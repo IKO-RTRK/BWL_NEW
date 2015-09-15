@@ -7,7 +7,9 @@ static void startGame(BOWLING_GAME* the_game);
 static void doTheRoll(BOWLING_GAME* the_game, uint8_t current_frame, uint8_t current_player);
 static BALL_POSITION throwTheBall(BOWLING_GAME* the_game, uint8_t current_player);
 static void freeResources(BOWLING_GAME* games[]);
-
+static uint8_t createGame(BOWLING_GAME* game_init[], uint8_t the_lane);
+static uint8_t initPlayers(BOWLING_GAME* game_init[], uint8_t the_lane);
+static uint8_t numberOfLanes(uint8_t num_of_lanes);
 uint32_t main(uint32_t argc, char* argv[])
 {
 	uint8_t number_of_lanes = 0;
@@ -29,43 +31,17 @@ uint32_t main(uint32_t argc, char* argv[])
 	
 	// do INIT based on parsed argv!
 	init(gui);
-
-	printf("# of lanes: ");
-	scanf("%"SCNd8, &number_of_lanes);
-
-	if (!isLaneValid(number_of_lanes))
-	{
-		return ERROR_LANES;
-	}
-
+	//input number of lanes
+	numberOfLanes(number_of_lanes);
+	
 	// for each game
 	for (lane = 0; lane < number_of_lanes; lane++)
 	{
 		// create the game
-		games[lane] = bowlingGameCreate();
-
-		if (games[lane] == NULL)
-		{
-			return ERROR_MEMORY;
-		} 
-		
-		games[lane]->lane_number = lane;
-
-		printf("# of players on lane #%d: ", lane+1);
-		scanf("%"SCNd8, &games[lane]->number_of_players);
-		
-		if (!isPlayerValid(games[lane]->number_of_players))
-		{
-			freeResources(games);
-			return ERROR_PLAYERS;
-		}
-
-		if (!createPlayers(games[lane]))
-		{
-			freeResources(games);
-			return ERROR_MEMORY;
-		}		
-
+		createGame(games, lane);
+		//create and init players on the lane
+		initPlayers(games, lane);
+		//start game on that lane
 		startGame(games[lane]);
 	}	
 	
@@ -73,6 +49,47 @@ uint32_t main(uint32_t argc, char* argv[])
 	return ERROR_OK;
 }
 
+static uint8_t numberOfLanes(uint8_t num_of_lanes)
+{
+	printf("# of lanes: ");
+	scanf("%"SCNd8, &num_of_lanes);
+
+	if (!isLaneValid(num_of_lanes))
+	{
+		return ERROR_LANES;
+	}
+}
+
+static uint8_t initPlayers(BOWLING_GAME* game_init[], uint8_t the_lane)
+{
+	printf("# of players on lane #%d: ", the_lane+1);
+	scanf("%"SCNd8, &game_init[the_lane]->number_of_players);
+		
+	if (!isPlayerValid(game_init[the_lane]->number_of_players))
+	{
+		freeResources(game_init);
+		return ERROR_PLAYERS;
+	}
+
+	if (!createPlayers(game_init[the_lane]))
+	{
+		freeResources(game_init);
+		return ERROR_MEMORY;
+	}
+}	
+	
+static uint8_t createGame(BOWLING_GAME* game_init[], uint8_t the_lane)
+{
+// create the game
+		game_init[the_lane] = bowlingGameCreate();
+
+		if (game_init[the_lane] == NULL)
+		{
+			return ERROR_MEMORY;
+		} 
+		
+		game_init[the_lane]->lane_number = the_lane;
+}	
 
 static uint8_t createPlayers(BOWLING_GAME* the_game)
 {
