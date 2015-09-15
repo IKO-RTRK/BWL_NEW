@@ -47,7 +47,7 @@ uint32_t main(uint32_t argc, char* argv[])
 		startGame(games[lane]);
 	}	
 	
-	freeResources(games);
+	//freeResources(games);
 	return ERROR_OK;
 }
 
