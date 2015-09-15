@@ -19,6 +19,8 @@
 	} PLAYER;
 
 	PLAYER* playerCreate();
+	void increaseQuality (PLAYER* p);
+	void decreaseQuality (PLAYER* p);
 
 #endif
 
