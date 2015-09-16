@@ -1,8 +1,8 @@
 /**
-	@file 	main.h
-	@brief 	Dokument sadrzi kratak opis koristenih makroa i koristene enumeracije.
-	@author RT-RK
-	@date 	Septembar, 2015
+*	@file 	main.h
+*	@brief 	 This document contains short description about used macros and enumeration.
+*	@author RT-RK
+*	@date 	Septembar, 2015
 */
 #ifndef _MAIN_H
 #define _MAIN_H
@@ -18,12 +18,12 @@
 #include "../../gui/src/gui.h"
 #include "../../ball_logic/src/ball.h"
 /**
-	Vrijeme izmedju dva bacanja kugle izrazeno u mikro sekundama
+	Time between two throws in micro secunds.
 */
 #define MICRO_TIME_BETWEEN_TWO_ROLLS 	1500000
 
 /**
-	Enumeracija errora.
+	Enumeration of errors.
 */
 enum 
 {
