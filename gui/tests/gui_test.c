@@ -34,4 +34,3 @@ TEST(SDLAnimationTest, BMP_Load)
 	TEST_ASSERT_EQUAL(0, initGUI(SDL));
 }
 
-
