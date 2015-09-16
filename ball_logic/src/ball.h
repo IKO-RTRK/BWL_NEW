@@ -21,8 +21,7 @@
  * @brief Struktura sadrzi informacije o poziciji kugle na stazi
  */
 
-uint32_t width;		///<	Promjenjiva koja cuva vrijednost sirine staze
-uint32_t length;	///<	Promjenjiva koja cuva vrijednost duzine staze
+LANE_CONFIG lane;	///<	Struktura u kojoj su sadrzane informacije o dimenzijama staze
 
 typedef struct ball_position_struct
 {
