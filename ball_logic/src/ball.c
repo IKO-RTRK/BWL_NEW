@@ -10,7 +10,7 @@ void initBallLogic(LANE_CONFIG lane_cfg)
 BALL_POSITION rollTheBall(struct player* theplayer, BALL_POSITION current_ball_position)
 {
 	BALL_POSITION next_ball_position;
-	next_ball_position.x = 0;//current_ball_position.coeff * current_ball_position.y + current_ball_position.x;
+	next_ball_position.x = current_ball_position.x;
 	return next_ball_position;
 }
 

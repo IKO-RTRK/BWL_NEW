@@ -6,13 +6,14 @@
 
 #include "../../player/src/player.h"
 
+
 TEST_GROUP(knockDownPins);
 TEST_GROUP(RollTheBallTests);
 
 TEST_GROUP_RUNNER(RollTheBallTests)
 {
     RUN_TEST_CASE(RollTheBallTests, StraightLineTest);
-   // RUN_TEST_CASE(RollTheBallTest, OffsetStraightLineTest);
+    RUN_TEST_CASE(RollTheBallTests, OffsetStraightLineTest);
 }
 
 TEST_GROUP_RUNNER(knockDownPins)
@@ -63,19 +64,44 @@ TEST(RollTheBallTests, StraightLineTest)
   uint32_t positions[lane.length];
   BALL_POSITION ball_pos;
   BALL_POSITION ball_pos_next;
-  positions[0] = 0;
   
   for(i = 0;i < lane.length;i++)
   {
       ball_pos.y = i;
       ball_pos.x = 0;
       ball_pos_next = rollTheBall(NULL,ball_pos);
-      positions[i+1] = ball_pos_next.x; 
+      positions[i] = ball_pos.x;
+	  ball_pos.x = ball_pos_next.x;
   }
   
   TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, positions, lane.length);
 }
 
+TEST(RollTheBallTests, OffsetStraightLineTest)
+{
+	int i;
+	
+	uint32_t expected[lane.length];
+	for (i = 0; i < lane.length; i++)
+	{
+		expected[i] = 3;
+	}
+	
+	uint32_t positions[lane.length];
+	BALL_POSITION ball_pos;
+	BALL_POSITION ball_pos_next;
+	
+	for (i = 0;i < lane.length;i++)
+	{
+		ball_pos.y = i;
+		ball_pos.x = 3;
+		ball_pos_next = rollTheBall(NULL, ball_pos);
+		positions[i] = ball_pos.x;
+		ball_pos.x = ball_pos_next.x;
+	}
+	
+	TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, positions, lane.length);
+}
 
 TEST(knockDownPins, BallInLeftCanal)
 {
