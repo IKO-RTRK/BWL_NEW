@@ -1,3 +1,9 @@
+/**
+*	@file 	main.h
+*	@brief 	 This document contains short description about used macros and enumeration.
+*	@author RT-RK
+*	@date 	Septembar, 2015
+*/
 #ifndef _MAIN_H
 #define _MAIN_H
 #include <stdio.h>
@@ -11,10 +17,14 @@
 #include "../../player/src/player.h"
 #include "../../gui/src/gui.h"
 #include "../../ball_logic/src/ball.h"
-
+/**
+	Time between two throws in micro secunds.
+*/
 #define MICRO_TIME_BETWEEN_TWO_ROLLS 	1500000
 
-
+/**
+	Enumeration of errors.
+*/
 enum 
 {
 	ERROR_OK	= 0,
