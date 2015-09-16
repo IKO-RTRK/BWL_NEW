@@ -1,3 +1,3 @@
 all:
-	gcc -o ../runall unity.o unity_fixture.o gui_test.o runall.o ../../build/gui.o
+	gcc -o ../runall unity.o unity_fixture.o gui_test.o runall.o ../../build/gui.o -L../../libs -lSDL -ldl -lpthread -lm
 

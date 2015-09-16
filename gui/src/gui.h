@@ -6,6 +6,7 @@
 
 #include "../../ball_logic/src/ball.h"
 #include "../../stats/src/bowling_game.h"
+#include "../../include/SDL.h"
 
 typedef enum
 {
@@ -15,8 +16,8 @@ typedef enum
 
 extern LANE_CONFIG my_lane_config;
 
-void (*drawKnockedPinsAndTable)(BOWLING_GAME*, uint8_t, KNOCKED_DOWN_PINS);
-void (*animateBallMovement)(BOWLING_GAME*, uint8_t, BALL_POSITION);
+uint8_t (*drawKnockedPinsAndTable)(BOWLING_GAME*, uint8_t, KNOCKED_DOWN_PINS);
+uint8_t (*animateBallMovement)(BOWLING_GAME*, uint8_t, BALL_POSITION);
 
 void initGUI(uint8_t gui);
 #endif
