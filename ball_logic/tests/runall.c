@@ -2,7 +2,7 @@
 
 static void RunAllTests(void)
 {
-	RUN_TEST_GROUP(BallLogicTests);
+	RUN_TEST_GROUP(RollTheBallTests);
 }
 
 int main(int argc, char* argv[])
