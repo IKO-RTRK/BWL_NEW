@@ -2,6 +2,7 @@
 
 static void RunAllTests(void)
 {
+	RUN_TEST_GROUP(knockDownPins);
 	RUN_TEST_GROUP(RollTheBallTests);
 }
 

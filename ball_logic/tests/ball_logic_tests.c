@@ -4,15 +4,24 @@
 #include <inttypes.h>
 #include <stdint.h>
 
+#include "../../player/src/player.h"
+
+TEST_GROUP(knockDownPins);
 TEST_GROUP(RollTheBallTests);
 
 TEST_GROUP_RUNNER(RollTheBallTests)
 {
-    RUN_TEST_CASE(RollTheBallTest, StraightLineTest);
+    RUN_TEST_CASE(RollTheBallTests, StraightLineTest);
    // RUN_TEST_CASE(RollTheBallTest, OffsetStraightLineTest);
 }
 
-TEST_SETUP(RollTheBallTest)
+TEST_GROUP_RUNNER(knockDownPins)
+{
+	RUN_TEST_CASE(knockDownPins, BallInLeftCanal);
+	RUN_TEST_CASE(knockDownPins, BallInRightCanal);
+}
+
+TEST_SETUP(RollTheBallTests)
 {
     LANE_CONFIG lane2;
     lane2.width = 20;
@@ -20,12 +29,28 @@ TEST_SETUP(RollTheBallTest)
     initBallLogic(lane2);
 }
 
-TEST_TEAR_DOWN(RollTheBallTest)
+TEST_TEAR_DOWN(RollTheBallTests)
 {
 	
 }
 
-TEST(RollTheBallTest, StraightLineTest)
+PLAYER player;
+BALL_POSITION position;
+
+extern LANE_CONFIG lane;
+
+TEST_SETUP(knockDownPins)
+{
+	lane.width = 7;
+	lane.length = 40;
+}
+
+TEST_TEAR_DOWN(knockDownPins)
+{
+	
+}
+
+TEST(RollTheBallTests, StraightLineTest)
 {
   int i;
   
@@ -51,3 +76,25 @@ TEST(RollTheBallTest, StraightLineTest)
   TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, positions, lane.length);
 }
 
+
+TEST(knockDownPins, BallInLeftCanal)
+{
+	uint8_t i;
+	position.x = - lane.width/2 - 1;
+	KNOCKED_DOWN_PINS pins = knockDownPins(&player, position);
+	for(i = 0; i <= NUMBER_OF_PINS - 1; i++)
+	{
+		TEST_ASSERT_EQUAL(0, pins.pins[i]);
+	}
+}
+
+TEST(knockDownPins, BallInRightCanal)
+{
+	uint8_t i;
+	position.x = lane.width/2 + 1;
+	KNOCKED_DOWN_PINS pins = knockDownPins(&player, position);
+	for(i = 0; i <= NUMBER_OF_PINS - 1; i++)
+	{
+		TEST_ASSERT_EQUAL(0, pins.pins[i]);
+	}
+}
