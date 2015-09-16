@@ -1,6 +1,6 @@
 /**
  * @file ball.h
- * @brief Dokument sadrzi kratak opis struktura i funkcija koje su koristene
+ * @brief Document contains short description of used structures and functions 
  * @author RT-RK Ball_logic
  * @date September, 2015
  */
@@ -13,63 +13,63 @@
 
 #include "../../player/src/player.h"
 /**
- * Broj cunjeva u garnituri na pocetku igre
+ * Number of pins in lane when game starts
  */
 #define NUMBER_OF_PINS 10
 
 /**
- * @brief Struktura sadrzi informacije o poziciji kugle na stazi
+ * @brief Structure contains information about ball position
  */
 
 typedef struct ball_position_struct
 {
-	uint8_t isEndOfLane;		///<	Informacija o tome da li je kugla dosla do kraja staza, moze imati vrijednost 0 ili 1 
-	uint8_t isStartPosition;	///<	Informacija o tome da li je kugla na pocetku staze, moze imati vrijednost 0 ili 1
-	uint32_t x;			///<	Trenutna vrijednost koordinate x za kuglu na stazi, predstavlja udaljenost kugle od centralne linije staze
-	uint32_t y;			///<	Trenutna vrijednost koordinate y za kuglu na stazi, predstavlja udaljenost kugle od pocetka staze
+	uint8_t isEndOfLane;		///<	Did the ball reached the end of lane, have values 0 or 1 
+	uint8_t isStartPosition;	///<	Is the ball at the start of lane, have values 0 or 1  
+	uint32_t x;			///<	x coordinate current value for ball, represents distance between ball and central line of lane 
+	uint32_t y;			///<	y coordinate current value for ball, represents distance between ball and the beginning of lane
 } BALL_POSITION;
 
 
 /**
- * @brief Struktura sadrzi informacije o cunjevima
+ * @brief Structure contains information about pins on the lane
  */
 typedef struct knocked_down_pins_struct
 {
-	uint8_t number_of_pins;		///<	Broj cunjeva koji je srusen u bacanju kugle
-	uint8_t pins[NUMBER_OF_PINS];	///<	Niz cunjeva, vrijednosti niza su 0 ako je cunj srusen, inace 1
+	uint8_t number_of_pins;		///<	Number of knocked pins in a throw
+	uint8_t pins[NUMBER_OF_PINS];	///<	Array of pins, array element is 0 if a matching pin has been knocked
 } KNOCKED_DOWN_PINS;
 
 /**
- * @brief Struktura sadrzi informacije o velicini staze
+ * @brief Structure contains information about lane size
  */
 typedef struct
 {
-	uint32_t width;		///<	Sirina staze
-	uint32_t length;	///<	Duzina staze
+	uint32_t width;		///<	Lane width
+	uint32_t length;	///<	Lane length
 } LANE_CONFIG;
 
-LANE_CONFIG lane;	///<	Struktura u kojoj su sadrzane informacije o dimenzijama staze
+LANE_CONFIG lane;	///<	Structure in which are informations about lane dimensions
 
 /**
- * @brief 	Funkcija postavlja osnovne parametre za pocetak igre
- * @param 	lane_cfg	Struktura koja sadrzi informacije o stazi
+ * @brief 	Function sets basic parameters for game start
+ * @param 	lane_cfg	Structure with lane information
  * @retval	void
  */
 void initBallLogic(LANE_CONFIG lane_cfg);
 
 /**
- * @brief 	Funkcija odredjuje narednu poziciju kugle na stazi
- * @param 	*the_player	Sadrzi informacije o igracu koji igra trenutno na stazi
- * @param 	current_ball_position	Sadrzi informacije o trenutnoj poziciji kugle na stazi
- * @retval 	BALL_POSITION Funckija vraca strukturu sa informacijama o novom polozaju kugle
+ * @brief 	Function which determinates next ball position on lane
+ * @param 	*the_player	Information about current player who play on lane
+ * @param 	current_ball_position	Information about current ball position on lane 
+ * @retval 	BALL_POSITION Function returns structure with information of ball new position
  */
 BALL_POSITION rollTheBall(PLAYER* the_player, BALL_POSITION current_ball_position);
 
 /**
- * @brief 	Funkcija implementira rusenje cunjeva
- * @param 	*the_player	Sadrzi informacije o igracu koji trenutno igra na stazi
- * @param 	ball_position	Sadrzi informacije o polozaju kugle neposredno prije rusenja cunjeva
- * @retval	KNOCKED_DOWN_PINS Funkcija vraca strukturu sa informacija koliko i koji cunjevi su sruseni
+ * @brief 	Function implements knocking down pins
+ * @param 	*the_player	Information about current player who play on lane
+ * @param 	ball_position	Information of ball position immediately before knocking pins
+ * @retval	KNOCKED_DOWN_PINS Function returns structure with information which and how many pins are koncked 
  */
 KNOCKED_DOWN_PINS knockDownPins(PLAYER* the_player, BALL_POSITION ball_position);
 #endif
