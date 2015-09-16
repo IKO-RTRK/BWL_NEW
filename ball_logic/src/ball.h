@@ -21,8 +21,6 @@
  * @brief Struktura sadrzi informacije o poziciji kugle na stazi
  */
 
-LANE_CONFIG lane;	///<	Struktura u kojoj su sadrzane informacije o dimenzijama staze
-
 typedef struct ball_position_struct
 {
 	uint8_t isEndOfLane;		///<	Informacija o tome da li je kugla dosla do kraja staza, moze imati vrijednost 0 ili 1 
@@ -49,6 +47,8 @@ typedef struct
 	uint32_t width;		///<	Sirina staze
 	uint32_t length;	///<	Duzina staze
 } LANE_CONFIG;
+
+LANE_CONFIG lane;	///<	Struktura u kojoj su sadrzane informacije o dimenzijama staze
 
 /**
  * @brief 	Funkcija postavlja osnovne parametre za pocetak igre
