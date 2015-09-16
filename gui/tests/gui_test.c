@@ -3,18 +3,19 @@
 
 TEST_GROUP(GuiSDLTest);
 
+
 TEST_GROUP_RUNNER(GuiSDLTest)
 {
 //	RUN_TEST_CASE(GuiSDLTest, ____);
-
 }
 
-TEST_SETUP(BowlingTest)
+TEST_SETUP(GuiSDLTest)
 {
 	 
 }
 
-TEST_TEAR_DOWN(BowlingTest)
+TEST_TEAR_DOWN(GuiSDLTest)
 {
 }
+
 

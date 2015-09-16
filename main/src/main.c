@@ -9,7 +9,7 @@ static BALL_POSITION throwTheBall(BOWLING_GAME* the_game, uint8_t current_player
 static void freeResources(BOWLING_GAME* games[]);
 static uint8_t createGame(BOWLING_GAME* game_init[], uint8_t the_lane);
 static uint8_t initPlayers(BOWLING_GAME* game_init[], uint8_t the_lane);
-static uint8_t numberOfLanes(uint8_t num_of_lanes);
+static uint8_t numberOfLanes();
 uint32_t main(uint32_t argc, char* argv[])
 {
 	uint8_t number_of_lanes = 0;
@@ -32,34 +32,44 @@ uint32_t main(uint32_t argc, char* argv[])
 	// do INIT based on parsed argv!
 	init(gui);
 	//input number of lanes
-	numberOfLanes(number_of_lanes);
-	
+	number_of_lanes=numberOfLanes();
+
 	// for each game
 	for (lane = 0; lane < number_of_lanes; lane++)
 	{
 		// create the game
-		createGame(games, lane);
+		createGame(games,lane);
+
 		//create and init players on the lane
-		initPlayers(games, lane);
+		initPlayers(games,lane);
+		
 		//start game on that lane
 		startGame(games[lane]);
 	}	
 	
-	freeResources(games);
+	//freeResources(games);
 	return ERROR_OK;
 }
 
-static uint8_t numberOfLanes(uint8_t num_of_lanes)
-{
+/**
+	Odredjuje se broj staza.
+*/
+static uint8_t numberOfLanes()
+{	
+	uint8_t temp=0;
 	printf("# of lanes: ");
-	scanf("%"SCNd8, &num_of_lanes);
-
-	if (!isLaneValid(num_of_lanes))
+	scanf("%"SCNd8, &temp);
+	
+	if (!isLaneValid(temp))
 	{
 		return ERROR_LANES;
 	}
+	return temp;;
 }
 
+/**
+	Odredjuje broj igraca na svakoj stazi i odredjuju se imena igraca.
+*/
 static uint8_t initPlayers(BOWLING_GAME* game_init[], uint8_t the_lane)
 {
 	printf("# of players on lane #%d: ", the_lane+1);
@@ -76,21 +86,29 @@ static uint8_t initPlayers(BOWLING_GAME* game_init[], uint8_t the_lane)
 		freeResources(game_init);
 		return ERROR_MEMORY;
 	}
-}	
 	
+}
+	
+/**
+	Kreira se statistika za stazu.
+*/	
 static uint8_t createGame(BOWLING_GAME* game_init[], uint8_t the_lane)
 {
-// create the game
 		game_init[the_lane] = bowlingGameCreate();
 
 		if (game_init[the_lane] == NULL)
-		{
+		{	
+			freeResources(game_init);
 			return ERROR_MEMORY;
 		} 
 		
 		game_init[the_lane]->lane_number = the_lane;
+		
 }	
 
+/**
+	Kreiraju se igraci.
+*/
 static uint8_t createPlayers(BOWLING_GAME* the_game)
 {
 	uint8_t player = 0;
@@ -106,6 +124,9 @@ static uint8_t createPlayers(BOWLING_GAME* the_game)
 	}
 }
 
+/**
+	Pokrece se igra na odredjenoj stazi.
+*/
 static void startGame(BOWLING_GAME* the_game)
 {
 	uint8_t current_player = 0;
@@ -120,6 +141,9 @@ static void startGame(BOWLING_GAME* the_game)
 	}
 }
 
+/**
+	Provjerava se da li igrac moze bacati kuglu, odredjuje se putanja kugle, odredjuje se koji su cunjevi sruseni i upisuje se rezultat.
+*/
 static void doTheRoll(BOWLING_GAME* the_game, uint8_t current_frame, uint8_t current_player)
 {
 	BALL_POSITION final_ball_position;
@@ -139,6 +163,9 @@ static void doTheRoll(BOWLING_GAME* the_game, uint8_t current_frame, uint8_t cur
 	}
 }
 
+/**
+	Sama kretnja kugle.
+*/
 static BALL_POSITION throwTheBall(BOWLING_GAME* the_game, uint8_t current_player)
 {
 	BALL_POSITION current_ball_position;
@@ -152,6 +179,9 @@ static BALL_POSITION throwTheBall(BOWLING_GAME* the_game, uint8_t current_player
 	return current_ball_position;
 }
 
+/**
+	Ispisuje uputu sa odabir GUI-a.
+*/
 static void printUsage(const char* const program_name)
 {
 	printf("Usage %s [0 or 1]\n", program_name);
@@ -159,6 +189,9 @@ static void printUsage(const char* const program_name)
 	printf("\t 1 - SDL GUI\n");
 }
 
+/**
+	Inicijalizacija promjelnji gui_id koja odredjuje koji se GUI koristi.
+*/
 static void init(GUI_TYPE gui_id)
 {
 	system("clear");
@@ -167,6 +200,9 @@ static void init(GUI_TYPE gui_id)
 	initBallLogic(my_lane_config);
 }
 
+/**
+	Oslobadjanje zauzete memorije za strukturu BOWLING_GAME.
+*/
 static void freeResources(BOWLING_GAME* games[])
 {	
 	uint8_t l = 0;

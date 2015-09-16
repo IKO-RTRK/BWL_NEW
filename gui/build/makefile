@@ -1,2 +1,3 @@
 all:
-	gcc -o ../runall unity.o unity_fixture.o ../../build/gui.o runall.o gui_test.o
+	gcc -o ../runall unity.o unity_fixture.o gui_test.o runall.o ../../build/gui.o
+

@@ -3,7 +3,6 @@
 static void RunAllTests(void)
 {
 	RUN_TEST_GROUP(GuiSDLTest);
-
 }
 
 int main(int argc, char *argv[])
