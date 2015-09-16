@@ -9,7 +9,7 @@ static uint8_t animateBallMovement_SDL(BOWLING_GAME* the_game, uint8_t current_p
 
 LANE_CONFIG my_lane_config;
 
-void initGUI(uint8_t gui)
+uint8_t initGUI(uint8_t gui)
 {
 	if (gui == CONSOLE)
 	{
@@ -17,12 +17,18 @@ void initGUI(uint8_t gui)
 		animateBallMovement = NULL;
 		// configure my_lane_config based on GUI choose (width/length/...)
 		
-	} else
+	} 
+	else
 	{
 		// Assign function pointer to adequate function...
 		// configure my_lane_config based on GUI choose (width/length/...)
 		drawKnockedPinsAndTable = drawKnockedPinsAndTable_SDL;
 		animateBallMovement = animateBallMovement_SDL;
+
+		if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+		return 1;
+		
+		return 0;
 	}
 }
 
@@ -47,12 +53,8 @@ static uint8_t drawKnockedPinsAndTable_SDL(BOWLING_GAME* the_game, uint8_t curre
 }
 
 static uint8_t animateBallMovement_SDL(BOWLING_GAME* the_game, uint8_t current_player, BALL_POSITION ball_position)
-{
-	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
-	return 1;
+{	
 	
-	
-	return 0;
 }
 // SDL GUI END
 

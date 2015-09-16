@@ -19,6 +19,6 @@ extern LANE_CONFIG my_lane_config;
 uint8_t (*drawKnockedPinsAndTable)(BOWLING_GAME*, uint8_t, KNOCKED_DOWN_PINS);
 uint8_t (*animateBallMovement)(BOWLING_GAME*, uint8_t, BALL_POSITION);
 
-void initGUI(uint8_t gui);
+uint8_t initGUI(uint8_t gui);
 #endif
 
