@@ -49,7 +49,6 @@ uint8_t initGUI(uint8_t gui)
 			if (printLane(i))	
 			return 3;
 		}
-		SDL_Delay(5000);
 		
 		return 0;
 	}
@@ -94,6 +93,16 @@ static uint8_t animateBallMovement_SDL(BOWLING_GAME* the_game, uint8_t current_p
 {
 	
 	
+}
+
+void quit()
+{
+	SDL_FreeSurface(ball[0]);
+	SDL_FreeSurface(ball[1]);
+	SDL_FreeSurface(screen);	
+	SDL_FreeSurface(bowling_lane);
+
+	SDL_Quit(); 
 }
 // SDL GUI END
 

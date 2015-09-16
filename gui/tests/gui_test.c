@@ -15,7 +15,7 @@ TEST_GROUP_RUNNER(SDLAnimationTest)
 
 TEST_SETUP(SDLAnimationTest)
 {
-	 
+	quit();
 }
 
 TEST_TEAR_DOWN(SDLAnimationTest)
