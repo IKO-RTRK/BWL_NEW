@@ -1,5 +1,8 @@
 #include "gui.h"
 
+static SDL_Surface* screen = NULL;
+static SDL_Surface* ball[2] = {NULL, NULL};  
+static SDL_Surface* bowling_lane = NULL; 
 
 static uint8_t drawKnockedPinsAndTable_console(BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins);
 static uint8_t animateBallMovement_console(BOWLING_GAME* the_game, uint8_t current_player, BALL_POSITION ball_position);
@@ -27,6 +30,16 @@ uint8_t initGUI(uint8_t gui)
 
 		if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 		return 1;
+
+		screen = SDL_SetVideoMode(800, 600, 32, SDL_DOUBLEBUF); 
+		ball[0] = SDL_LoadBMP("../resources/ball1.bmp");
+		ball[1] = SDL_LoadBMP("../resources/ball2.bmp");
+		bowling_lane = SDL_LoadBMP("../resources/bowling_lane.bmp");
+
+		if (screen == NULL || ball[0] == NULL || ball[1] == NULL || bowling_lane == NULL)
+		return 2;
+
+		SDL_WM_SetCaption("Bowling", NULL);
 		
 		return 0;
 	}
