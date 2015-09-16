@@ -6,6 +6,44 @@
 
 #include "../../player/src/player.h"
 
+uint32_t* expected;
+uint32_t* positions;
+
+PLAYER player;
+BALL_POSITION position;
+BALL_POSITION ball_pos;
+BALL_POSITION ball_pos_next;
+
+static void fillExpectedArray(uint32_t element)
+{
+	expected = (uint32_t*) calloc(lane.length, sizeof(uint32_t));
+	int i;
+	for (i = 0; i < lane.length; i++)
+	{
+		expected[i] = element;
+	}
+}
+
+static void initialiseArray()
+{
+	positions = (uint32_t*) calloc(lane.length, sizeof(uint32_t));
+}
+
+static void addPositionToArray(int position, uint32_t offset)
+{
+	ball_pos.y = position;
+	if (position == 0)
+		ball_pos.x = offset;
+	ball_pos_next = rollTheBall(&player, ball_pos);
+	positions[position] = ball_pos.x;
+	ball_pos.x = ball_pos_next.x;
+}
+
+static void freeArrays()
+{
+	free(expected);
+	free(positions);
+}
 
 TEST_GROUP(knockDownPins);
 TEST_GROUP(RollTheBallTests);
@@ -35,9 +73,6 @@ TEST_TEAR_DOWN(RollTheBallTests)
 	
 }
 
-PLAYER player;
-BALL_POSITION position;
-
 extern LANE_CONFIG lane;
 
 TEST_SETUP(knockDownPins)
@@ -55,52 +90,36 @@ TEST(RollTheBallTests, StraightLineTest)
 {
   int i;
   
-  uint32_t expected[lane.length];
-  for (i = 0; i < lane.length; i++)
-  {
-    expected[i] = 0;
-  }
+  fillExpectedArray(10);
   
-  uint32_t positions[lane.length];
-  BALL_POSITION ball_pos;
-  BALL_POSITION ball_pos_next;
+  player.quality = 10;
   
+  initialiseArray();
   for(i = 0;i < lane.length;i++)
   {
-      ball_pos.y = i;
-      ball_pos.x = 0;
-      ball_pos_next = rollTheBall(NULL,ball_pos);
-      positions[i] = ball_pos.x;
-	  ball_pos.x = ball_pos_next.x;
+      addPositionToArray(i,lane.width/2);
   }
   
   TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, positions, lane.length);
+  
+  freeArrays();
 }
 
 TEST(RollTheBallTests, OffsetStraightLineTest)
 {
 	int i;
 	
-	uint32_t expected[lane.length];
-	for (i = 0; i < lane.length; i++)
-	{
-		expected[i] = 3;
-	}
+	fillExpectedArray(13);
 	
-	uint32_t positions[lane.length];
-	BALL_POSITION ball_pos;
-	BALL_POSITION ball_pos_next;
-	
+	initialiseArray();
 	for (i = 0;i < lane.length;i++)
 	{
-		ball_pos.y = i;
-		ball_pos.x = 3;
-		ball_pos_next = rollTheBall(NULL, ball_pos);
-		positions[i] = ball_pos.x;
-		ball_pos.x = ball_pos_next.x;
+		addPositionToArray(i,lane.width/2 + 3);
 	}
 	
 	TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, positions, lane.length);
+	
+	freeArrays();
 }
 
 TEST(knockDownPins, BallInLeftCanal)
