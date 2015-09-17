@@ -69,6 +69,10 @@ TEST_GROUP_RUNNER(knockDownPins)
 	RUN_TEST_CASE(knockDownPins, BallAlmostInLeftCanal);
 	RUN_TEST_CASE(knockDownPins, BallAlmostInRightCanal);
 	RUN_TEST_CASE(knockDownPins, BallHitsCentre);
+	RUN_TEST_CASE(knockDownPins, BallInMiddleOfLeftHalf);
+	RUN_TEST_CASE(knockDownPins, BallInMiddleOfRightHalf);
+	RUN_TEST_CASE(knockDownPins, BallAlmostHitCentreLeft);
+	RUN_TEST_CASE(knockDownPins, BallAlmostHitCentreRight);
 }
 
 TEST_SETUP(RollTheBallTests)
@@ -224,57 +228,81 @@ static uint8_t howMuch()
 	return counter;
 }
 
+static uint8_t isValid(uint8_t parameter, uint8_t lower_bound, uint8_t upper_bound)
+{
+	if ( parameter >= lower_bound && parameter <= upper_bound )
+		if ( parameter == pins.number_of_pins ) return 1;
+	return 0;
+}
+
 TEST(knockDownPins, BallInLeftCanal)
 {
-	uint8_t counter, isValid=0;
+	uint8_t counter;
 	position.x = 2;
 	counter = howMuch();
-	if ( counter == 0 )
-		if ( counter == pins.number_of_pins ) isValid = 1;
-
-	TEST_ASSERT_EQUAL(1, isValid);
+	TEST_ASSERT_EQUAL(1, isValid(counter, 0, 0));
 }
 
 TEST(knockDownPins, BallInRightCanal)
 {
-	uint8_t counter, isValid=0;
+	uint8_t counter;
 	position.x = 10;
 	counter = howMuch();
-	if ( counter == 0 )
-		if ( counter == pins.number_of_pins ) isValid = 1;
-
-	TEST_ASSERT_EQUAL(1, isValid);
+	TEST_ASSERT_EQUAL(1, isValid(counter, 0, 0));
 }
 
 TEST(knockDownPins, BallAlmostInLeftCanal)
 {
-	uint8_t counter, isValid=0;
+	uint8_t counter;
 	position.x = 3;
 	counter = howMuch();
-	if ( counter >= 0 && counter <= 4 )
-		if ( counter == pins.number_of_pins ) isValid = 1;
-
-	TEST_ASSERT_EQUAL(1, isValid);
+	TEST_ASSERT_EQUAL(1, isValid(counter, 0, 4));
 }
 
 TEST(knockDownPins, BallAlmostInRightCanal)
 {
-	uint8_t counter, isValid=0;
+	uint8_t counter;
 	position.x = 9;
 	counter = howMuch();
-	if ( counter >= 0 && counter <= 4 )
-		if ( counter == pins.number_of_pins ) isValid = 1;
-
-	TEST_ASSERT_EQUAL(1, isValid);
+	TEST_ASSERT_EQUAL(1, isValid(counter, 0, 4));
 }
 
 TEST(knockDownPins, BallHitsCentre)
 {
-	uint8_t counter, isValid=0;
+	uint8_t counter;
 	position.x = 6;
 	counter = howMuch();
-	if ( counter >= 0 && counter <= 10 )
-		if ( counter == pins.number_of_pins ) isValid = 1;
+	TEST_ASSERT_EQUAL(1, isValid(counter, 0, 10));
+}
 
-	TEST_ASSERT_EQUAL(1, isValid);
+TEST(knockDownPins, BallInMiddleOfLeftHalf)
+{
+	uint8_t counter;
+	position.x = 4;
+	counter = howMuch();
+	TEST_ASSERT_EQUAL(1, isValid(counter, 0, 6));
+}
+
+TEST(knockDownPins, BallInMiddleOfRightHalf)
+{
+	uint8_t counter;
+	position.x = 8;
+	counter = howMuch();
+	TEST_ASSERT_EQUAL(1, isValid(counter, 0, 6));
+}
+
+TEST(knockDownPins, BallAlmostHitCentreLeft)
+{
+	uint8_t counter;
+	position.x = 5;
+	counter = howMuch();
+	TEST_ASSERT_EQUAL(1, isValid(counter, 0, 8));
+}
+
+TEST(knockDownPins, BallAlmostHitCentreRight)
+{
+	uint8_t counter;
+	position.x = 7;
+	counter = howMuch();
+	TEST_ASSERT_EQUAL(1, isValid(counter, 0, 8));
 }

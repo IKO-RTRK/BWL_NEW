@@ -4,10 +4,10 @@
 - ~~3) TEST : Ball ends up next to left canal.~~
 - ~~4) TEST : Ball ends up next to right canal.~~
 - ~~5) TEST : Ball ends up at first pin.~~
--  6) TEST : Solid throw - left (middle of left half).
--  7) TEST : Solid throw - right (middle of right half).
--  8) TEST : Almost in centre - left.
--  9) TEST : Almost in centre - right.
+- ~~6) TEST : Solid throw - left (middle of left half).~~
+- ~~7) TEST : Solid throw - right (middle of right half).~~
+- ~~8) TEST : Almost in centre - left.~~
+- ~~9) TEST : Almost in centre - right.~~
 
 -  Tests for rollTheBall()
 -  ~~1) TEST : Ball is properly set on starting positon~~

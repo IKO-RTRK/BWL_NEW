@@ -85,18 +85,34 @@ static uint8_t howManyToKnockMax(int32_t position)
 	if ( relative_offset <= 0 ) realValue = 10+23*relative_offset+36*power_f(relative_offset, 2)+36*power_f(relative_offset, 3);  // y = 10+23*x+36*x^2+36*x^3 for -0.5 >= x >= 0
 	else realValue = 10-23*relative_offset+36*power_f(relative_offset, 2)-36*power_f(relative_offset, 3);  // y = 10-23*x+36*x^2-36*x^3 for 0 < x <= 0.5
 	// function that approximates convention values
+	
+	//printf("%lf\n\n\n", realValue);
 
 	return (uint8_t)ceil(realValue);
+}
+
+
+
+static void resetKnockedDownpins(KNOCKED_DOWN_PINS *pins)
+{
+	pins->number_of_pins = 0;
+	uint8_t i;
+	for(i=0; i <= NUMBER_OF_PINS - 1 ; i++)
+	{
+		pins->pins[i] = 0;
+	}
 }
 
 KNOCKED_DOWN_PINS knockDownPins(PLAYER* the_player, BALL_POSITION ball_position)
 {
 	KNOCKED_DOWN_PINS pins;
 	uint8_t i, max;
+	resetKnockedDownpins(&pins);
 	max = howManyToKnockMax((int32_t)ball_position.x);
 
 	if ( max == 0 ) pins.number_of_pins =  0; 
 	else pins.number_of_pins = max - ( random() % max );
+	//printf("%"PRIu8" ", pins.number_of_pins);
 
 	for(i=0; i < pins.number_of_pins ; i++)
 	{
