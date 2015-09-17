@@ -6,7 +6,7 @@
 
 #include "../../ball_logic/src/ball.h"
 #include "../../stats/src/bowling_game.h"
-#include "../../include/SDL.h"
+#include "../include/SDL.h"
 
 #define INIT_OFFSET_X 40
 #define INIT_OFFSET_Y 40

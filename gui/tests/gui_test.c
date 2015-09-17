@@ -1,6 +1,6 @@
 #include "../../unity/unity_fixture.h"
 #include "../src/gui.h"
-#include "../../include/SDL.h"
+#include "../include/SDL.h"
 
 BOWLING_GAME bg1, bg2;
 BALL_POSITION bp1, bp2;
