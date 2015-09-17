@@ -14,7 +14,7 @@ static uint8_t drawKnockedPinsAndTable_SDL(BOWLING_GAME* the_game, uint8_t curre
 static uint8_t animateBallMovement_SDL(BOWLING_GAME* the_game, uint8_t current_player, BALL_POSITION ball_position);
 
 static uint8_t printLane(uint8_t i);
-static void printBall(uint16_t x, uint16_t y, uint8_t lane);
+static void printBall(uint32_t x, uint32_t y, uint8_t lane);
 
 LANE_CONFIG my_lane_config;
 
@@ -105,7 +105,7 @@ static uint8_t animateBallMovement_SDL(BOWLING_GAME* the_game, uint8_t current_p
 	return 0;
 }
 
-static void printBall(uint16_t x, uint16_t y, uint8_t lane)  // x,y - centar lopte
+static void printBall(uint32_t x, uint32_t y, uint8_t lane)  // x,y - centar lopte
 {
 
 	// Pozicija na stazi na kojoj se brise lopta

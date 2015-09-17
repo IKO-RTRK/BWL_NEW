@@ -10,7 +10,7 @@
 
 #define INIT_OFFSET_X 40
 #define INIT_OFFSET_Y 40
-#define LANE_WIDTH 110
+#define LANE_WIDTH 170
 #define LANE_HEIGHT 508
 #define BALL_DIM 30 
 #define BALL_MIDDLE 15

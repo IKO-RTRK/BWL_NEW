@@ -40,16 +40,17 @@ TEST(SDLAnimationTest, BMP_Load)
 TEST(SDLAnimationTest, Animation)
 {
 	initGUI(SDL);
-	bp1.x = 0;
-	bp2.x = 50;
+	bp1.x = 15;
+	bp2.x = 125;
 	bg1.lane_number = 0;
 	bg2.lane_number = 2;
-	uint8_t i;
-	for (i = 0; i < 250; i++)
+	uint32_t i;
+	for (i = 0; i < 450; i++)
 	{	
 		SDL_Delay(10);
 		bp1.y = i;
 		bp2.y = i;
+		if (i < 300)
 		animateBallMovement(&bg1, 0, bp1);
 		animateBallMovement(&bg2, 0, bp2);
 	}
