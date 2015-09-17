@@ -2,7 +2,7 @@
 
 static void RunAllTests(void)
 {
-	RUN_TEST_GROUP(StatTests);
+	RUN_TEST_GROUP(PlayerCanTrowTests);
 }
 
 int main(int argc, char *argv[])
