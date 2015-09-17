@@ -57,6 +57,8 @@ TEST_GROUP_RUNNER(RollTheBallTests)
     RUN_TEST_CASE(RollTheBallTests, IsStartPositionNotTrue);
     RUN_TEST_CASE(RollTheBallTests, MakeOffsetOnStartLine);
     RUN_TEST_CASE(RollTheBallTests, OffsetFromCentralLine);
+    RUN_TEST_CASE(RollTheBallTests, StraightLineTest);
+    RUN_TEST_CASE(RollTheBallTests, OffsetStraightLineTest);
 }
 
 TEST_GROUP_RUNNER(knockDownPins)
@@ -90,8 +92,6 @@ TEST_TEAR_DOWN(knockDownPins)
 {
 	
 }
-
-
 
 // ==========================================================================================
 
@@ -129,6 +129,43 @@ TEST(RollTheBallTests, OffsetFromCentralLine)
   ball_pos_next = rollTheBall(&player, ball_pos);
   TEST_ASSERT_EQUAL_UINT32(12, ball_pos_next.x);
 }
+
+TEST(RollTheBallTests, StraightLineTest)
+{
+  int i;
+  
+  fillExpectedArray(10);
+  
+  player.quality = 10;
+  
+  initialiseArray();
+  for(i = 0;i < lane.length;i++)
+  {
+      addPositionToArray(i,lane.width/2);
+  }
+  
+  TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, positions, lane.length);
+  
+  freeArrays();
+}
+
+TEST(RollTheBallTests, OffsetStraightLineTest)
+{
+	int i;
+	
+	fillExpectedArray(13);
+	
+	initialiseArray();
+	for (i = 0;i < lane.length;i++)
+	{
+		addPositionToArray(i,lane.width/2 + 3);
+	}
+	
+	TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, positions, lane.length);
+	
+	freeArrays();
+}
+
 // ==========================================================================================
 
 TEST(knockDownPins, BallInLeftCanal)

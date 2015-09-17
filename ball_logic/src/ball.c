@@ -7,6 +7,11 @@ static bool isBallOnStartPosition(BALL_POSITION ball_position)
   return false;
 }
 
+static void setIsStartPosition(BALL_POSITION* ball_position)
+{
+  ball_position -> isStartPosition = false;
+}
+
 void initBallLogic(LANE_CONFIG lane_cfg)
 {
 
@@ -28,6 +33,7 @@ BALL_POSITION rollTheBall(struct player* the_player, BALL_POSITION current_ball_
 	    center += offset;
 	  }
 	  
+	  setIsStartPosition(&current_ball_position);
 	  next_ball_position.x = center;
 	}
 	else
