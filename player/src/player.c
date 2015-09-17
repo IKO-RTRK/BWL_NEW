@@ -47,6 +47,16 @@ void assignPlayerMainHand(PLAYER* player, int8_t main_hand)
 	}
 }
 
+void increaseQuality(PLAYER* player)
+{
+	player->quality = player->quality >= QUALITY_MAX ? QUALITY_MAX : player->quality + 1;
+}
+
+void decreaseQuality(PLAYER* player)
+{
+	player->quality = player->quality <= QUALITY_MIN ? QUALITY_MIN : player->quality - 1;
+}
+
 void playerDelete (PLAYER* player)
 {
 	free (player);
