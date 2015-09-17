@@ -14,6 +14,7 @@ TEST_GROUP_RUNNER(PlayerTest)
 	RUN_TEST_CASE (PlayerTest, AssignedQualityInBounds);
 	RUN_TEST_CASE (PlayerTest, AssignedMainHandOutOfBounds);
 	RUN_TEST_CASE (PlayerTest, AssignedMainHandInBounds);
+	RUN_TEST_CASE (PlayerTest, TestDeallocatePlayer);
 }
 
 TEST_SETUP(PlayerTest)
@@ -45,7 +46,7 @@ TEST(PlayerTest, TestNameOutOfBounds)
 TEST(PlayerTest, AssignedQualityOutOfBounds)
 {
 	assignPlayerQuality (player, 0);
-	TEST_ASSERT_TRUE (player -> quality == 1);
+	TEST_ASSERT_TRUE (player -> quality == QUALITY_MIN);
 }
 
 TEST(PlayerTest, AssignedQualityInBounds)
@@ -57,12 +58,13 @@ TEST(PlayerTest, AssignedQualityInBounds)
 TEST(PlayerTest, AssignedMainHandOutOfBounds)
 {
 	assignPlayerMainHand (player, 7);
-	TEST_ASSERT_TRUE (player -> main_hand == 1);
+	TEST_ASSERT_TRUE (player -> main_hand == RIGHT_HAND);
 }
 
 TEST(PlayerTest, AssignedMainHandInBounds)
 {
-	assignPlayerMainHand (player, 0);
-	TEST_ASSERT_TRUE (player -> main_hand == 0);
+	assignPlayerMainHand (player, LEFT_HAND);
+	TEST_ASSERT_TRUE (player -> main_hand == LEFT_HAND);
 }
+
 

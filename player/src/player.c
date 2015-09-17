@@ -5,7 +5,7 @@ static int isQualityInBounds(uint8_t quality)
 	return ((quality >= QUALITY_MIN) && (quality <= QUALITY_MAX));
 }
 
-PLAYER* playerCreate()
+PLAYER* playerCreate(void)
 {
 	return (PLAYER*) malloc( sizeof(PLAYER) );
 }
@@ -28,7 +28,7 @@ void assignPlayerQuality(PLAYER* player, uint8_t quality)
 	}
 }
 
-void assignPlayerMainHand(PLAYER* player, uint8_t main_hand)
+void assignPlayerMainHand(PLAYER* player, int8_t main_hand)
 {
 	if ((main_hand == LEFT_HAND) || (main_hand == RIGHT_HAND))
 	{
@@ -38,4 +38,9 @@ void assignPlayerMainHand(PLAYER* player, uint8_t main_hand)
 	{
 		player -> main_hand = RIGHT_HAND;
 	}
+}
+
+void playerDelete (PLAYER* player)
+{
+	free (player);
 }
