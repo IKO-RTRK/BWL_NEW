@@ -8,7 +8,7 @@ static uint16_t prevX[3];
 static uint16_t prevY[3];
 
 static void SetCursorPos(int XPos, int YPos);
-static void initialisation_track_console(TRACK_CONSOLE* t, BOWLING_GAME* the_game);
+void initialisation_track_console(TRACK_CONSOLE* t, BOWLING_GAME* the_game);
 static void initialisation_pins_console(TRACK_CONSOLE* track);
 static void initialisation_lane_console(TRACK_CONSOLE* track);
 static void initialisation_table_console(TRACK_CONSOLE* track, BOWLING_GAME* the_game);
@@ -17,13 +17,12 @@ static void print_lane_console(TRACK_CONSOLE* track);
 static void print_table_console(TRACK_CONSOLE* track);
 
 
-
-char bowling_pins[NUM_OF_PINS] = {[0 ... NUM_OF_PINS-1] = '!'};
 char bowling_ball = 'o';
-static TRACK_CONSOLE surface[3];
+char init_bowling_pins[NUM_OF_PINS] = {[0 ... NUM_OF_PINS-1] = '!'};
 
 
-static uint8_t drawKnockedPinsAndTable_console(BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins);
+
+uint8_t drawKnockedPinsAndTable_console(BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins, TRACK_CONSOLE* track);
 static uint8_t animateBallMovement_console(BOWLING_GAME* the_game, uint8_t current_player, BALL_POSITION ball_position);
 
 static uint8_t drawKnockedPinsAndTable_SDL(BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins);
@@ -38,7 +37,7 @@ uint8_t initGUI(uint8_t gui)
 {
 	if (gui == CONSOLE)
 	{
-		drawKnockedPinsAndTable = NULL;
+		drawKnockedPinsAndTable = drawKnockedPinsAndTable_console;
 		animateBallMovement = NULL;
 		my_lane_config.length=LENGTH_OF_LANE_CONSOLE - START_COLUMN_PINS;
 		my_lane_config.width=WIDTH_OF_LANE_CONSOLE-2;
@@ -88,8 +87,10 @@ static void SetCursorPos(int XPos, int YPos)
 {
  	printf("\033[%d;%dH", YPos+1, XPos+1);
 }
-static void initialisation_track_console(TRACK_CONSOLE* t, BOWLING_GAME* the_game)
+
+void initialisation_track_console(TRACK_CONSOLE* t, BOWLING_GAME* the_game)
 {
+	
 	initialisation_pins_console(t);
 	initialisation_lane_console(t);
 	initialisation_table_console(t, the_game);
@@ -107,8 +108,9 @@ static void initialisation_lane_console(TRACK_CONSOLE* track)
 	    track->table_gui[i][j] = ' ';
 	  }
 	}
-	track->ball_prevXpos=FIRST_BALL_POS_COL;
-	track->ball_prevYpos=FIRST_BALL_POS_ROW;
+	
+	track->ball_prevXpos = FIRST_BALL_POS_COL;
+	track->ball_prevYpos = FIRST_BALL_POS_ROW;
 
 	for (current_row = START_OF_FIRST_TRACK_ROW ; current_row < LENGTH_OF_LANE_CONSOLE; current_row++)
 	{
@@ -128,20 +130,21 @@ static void initialisation_pins_console(TRACK_CONSOLE* track)
     uint8_t current_column;
     uint8_t counter = NUM_OF_PINS - 1;
     uint8_t tmp = START_OF_FIRST_TRACK_ROW, tmp1;
-    uint8_t n = START_COLUMN_PINS;
+    uint8_t n = END_COLUMN_PINS;
 
-    for (current_row =END_OF_PINS_ROW; current_row > START_OF_FIRST_TRACK_ROW; current_row--)
+    for (current_row = END_OF_PINS_ROW; current_row > START_OF_FIRST_TRACK_ROW; current_row--)
     {
 	tmp1 = n;
 	for (current_column = current_row; current_column >START_OF_FIRST_TRACK_ROW; current_column--)
 	{
-	    track->lane_gui[tmp][tmp1] = bowling_pins[counter--];
-	    tmp1+=2;
+	    track->lane_gui[tmp][tmp1] = init_bowling_pins[counter--];
+	    tmp1-=2;
 	}
 	tmp++;
-	n++;
-	
+	n--;	
     }
+
+   
     return;
 }
 
@@ -281,9 +284,38 @@ static void print_table_console(TRACK_CONSOLE* track)
 
 
 
-static uint8_t drawKnockedPinsAndTable_console(BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins)
+uint8_t drawKnockedPinsAndTable_console(BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins, TRACK_CONSOLE* track)
 {
+    uint8_t current_row;
+    uint8_t current_column;
+    uint8_t counter = NUM_OF_PINS - 1;
+    uint8_t tmp = START_OF_FIRST_TRACK_ROW, tmp1;
+    uint8_t n = END_COLUMN_PINS;
+    uint8_t i;
+    
+	for (i = 0; i < 10; i++)
+	  if (knocked_down_pins.pins[i]){
+	    track->bowling_pins[i] = 'x';
+	 }
 
+    for (current_row = END_OF_PINS_ROW; current_row > START_OF_FIRST_TRACK_ROW; current_row--)
+    {
+	tmp1 = n;
+	for (current_column = current_row; current_column >START_OF_FIRST_TRACK_ROW; current_column--)
+	{
+	   track->lane_gui[tmp][tmp1] = track->bowling_pins[tmp];
+	    tmp1-=2;
+	}
+	tmp++;
+	n--;
+	
+    }
+	
+	i = 0;
+    for (n = 0; n < NUM_OF_PINS; n++)
+	if (track->bowling_pins[n] == 'x')
+	   i++;
+    return i;
 }
 
 static uint8_t animateBallMovement_console(BOWLING_GAME* the_game, uint8_t current_player, BALL_POSITION ball_position)

@@ -5,8 +5,13 @@
 BOWLING_GAME bg1, bg2;
 BALL_POSITION bp1, bp2;
 
-TEST_GROUP(SDLAnimationTest);
+TRACK_CONSOLE* track;
+BOWLING_GAME* game;
+KNOCKED_DOWN_PINS knocked_pins;
 
+
+TEST_GROUP(SDLAnimationTest);
+TEST_GROUP(ConsoleAnimationTest);
 
 TEST_GROUP_RUNNER(SDLAnimationTest)
 {
@@ -15,12 +20,43 @@ TEST_GROUP_RUNNER(SDLAnimationTest)
 	RUN_TEST_CASE(SDLAnimationTest, Animation);
 }
 
+TEST_GROUP_RUNNER(ConsoleAnimationTest)
+{
+	RUN_TEST_CASE(ConsoleAnimationTest, drawKnockedPinsNone);
+	RUN_TEST_CASE(ConsoleAnimationTest, drawKnockedPinsAll);
+	RUN_TEST_CASE(ConsoleAnimationTest, drawKnockedPinsOne);
+	RUN_TEST_CASE(ConsoleAnimationTest, drawKnockedPinsTwo);
+}
+
 TEST_SETUP(SDLAnimationTest)
 {
 	quit();
 }
 
+TEST_SETUP(ConsoleAnimationTest)
+{
+	track = (TRACK_CONSOLE*)calloc(1, sizeof(TRACK_CONSOLE));
+	track->trackID = 1;
+	game = (BOWLING_GAME*)malloc(sizeof(BOWLING_GAME));
+	game->lane_number = 1;
+	game->number_of_players = 1;
+	
+	initialisation_track_console(track, game);
+	uint8_t i;
+
+	knocked_pins.number_of_pins = 0;
+	for (i = 0; i < NUM_OF_PINS; i++)
+	{
+	  knocked_pins.pins[i] = 0;
+	} 
+	
+}
+
 TEST_TEAR_DOWN(SDLAnimationTest)
+{
+}
+
+TEST_TEAR_DOWN(ConsoleAnimationTest)
 {
 }
 
@@ -59,5 +95,52 @@ TEST(SDLAnimationTest, Animation)
 }
 
 
+//Prvi test - Console gui
+TEST(ConsoleAnimationTest, drawKnockedPinsNone)
+{	
+	
+	TEST_ASSERT_EQUAL(0, drawKnockedPinsAndTable_console(game, 1, knocked_pins, track));
+	free(track);
+	free(game);
+	
+}
+
+TEST(ConsoleAnimationTest, drawKnockedPinsAll)
+{
+
+	uint8_t i;
+	
+	knocked_pins.number_of_pins = 10;
+	for (i = 0; i < NUM_OF_PINS; i++)
+	{
+	  knocked_pins.pins[i] = 1;
+	} 
+	
+	TEST_ASSERT_EQUAL(10, drawKnockedPinsAndTable_console(game, 1, knocked_pins, track));
+	free(track);
+	free(game);
+}
+
+TEST(ConsoleAnimationTest, drawKnockedPinsOne)
+{
+	knocked_pins.number_of_pins = 1;
+	knocked_pins.pins[0] = 1;
+	
+	TEST_ASSERT_EQUAL(1, drawKnockedPinsAndTable_console(game, 1, knocked_pins, track));
+	free(track);
+	free(game);
+}
+
+TEST(ConsoleAnimationTest, drawKnockedPinsTwo)
+{
+
+	knocked_pins.number_of_pins = 2;
+	knocked_pins.pins[0] = 1;
+	knocked_pins.pins[1] = 1;
+	
+	TEST_ASSERT_EQUAL(2, drawKnockedPinsAndTable_console(game, 1, knocked_pins, track));
+	free(track);
+	free(game);
+}
 
 

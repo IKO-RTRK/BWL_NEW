@@ -25,7 +25,8 @@
 #define NUM_OF_PINS 10		     
 #define START_LANE_ROW 0             
 #define START_LANE_COLUMN 0         
-#define START_COLUMN_PINS 5          
+#define START_COLUMN_PINS 5  
+#define END_COLUMN_PINS 11
 #define END_OF_PINS_ROW 4	     
 #define START_OF_FIRST_TRACK_ROW 0   
 #define DIFF_CONSOLE 66
@@ -44,8 +45,10 @@ typedef struct track_console
 	uint8_t ball_prevYpos;
 	char lane_gui[LENGTH_OF_LANE_CONSOLE][WIDTH_OF_LANE_CONSOLE];
 	char table_gui[LENGTH_OF_TABLE_CONSOLE][WIDTH_OF_TABLE_CONSOLE];
+	char bowling_pins[NUM_OF_PINS];
 	
 }TRACK_CONSOLE;
+
 
 extern LANE_CONFIG my_lane_config;
 
