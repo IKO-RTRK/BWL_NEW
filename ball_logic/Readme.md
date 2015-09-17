@@ -16,3 +16,5 @@ Tests for knockDownPins()
 -  ~~2) TEST : Ball is on other positon then starting one~~
 -  ~~3) TEST : Offset from central line on start line~~
 -  ~~4) TEST : Offset from central line~~
+-  ~~5) TEST : Straight line test~~
+-  ~~6) TEST : Straight line test with offset on central line~~
