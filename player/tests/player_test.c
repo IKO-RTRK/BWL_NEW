@@ -10,6 +10,7 @@ TEST_GROUP_RUNNER(PlayerTest)
 	RUN_TEST_CASE (PlayerTest, TestAllocatePlayer);
 	RUN_TEST_CASE (PlayerTest, TestCreateName);
 	RUN_TEST_CASE (PlayerTest, TestNameOutOfBounds);
+	RUN_TEST_CASE (PlayerTest, TestEmptyName);
 	RUN_TEST_CASE (PlayerTest, AssignedQualityOutOfBounds);
 	RUN_TEST_CASE (PlayerTest, AssignedQualityInBounds);
 	RUN_TEST_CASE (PlayerTest, AssignedMainHandOutOfBounds);
@@ -61,6 +62,12 @@ TEST(PlayerTest, AssignedMainHandOutOfBounds)
 
 TEST(PlayerTest, AssignedMainHandInBounds)
 {
-	assignPlayerMainHand (player, 0);
-	TEST_ASSERT_TRUE (player -> main_hand == 0);
+	assignPlayerMainHand (player, RIGHT_HAND);
+	TEST_ASSERT_TRUE (player -> main_hand == RIGHT_HAND);
+}
+
+TEST(PlayerTest, TestEmptyName)
+{
+	assignPlayerName (player,"");
+	STRCMP_EQUAL("Player", player->name);
 }
