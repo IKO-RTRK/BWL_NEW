@@ -1,6 +1,4 @@
-Tests for knockDownPins()
-
-
+-  Tests for knockDownPins()
 - ~~1) TEST : Ball ends up in left canal.~~
 - ~~2) TEST : Ball ends up in right canal.~~
 -  3) TEST : Ball ends up next to left canal.
