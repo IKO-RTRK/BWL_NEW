@@ -97,9 +97,6 @@ KNOCKED_DOWN_PINS knockDownPins(PLAYER* the_player, BALL_POSITION ball_position)
 	if ( max == 0 ) pins.number_of_pins =  0; 
 	else pins.number_of_pins = max - ( random() % max );
 
-	printf("%"PRIu8"\n\n\n",pins.number_of_pins);
-
-
 	for(i=0; i < pins.number_of_pins ; i++)
 	{
 		pins.pins[i] = 1;
