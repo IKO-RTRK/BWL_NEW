@@ -12,8 +12,15 @@ PLAYER* playerCreate(void)
 
 void assignPlayerName(PLAYER* player, char* name)
 {
-	strncpy (player -> name, name, NAME_LENGTH_MAX);
-	player -> name[NAME_LENGTH_MAX-1] = '\0';
+	if(strlen(name) < 1)
+	{
+		strcpy (player -> name, "Player");
+	}	
+	else
+	{
+		strncpy (player -> name, name, NAME_LENGTH_MAX);
+		player -> name[NAME_LENGTH_MAX-1] = '\0';
+	}
 }
 
 void assignPlayerQuality(PLAYER* player, uint8_t quality)

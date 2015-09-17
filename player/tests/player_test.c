@@ -10,11 +10,11 @@ TEST_GROUP_RUNNER(PlayerTest)
 	RUN_TEST_CASE (PlayerTest, TestAllocatePlayer);
 	RUN_TEST_CASE (PlayerTest, TestCreateName);
 	RUN_TEST_CASE (PlayerTest, TestNameOutOfBounds);
+	RUN_TEST_CASE (PlayerTest, TestEmptyName);
 	RUN_TEST_CASE (PlayerTest, AssignedQualityOutOfBounds);
 	RUN_TEST_CASE (PlayerTest, AssignedQualityInBounds);
 	RUN_TEST_CASE (PlayerTest, AssignedMainHandOutOfBounds);
 	RUN_TEST_CASE (PlayerTest, AssignedMainHandInBounds);
-	RUN_TEST_CASE (PlayerTest, TestDeallocatePlayer);
 }
 
 TEST_SETUP(PlayerTest)
@@ -42,7 +42,6 @@ TEST(PlayerTest, TestNameOutOfBounds)
 	assignPlayerName (player, "name123456789123456789");
 	STRCMP_EQUAL("name123456789123456", player->name);
 }
-
 TEST(PlayerTest, AssignedQualityOutOfBounds)
 {
 	assignPlayerQuality (player, 0);
@@ -63,8 +62,15 @@ TEST(PlayerTest, AssignedMainHandOutOfBounds)
 
 TEST(PlayerTest, AssignedMainHandInBounds)
 {
+
 	assignPlayerMainHand (player, LEFT_HAND);
 	TEST_ASSERT_TRUE (player -> main_hand == LEFT_HAND);
 }
 
+
+TEST(PlayerTest, TestEmptyName)
+{
+	assignPlayerName (player,"");
+	STRCMP_EQUAL("Player", player->name);
+}
 
