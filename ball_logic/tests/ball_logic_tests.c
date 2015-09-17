@@ -66,6 +66,7 @@ TEST_GROUP_RUNNER(knockDownPins)
 	RUN_TEST_CASE(knockDownPins, BallInRightCanal);
 	RUN_TEST_CASE(knockDownPins, BallAlmostInLeftCanal);
 	RUN_TEST_CASE(knockDownPins, BallAlmostInRightCanal);
+	RUN_TEST_CASE(knockDownPins, BallHitsCentre);
 }
 
 TEST_SETUP(RollTheBallTests)
@@ -201,7 +202,7 @@ static uint8_t howMuch()
 TEST(knockDownPins, BallInLeftCanal)
 {
 	uint8_t counter, isValid=0;
-	position.x = 3;
+	position.x = 2;
 	counter = howMuch();
 	if ( counter == 0 )
 		if ( counter == pins.number_of_pins ) isValid = 1;
@@ -212,7 +213,7 @@ TEST(knockDownPins, BallInLeftCanal)
 TEST(knockDownPins, BallInRightCanal)
 {
 	uint8_t counter, isValid=0;
-	position.x = 13;
+	position.x = 10;
 	counter = howMuch();
 	if ( counter == 0 )
 		if ( counter == pins.number_of_pins ) isValid = 1;
@@ -223,7 +224,7 @@ TEST(knockDownPins, BallInRightCanal)
 TEST(knockDownPins, BallAlmostInLeftCanal)
 {
 	uint8_t counter, isValid=0;
-	position.x = 4;
+	position.x = 3;
 	counter = howMuch();
 	if ( counter >= 0 && counter <= 4 )
 		if ( counter == pins.number_of_pins ) isValid = 1;
@@ -234,9 +235,20 @@ TEST(knockDownPins, BallAlmostInLeftCanal)
 TEST(knockDownPins, BallAlmostInRightCanal)
 {
 	uint8_t counter, isValid=0;
-	position.x = 12;
+	position.x = 9;
 	counter = howMuch();
 	if ( counter >= 0 && counter <= 4 )
+		if ( counter == pins.number_of_pins ) isValid = 1;
+
+	TEST_ASSERT_EQUAL(1, isValid);
+}
+
+TEST(knockDownPins, BallHitsCentre)
+{
+	uint8_t counter, isValid=0;
+	position.x = 6;
+	counter = howMuch();
+	if ( counter >= 0 && counter <= 10 )
 		if ( counter == pins.number_of_pins ) isValid = 1;
 
 	TEST_ASSERT_EQUAL(1, isValid);
