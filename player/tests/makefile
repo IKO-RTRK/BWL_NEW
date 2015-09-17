@@ -1,11 +1,13 @@
-CC=gcc
-
-all: player_test.o runall.o
+all: player_test.o runall.o unity.o unity_fixture.o
 
 player_test.o:
-	$(CC) player_test.c -o ../build/player_test.o
+	gcc -c player_test.c -o ../build/player_test.o
 
 runall.o:
-	$(CC) runall.c -o ../build/runall.o
+	gcc -c runall.c -o ../build/runall.o
 
+unity.o:
+	gcc -c ../../unity/unity.c -o ../build/unity.o
 
+unity_fixture.o:
+	gcc -c ../../unity/unity_fixture.c -o ../build/unity_fixture.o

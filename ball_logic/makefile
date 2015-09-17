@@ -1,9 +1,14 @@
 CC=gcc
 
-all: ball
+all: ball tests build
 
-.PHONY: ball
+.PHONY: ball tests build
 
 ball:
 	$(CC) -c src/ball.c -o ../build/ball.o
 
+tests:
+	$(MAKE) -C tests all
+
+build:
+	$(MAKE) -C build all
