@@ -44,8 +44,9 @@ typedef struct knocked_down_pins_struct
  */
 typedef struct
 {
-	uint32_t width;		///<	Lane width
-	uint32_t length;	///<	Lane length
+	int32_t width;		///<	Lane width
+	int32_t length;		///<	Lane length
+	int32_t bumperWidth;	///<	Bumper width
 } LANE_CONFIG;
 
 LANE_CONFIG lane;	///<	Structure in which are informations about lane dimensions

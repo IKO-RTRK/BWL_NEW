@@ -58,6 +58,8 @@ TEST_GROUP_RUNNER(knockDownPins)
 {
 	RUN_TEST_CASE(knockDownPins, BallInLeftCanal);
 	RUN_TEST_CASE(knockDownPins, BallInRightCanal);
+	RUN_TEST_CASE(knockDownPins, BallAlmostInLeftCanal);
+	RUN_TEST_CASE(knockDownPins, BallAlmostInRightCanal);
 }
 
 TEST_SETUP(RollTheBallTests)
@@ -77,7 +79,8 @@ extern LANE_CONFIG lane;
 
 TEST_SETUP(knockDownPins)
 {
-	lane.width = 7;
+	lane.width = 13;
+	lane.bumperWidth = 3;
 	lane.length = 40;
 }
 
@@ -125,21 +128,68 @@ TEST(RollTheBallTests, OffsetStraightLineTest)
 TEST(knockDownPins, BallInLeftCanal)
 {
 	uint8_t i;
-	position.x = - lane.width/2 - 1;
+	uint8_t howMuch=0, isValid=0;
+	position.x = 3;
 	KNOCKED_DOWN_PINS pins = knockDownPins(&player, position);
 	for(i = 0; i <= NUMBER_OF_PINS - 1; i++)
 	{
-		TEST_ASSERT_EQUAL(0, pins.pins[i]);
+		if ( pins.pins[i] ) howMuch++;
 	}
+	if ( howMuch == 0 )
+		if ( howMuch == pins.number_of_pins ) isValid = 1;
+
+	TEST_ASSERT_EQUAL(1, isValid);
 }
 
 TEST(knockDownPins, BallInRightCanal)
 {
 	uint8_t i;
-	position.x = lane.width/2 + 1;
+	uint8_t howMuch=0, isValid=0;
+	position.x = 13;
 	KNOCKED_DOWN_PINS pins = knockDownPins(&player, position);
 	for(i = 0; i <= NUMBER_OF_PINS - 1; i++)
 	{
-		TEST_ASSERT_EQUAL(0, pins.pins[i]);
+		if ( pins.pins[i] ) howMuch++;
 	}
+	
+	if ( howMuch >= 0 && howMuch <=3 )
+		if ( howMuch == pins.number_of_pins ) isValid = 1;
+
+	TEST_ASSERT_EQUAL(1, isValid);
+}
+
+TEST(knockDownPins, BallAlmostInLeftCanal)
+{
+	uint8_t i;
+	uint8_t howMuch=0, isValid=0;
+	position.x = 4;
+	KNOCKED_DOWN_PINS pins = knockDownPins(&player, position);
+	for(i = 0; i <= NUMBER_OF_PINS - 1; i++)
+	{
+		if ( pins.pins[i] ) howMuch++;
+	}
+	
+	if ( howMuch >= 0 && howMuch <=4 )
+		if ( howMuch == pins.number_of_pins ) isValid = 1;
+
+	TEST_ASSERT_EQUAL(1, isValid);
+	
+	 
+}
+
+TEST(knockDownPins, BallAlmostInRightCanal)
+{
+	uint8_t i;
+	uint8_t howMuch=0, isValid;
+	position.x = 12;
+	KNOCKED_DOWN_PINS pins = knockDownPins(&player, position);
+	for(i = 0; i <= NUMBER_OF_PINS - 1; i++)
+	{
+		if ( pins.pins[i] ) howMuch++;
+	}
+	
+	if ( howMuch >= 0 && howMuch <=4 ) isValid = 1;
+	else isValid = 0;
+
+	TEST_ASSERT_EQUAL(1, isValid);
 }
