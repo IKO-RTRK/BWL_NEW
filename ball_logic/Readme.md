@@ -12,9 +12,7 @@ Tests for knockDownPins()
 -  9) TEST : Almost in centre - right.
 
 -  Tests for rollTheBall()
--  ~~1) TEST: Ball take straight line from beginning to the end of lane.~~
--  2) TEST: Ball take sideling line and ends up in bumper.
--  3) TEST: Ball take line with brake on lane
--  4) TEST: Ball trajectory have two brakes on course
--  5) TEST: Ball trajectory have three brakes on course
--  6) TEST: Ball have nearly rounded trajectory
+-  ~~1) TEST : Ball is properly set on starting positon~~
+-  ~~2) TEST : Ball is on other positon then starting one~~
+-  ~~3) TEST : Offset from central line on start line~~
+-  ~~4) TEST : Offset from central line~~

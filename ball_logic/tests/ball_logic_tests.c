@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <inttypes.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 #include "../../player/src/player.h"
 
@@ -50,8 +51,12 @@ TEST_GROUP(RollTheBallTests);
 
 TEST_GROUP_RUNNER(RollTheBallTests)
 {
-    RUN_TEST_CASE(RollTheBallTests, StraightLineTest);
-    RUN_TEST_CASE(RollTheBallTests, OffsetStraightLineTest);
+    //RUN_TEST_CASE(RollTheBallTests, StraightLineTest);
+    //RUN_TEST_CASE(RollTheBallTests, OffsetStraightLineTest);
+    RUN_TEST_CASE(RollTheBallTests, IsBallOnStartPosition);
+    RUN_TEST_CASE(RollTheBallTests, IsStartPositionNotTrue);
+    RUN_TEST_CASE(RollTheBallTests, MakeOffsetOnStartLine);
+    RUN_TEST_CASE(RollTheBallTests, OffsetFromCentralLine);
 }
 
 TEST_GROUP_RUNNER(knockDownPins)
@@ -86,41 +91,45 @@ TEST_TEAR_DOWN(knockDownPins)
 	
 }
 
-TEST(RollTheBallTests, StraightLineTest)
+
+
+// ==========================================================================================
+
+TEST(RollTheBallTests, IsBallOnStartPosition)
 {
-  int i;
-  
-  fillExpectedArray(10);
-  
-  player.quality = 10;
-  
-  initialiseArray();
-  for(i = 0;i < lane.length;i++)
-  {
-      addPositionToArray(i,lane.width/2);
-  }
-  
-  TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, positions, lane.length);
-  
-  freeArrays();
+  ball_pos.isStartPosition = true;
+  ball_pos_next.y = 5;
+  ball_pos_next = rollTheBall(&player, ball_pos);
+  TEST_ASSERT_EQUAL_UINT32(0, ball_pos_next.y);
 }
 
-TEST(RollTheBallTests, OffsetStraightLineTest)
+TEST(RollTheBallTests, IsStartPositionNotTrue)
 {
-	int i;
-	
-	fillExpectedArray(13);
-	
-	initialiseArray();
-	for (i = 0;i < lane.length;i++)
-	{
-		addPositionToArray(i,lane.width/2 + 3);
-	}
-	
-	TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, positions, lane.length);
-	
-	freeArrays();
+  ball_pos.isStartPosition = false;
+  ball_pos_next = rollTheBall(&player, ball_pos);
+  TEST_ASSERT_NOT_EQUAL(0, ball_pos_next.y);
 }
+
+TEST(RollTheBallTests, MakeOffsetOnStartLine)
+{
+  player.quality = 8;
+  
+  ball_pos.isStartPosition = true;
+  ball_pos_next = rollTheBall(&player, ball_pos);
+  TEST_ASSERT_EQUAL_UINT32(12, ball_pos_next.x);
+}
+
+TEST(RollTheBallTests, OffsetFromCentralLine)
+{
+  player.quality = 8;
+  
+  ball_pos.isStartPosition = false;
+  ball_pos.x = 12;
+  ball_pos.y = 3;
+  ball_pos_next = rollTheBall(&player, ball_pos);
+  TEST_ASSERT_EQUAL_UINT32(12, ball_pos_next.x);
+}
+// ==========================================================================================
 
 TEST(knockDownPins, BallInLeftCanal)
 {
