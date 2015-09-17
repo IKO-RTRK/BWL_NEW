@@ -54,14 +54,32 @@
   
   /**
   * @brief	This method assignes \a name to the \a player.
-		If name of the player is higher than #NAME_LENGTH_MAX, the name will be cut to be exactly #NAME_LENGTH_MAX long.
+		If \a name of the player is higher than #NAME_LENGTH_MAX, the name will be cut to be exactly #NAME_LENGTH_MAX long.
 		Must be called after playerCreate(), not before.
   * @param	PLAYER*	Pointer to structure \ref player whom we want to assign \a name.
   * @param	char*	The name to assign to the \a player.
   * @retval	void	
   */
   void assignPlayerName(PLAYER* player, char* name);
+
+	/**
+  * @brief	This method assignes \a quality to the \a player.
+		If \a quality of the player is higher than #QUALITY_MAX or lower than #QUALITY_MIN, the quality will be set on #QUALITY_MIN.
+		Must be called after playerCreate(), not before.
+  * @param	PLAYER*	Pointer to structure \ref player whom we want to assign \a quality.
+  * @param	uint8_t	The quality to assign to the \a player.
+  * @retval	void	
+  */
   void assignPlayerQuality(PLAYER* player, uint8_t quality);
+
+	/**
+  * @brief	This method assignes \a main_hand to the \a player.
+		If \a main_hand is different than #LEFT_HAND and #RIGHT_HAND, it will be set on #RIGHT_HAND.
+		Must be called after playerCreate(), not before.
+  * @param	PLAYER*	Pointer to structure \ref player whom we want to assign \a quality.
+  * @param	uint8_t	The main_hand to assign to the \a player.
+  * @retval	void	
+  */
   void assignPlayerMainHand(PLAYER* player, uint8_t main_hand);
   void increaseQuality (PLAYER* player);
   void decreaseQuality (PLAYER* player);

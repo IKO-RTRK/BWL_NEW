@@ -37,12 +37,12 @@ void assignPlayerQuality(PLAYER* player, uint8_t quality)
 
 void assignPlayerMainHand(PLAYER* player, uint8_t main_hand)
 {
-	if ((main_hand == 0) || (main_hand == 1))
+	if ((main_hand == LEFT_HAND) || (main_hand == RIGHT_HAND))
 	{
 		player -> main_hand = main_hand;
 	}
 	else
 	{
-		player -> main_hand = 1;
+		player -> main_hand = RIGHT_HAND;
 	}
 }
