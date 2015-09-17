@@ -32,7 +32,9 @@ uint32_t main(uint32_t argc, char* argv[])
 	// do INIT based on parsed argv!
 	init(gui);
 	//input number of lanes
-	number_of_lanes=numberOfLanes();
+	number_of_lanes= numberOfLanes();
+	if (number_of_lanes < 0)
+		number_of_lanes = 3;
 
 	// for each game
 	for (lane = 0; lane < number_of_lanes; lane++)
@@ -42,7 +44,7 @@ uint32_t main(uint32_t argc, char* argv[])
 
 		//create and init players on the lane
 		initPlayers(games,lane);
-		
+		createPlayers(games[lane]);
 		//start game on that lane
 		startGame(games[lane]);
 	}
@@ -84,11 +86,11 @@ static uint8_t initPlayers(BOWLING_GAME* game_init[], uint8_t the_lane)
 		return ERROR_PLAYERS;
 	}
 
-	if (!createPlayers(game_init[the_lane]))
+	/*if (!createPlayers(game_init[the_lane]))
 	{
 		freeResources(game_init);
 		return ERROR_MEMORY;
-	}
+	}*/
 	
 }
 	
@@ -120,15 +122,25 @@ static uint8_t createGame(BOWLING_GAME* game_init[], uint8_t the_lane)
 static uint8_t createPlayers(BOWLING_GAME* the_game)
 {
 	uint8_t player = 0;
+	char player_name[NAME_LENGTH_MAX];
+	uint8_t player_quality;
+	int8_t player_main_hand;
 	for (player = 0; player < the_game->number_of_players; player++)
-	{
+	{	
 		the_game->players[player] = playerCreate();
 		if (the_game->players[player] == NULL)
 		{
 			return ERROR_MEMORY;
 		}
-
-		strcpy(the_game->players[player]->name, "Player");
+		printf("Unesite ime igraca: ");		
+		scanf("%s", player_name);
+		assignPlayerName(the_game->players[player], player_name);
+		printf("Unesite kvalitet igraca: ");		
+		scanf("%"SCNu8, &player_quality);
+		assignPlayerQuality(the_game->players[player], player_quality);
+		printf("Unesite kojom rukom igrac igra: ");		
+		scanf("%"SCNd8, &player_main_hand);
+		assignPlayerMainHand(the_game->players[player], player_main_hand);
 	}
 }
 
