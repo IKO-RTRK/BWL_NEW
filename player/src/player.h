@@ -45,7 +45,7 @@
   } PLAYER;
 
   /**
-  * @brief	This method allocates memory for structure \ref player.
+  * @brief	This method allocates memory for structure \ref player, set player name to "Player", set player quality to #QUALITY_MIN and set main_hand to #RIGHT_HAND.
 		Must be called before any other method in this file.
   * @param	void
   * @retval	PLAYER* Returns pointer to the allocated memory or NULL pointer if error is occured while allocating memory.

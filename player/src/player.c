@@ -2,12 +2,21 @@
 
 static int isQualityInBounds(uint8_t quality)
 {
-	return ((quality >= QUALITY_MIN) && (quality <= QUALITY_MAX));
+	return (quality >= QUALITY_MIN) && (quality <= QUALITY_MAX);
+}
+
+static int validateMainHand (int8_t main_hand)
+{
+	return (main_hand == LEFT_HAND) || (main_hand == RIGHT_HAND);
 }
 
 PLAYER* playerCreate(void)
 {
-	return (PLAYER*) malloc( sizeof(PLAYER) );
+	PLAYER* player = (PLAYER*) malloc( sizeof(PLAYER) );
+	assignPlayerName (player, "");
+	assignPlayerQuality (player, QUALITY_MIN);
+	assignPlayerMainHand (player, RIGHT_HAND);
+	return player;
 }
 
 void assignPlayerName(PLAYER* player, char* name)
@@ -15,7 +24,7 @@ void assignPlayerName(PLAYER* player, char* name)
 	if(strlen(name) < 1)
 	{
 		strcpy (player -> name, "Player");
-	}	
+	}
 	else
 	{
 		strncpy (player -> name, name, NAME_LENGTH_MAX);
@@ -31,13 +40,13 @@ void assignPlayerQuality(PLAYER* player, uint8_t quality)
 	}
 	else
 	{
-		player -> quality = 1;
+		player -> quality = QUALITY_MIN;
 	}
 }
 
 void assignPlayerMainHand(PLAYER* player, int8_t main_hand)
 {
-	if ((main_hand == LEFT_HAND) || (main_hand == RIGHT_HAND))
+	if (validateMainHand (main_hand))
 	{
 		player -> main_hand = main_hand;
 	}
