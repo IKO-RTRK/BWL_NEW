@@ -2,7 +2,7 @@
 
 static void RunAllTests(void)
 {
-	RUN_TEST_GROUP(GuiSDLTest);
+	RUN_TEST_GROUP(SDLAnimationTest);
 }
 
 int main(int argc, char *argv[])
