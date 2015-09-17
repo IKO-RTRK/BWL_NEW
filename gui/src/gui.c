@@ -7,7 +7,8 @@ static SDL_Surface* bowling_lane = NULL;
 static uint16_t prevX[3];
 static uint16_t prevY[3];
 
-static void initialisation_track_console(TRACK_CONSOLE* t, BOWLING_GAME* the_game)
+static void SetCursorPos(int XPos, int YPos);
+static void initialisation_track_console(TRACK_CONSOLE* t, BOWLING_GAME* the_game);
 static void initialisation_pins_console(TRACK_CONSOLE* track);
 static void initialisation_lane_console(TRACK_CONSOLE* track);
 static void initialisation_table_console(TRACK_CONSOLE* track, BOWLING_GAME* the_game);
@@ -17,7 +18,9 @@ static void print_table_console(TRACK_CONSOLE* track);
 
 
 
-
+char bowling_pins[NUM_OF_PINS] = {[0 ... NUM_OF_PINS-1] = '!'};
+char bowling_ball = 'o';
+static TRACK_CONSOLE surface[3];
 
 
 static uint8_t drawKnockedPinsAndTable_console(BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins);
@@ -81,6 +84,10 @@ uint8_t initGUI(uint8_t gui)
 
 // CONSOLE GUI START
 
+static void SetCursorPos(int XPos, int YPos)
+{
+ 	printf("\033[%d;%dH", YPos+1, XPos+1);
+}
 static void initialisation_track_console(TRACK_CONSOLE* t, BOWLING_GAME* the_game)
 {
 	initialisation_pins_console(t);
@@ -222,10 +229,10 @@ static void initialisation_table_console(TRACK_CONSOLE* track, BOWLING_GAME* the
 	       track->table_gui[2 + DIFF_TABLE*temp][48] = '|';
 	       track->table_gui[3 + DIFF_TABLE*temp][48] = '|';
 		
-	  for (i = 1; the_game->players[temp].name[i-1] != '\0'; i++)
-          {
-	   track->table_gui[5 + DIFF_TABLE*temp][i] =the_game->players[temp].name[i-1];
-	  }
+//	  for (i = 1; the_game->players[temp].name[i-1] != '\0'; i++)
+//          {
+//	   track->table_gui[5 + DIFF_TABLE*temp][i] =the_game->players[temp].name[i-1];
+//	  }
 				    
          	temp++;
 	}				    
