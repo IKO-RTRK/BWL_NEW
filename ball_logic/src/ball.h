@@ -1,3 +1,10 @@
+/**
+ * @file ball.h
+ * @brief Document contains short description of used structures and functions 
+ * @author RT-RK Ball_logic
+ * @date September, 2015
+ */
+
 #ifndef _BALL_H
 #define _BALL_H
 #include <stdio.h>
@@ -5,32 +12,65 @@
 #include <inttypes.h>
 
 #include "../../player/src/player.h"
-
+/**
+ * Number of pins in lane when game starts
+ */
 #define NUMBER_OF_PINS 10
+
+/**
+ * @brief Structure contains information about ball position
+ */
 
 typedef struct ball_position_struct
 {
-	uint8_t isEndOfLane;
-	uint8_t isStartPosition;
-	uint8_t x;
-	uint8_t y;
+	uint8_t isEndOfLane;		///<	Did the ball reached the end of lane, have values 0 or 1 
+	uint8_t isStartPosition;	///<	Is the ball at the start of lane, have values 0 or 1  
+	uint32_t x;			///<	x coordinate current value for ball, represents distance between ball and central line of lane 
+	uint32_t y;			///<	y coordinate current value for ball, represents distance between ball and the beginning of lane
 } BALL_POSITION;
 
+
+/**
+ * @brief Structure contains information about pins on the lane
+ */
 typedef struct knocked_down_pins_struct
 {
-	uint8_t number_of_pins;
-	uint8_t pins[NUMBER_OF_PINS];
+	uint8_t number_of_pins;		///<	Number of knocked pins in a throw
+	uint8_t pins[NUMBER_OF_PINS];	///<	Array of pins, array element is 0 if a matching pin has been knocked
 } KNOCKED_DOWN_PINS;
 
-
+/**
+ * @brief Structure contains information about lane size
+ */
 typedef struct
 {
-	uint32_t width;
-	uint32_t length;
+	uint32_t width;		///<	Lane width
+	uint32_t length;	///<	Lane length
 } LANE_CONFIG;
 
+LANE_CONFIG lane;	///<	Structure in which are informations about lane dimensions
+
+/**
+ * @brief 	Function sets basic parameters for game start
+ * @param 	lane_cfg	Structure with lane information
+ * @retval	void
+ */
 void initBallLogic(LANE_CONFIG lane_cfg);
+
+/**
+ * @brief 	Function which determinates next ball position on lane
+ * @param 	*the_player	Information about current player who play on lane
+ * @param 	current_ball_position	Information about current ball position on lane 
+ * @retval 	BALL_POSITION Function returns structure with information of ball new position
+ */
 BALL_POSITION rollTheBall(PLAYER* the_player, BALL_POSITION current_ball_position);
+
+/**
+ * @brief 	Function implements knocking down pins
+ * @param 	*the_player	Information about current player who play on lane
+ * @param 	ball_position	Information of ball position immediately before knocking pins
+ * @retval	KNOCKED_DOWN_PINS Function returns structure with information which and how many pins are koncked 
+ */
 KNOCKED_DOWN_PINS knockDownPins(PLAYER* the_player, BALL_POSITION ball_position);
 #endif
 
