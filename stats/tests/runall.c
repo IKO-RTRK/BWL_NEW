@@ -2,7 +2,7 @@
 
 static void RunAllTests(void)
 {
-	RUN_TEST_GROUP(PlayerCanTrowTests);
+	RUN_TEST_GROUP(writeDownTheScoreTest);
 }
 
 int main(int argc, char *argv[])
