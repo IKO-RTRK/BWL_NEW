@@ -28,6 +28,7 @@ void initBallLogic(LANE_CONFIG lane_cfg)
 
   lane.width = lane_cfg.width;
   lane.length = lane_cfg.length;
+  lane.bumperWidth = lane_cfg.bumperWidth;
 }
 
 BALL_POSITION rollTheBall(struct player* the_player, BALL_POSITION current_ball_position)
@@ -36,9 +37,9 @@ BALL_POSITION rollTheBall(struct player* the_player, BALL_POSITION current_ball_
 	if (isBallOnStartPosition(current_ball_position))
 	{
 	  next_ball_position.y = 0;
-	  int center = lane.width / 2;
-	  int offset = center / QUALITY_MAX;
-	  int i;
+	  uint32_t center = lane.width / 2;
+	  uint32_t offset = center / QUALITY_MAX;
+	  uint8_t i;
 	  for (i = QUALITY_MAX; i > the_player -> quality; i--)
 	  {
 	    center += offset;

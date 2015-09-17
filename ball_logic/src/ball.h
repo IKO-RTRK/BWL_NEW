@@ -13,13 +13,13 @@
 #include <stdbool.h>
 
 #include "../../player/src/player.h"
-/**
- * Number of pins in lane when game starts
+/*!
+  Number of pins in lane when game starts
  */
 #define NUMBER_OF_PINS 10
 
-/**
- * @brief Structure contains information about ball position
+/*!	\struct ball_position_struct
+  Structure contains information about ball position
  */
 
 typedef struct ball_position_struct
@@ -31,8 +31,8 @@ typedef struct ball_position_struct
 } BALL_POSITION;
 
 
-/**
- * @brief Structure contains information about pins on the lane
+/*!	\struct knocked_down_pins_struct
+  Structure contains information about pins on the lane
  */
 typedef struct knocked_down_pins_struct
 {
@@ -40,8 +40,8 @@ typedef struct knocked_down_pins_struct
 	uint8_t pins[NUMBER_OF_PINS];	///<	Array of pins, array element is 0 if a matching pin has been knocked
 } KNOCKED_DOWN_PINS;
 
-/**
- * @brief Structure contains information about lane size
+/*!	\struct LANE_CONFIG
+  Structure contains information about lane size
  */
 typedef struct
 {
@@ -53,7 +53,8 @@ typedef struct
 LANE_CONFIG lane;	///<	Structure in which are informations about lane dimensions
 
 /**
- * @brief 	Function sets basic parameters for game start
+ * @brief 	Function define dimensions of lanes used in game.
+ * 			Values of parameter \a lane_cfg are assigned to global \ref LANE_CONFIG 
  * @param 	lane_cfg	Structure with lane information
  * @retval	void
  */
@@ -61,7 +62,7 @@ void initBallLogic(LANE_CONFIG lane_cfg);
 
 /**
  * @brief 	Function which determinates next ball position on lane
- * @param 	*the_player	Information about current player who play on lane
+ * @param 	*the_player	Information about current \a player who play on lane
  * @param 	current_ball_position	Information about current ball position on lane 
  * @retval 	BALL_POSITION Function returns structure with information of ball new position
  */
