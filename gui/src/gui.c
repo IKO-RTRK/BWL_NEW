@@ -1,8 +1,16 @@
+/**
+ * @file gui.c
+ * @brief Document contains short description of used structures and functions 
+ * @author RT-RK Ball_logic
+ * @date September, 2015
+ */
+
 #include "gui.h"
 
 static SDL_Surface* screen = NULL;
 static SDL_Surface* ball[2] = {NULL, NULL};  
 static SDL_Surface* bowling_lane = NULL; 
+static SDL_Surface* pin = NULL; 
 
 static uint16_t prevX[3];
 static uint16_t prevY[3];
@@ -58,6 +66,7 @@ uint8_t initGUI(uint8_t gui)
 		ball[0] = SDL_LoadBMP("../resources/ball1.bmp");
 		ball[1] = SDL_LoadBMP("../resources/ball2.bmp");
 		bowling_lane = SDL_LoadBMP("../resources/bowling_lane.bmp");
+		pin = SDL_LoadBMP("../resources/pin.bmp"); ///<	Load pin image
 
 		if (screen == NULL || ball[0] == NULL || ball[1] == NULL || bowling_lane == NULL)
 		return 2;
@@ -76,6 +85,9 @@ uint8_t initGUI(uint8_t gui)
 
 		Uint32 colorkey2 = SDL_MapRGB( ball[1] -> format, 255, 234, 157);
 		SDL_SetColorKey(ball[1], SDL_SRCCOLORKEY, colorkey2);
+		
+		Uint32 colorkey3 = SDL_MapRGB( pin -> format, 255, 255, 255);
+		SDL_SetColorKey(pin, SDL_SRCCOLORKEY, colorkey3); ///<	Set pin key color to white
 		
 		return 0;
 	}
@@ -298,19 +310,56 @@ static uint8_t animateBallMovement_console(BOWLING_GAME* the_game, uint8_t curre
 // i = 0, ..., n
 static uint8_t printLane(uint8_t i)
 {
-	SDL_Rect dstOffset; 
-
-	dstOffset.x = INIT_OFFSET_X + i * TWO_LANES_DISTANCE; 
+	SDL_Rect dstOffset;
+	
+	dstOffset.x = INIT_OFFSET_X + i * TWO_LANES_DISTANCE;
 	dstOffset.y = INIT_OFFSET_Y;
-
+	
 	int8_t k = SDL_BlitSurface(bowling_lane, NULL, screen, &dstOffset);
 	int8_t j = SDL_Flip(screen);
-
+	
 	return ((k || j) ? 1 : 0);
+}
+/**
+ * @brief 	Function drow pins on lane
+ * @param 	lane	Number of lain (lane ID)
+ * @param 	knocked_down_pins	Structure who keep data of knocked pins
+ * @retval	int8_t	This function returns 0 if successful, or -1 if there was an error.
+ */
+static int8_t drawPins(uint8_t lane, KNOCKED_DOWN_PINS knocked_down_pins )
+{
+  printLane(lane);
+  SDL_Rect dstOffset; 
+
+  dstOffset.x = INIT_OFFSET_FOR_PINS_X + (lane) * TWO_LANES_DISTANCE; 
+  dstOffset.y = INIT_OFFSET_Y;
+  
+  int8_t numOfPin = NUM_OF_PINS; 
+  int8_t numOfRow;
+  int8_t numOfPinsInRow;
+  
+  for (numOfRow = 4; numOfRow > 0; numOfRow--)
+  {
+    for(numOfPinsInRow = numOfRow; numOfPinsInRow > 0; numOfPinsInRow--)
+    {
+      if(knocked_down_pins.pins[--numOfPin] == 0)
+      {
+	SDL_BlitSurface(pin, NULL, screen, &dstOffset); ///<	Add pin to the sceen
+      }
+      dstOffset.x += OFFSET_FOR_PINS_X; ///<	Sets  offset for x for next pin
+    }
+    dstOffset.x = INIT_OFFSET_FOR_PINS_X + (lane) * TWO_LANES_DISTANCE + (4 - numOfRow + 1) * OFFSET_FOR_PINS_X / 2; ///<	Sets initial offset for x for given row
+    dstOffset.y += OFFSET_FOR_PINS_Y; ///<	Sets initial offset for y for given row
+  }
+  
+  int8_t j = SDL_Flip(screen);
+
+  return j;
 }
 
 static uint8_t drawKnockedPinsAndTable_SDL(BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins)
 {
+  drawPins(the_game -> lane_number, knocked_down_pins);
 
 }
 

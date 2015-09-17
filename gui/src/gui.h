@@ -10,6 +10,10 @@
 
 #define INIT_OFFSET_X 40
 #define INIT_OFFSET_Y 40
+#define INIT_OFFSET_FOR_PINS_X 65
+#define OFFSET_FOR_PINS_X 30
+#define OFFSET_FOR_PINS_Y 20
+#define PIN_WIDTH 20
 #define LANE_WIDTH 170
 #define LANE_HEIGHT 508
 #define BALL_DIM 30 
