@@ -15,6 +15,8 @@ BALL_POSITION position;
 BALL_POSITION ball_pos;
 BALL_POSITION ball_pos_next;
 
+KNOCKED_DOWN_PINS pins;
+
 static void fillExpectedArray(uint32_t element)
 {
 	expected = (uint32_t*) calloc(lane.length, sizeof(uint32_t));
@@ -83,9 +85,16 @@ extern LANE_CONFIG lane;
 
 TEST_SETUP(knockDownPins)
 {
+	uint8_t i;
 	lane.width = 13;
 	lane.bumperWidth = 3;
 	lane.length = 40;
+
+	for(i = 0; i <= NUMBER_OF_PINS - 1; i++)
+	{
+		pins.pins[i] = 0;
+	}
+	pins.number_of_pins = 0;
 }
 
 TEST_TEAR_DOWN(knockDownPins)
@@ -172,71 +181,63 @@ TEST(RollTheBallTests, OffsetStraightLineTest)
 
 // ==========================================================================================
 
-TEST(knockDownPins, BallInLeftCanal)
+
+static uint8_t howMuch()
 {
 	uint8_t i;
-	uint8_t howMuch=0, isValid=0;
-	position.x = 3;
-	KNOCKED_DOWN_PINS pins = knockDownPins(&player, position);
+	uint8_t counter = 0;
+	pins = knockDownPins(&player, position);
 	for(i = 0; i <= NUMBER_OF_PINS - 1; i++)
 	{
-		if ( pins.pins[i] ) howMuch++;
+		if ( pins.pins[i] ) counter++;
 	}
-	if ( howMuch == 0 )
-		if ( howMuch == pins.number_of_pins ) isValid = 1;
+	for(i = 0; i <= NUMBER_OF_PINS - 1; i++)
+	{
+		pins.pins[i] = 0;
+	}
+	return counter;
+}
+
+TEST(knockDownPins, BallInLeftCanal)
+{
+	uint8_t counter, isValid=0;
+	position.x = 3;
+	counter = howMuch();
+	if ( counter == 0 )
+		if ( counter == pins.number_of_pins ) isValid = 1;
 
 	TEST_ASSERT_EQUAL(1, isValid);
 }
 
 TEST(knockDownPins, BallInRightCanal)
 {
-	uint8_t i;
-	uint8_t howMuch=0, isValid=0;
+	uint8_t counter, isValid=0;
 	position.x = 13;
-	KNOCKED_DOWN_PINS pins = knockDownPins(&player, position);
-	for(i = 0; i <= NUMBER_OF_PINS - 1; i++)
-	{
-		if ( pins.pins[i] ) howMuch++;
-	}
-	
-	if ( howMuch >= 0 && howMuch <=3 )
-		if ( howMuch == pins.number_of_pins ) isValid = 1;
+	counter = howMuch();
+	if ( counter == 0 )
+		if ( counter == pins.number_of_pins ) isValid = 1;
 
 	TEST_ASSERT_EQUAL(1, isValid);
 }
 
 TEST(knockDownPins, BallAlmostInLeftCanal)
 {
-	uint8_t i;
-	uint8_t howMuch=0, isValid=0;
+	uint8_t counter, isValid=0;
 	position.x = 4;
-	KNOCKED_DOWN_PINS pins = knockDownPins(&player, position);
-	for(i = 0; i <= NUMBER_OF_PINS - 1; i++)
-	{
-		if ( pins.pins[i] ) howMuch++;
-	}
-	
-	if ( howMuch >= 0 && howMuch <=4 )
-		if ( howMuch == pins.number_of_pins ) isValid = 1;
+	counter = howMuch();
+	if ( counter >= 0 && counter <= 4 )
+		if ( counter == pins.number_of_pins ) isValid = 1;
 
 	TEST_ASSERT_EQUAL(1, isValid);
-	
-	 
 }
 
 TEST(knockDownPins, BallAlmostInRightCanal)
 {
-	uint8_t i;
-	uint8_t howMuch=0, isValid;
+	uint8_t counter, isValid=0;
 	position.x = 12;
-	KNOCKED_DOWN_PINS pins = knockDownPins(&player, position);
-	for(i = 0; i <= NUMBER_OF_PINS - 1; i++)
-	{
-		if ( pins.pins[i] ) howMuch++;
-	}
-	
-	if ( howMuch >= 0 && howMuch <=4 ) isValid = 1;
-	else isValid = 0;
+	counter = howMuch();
+	if ( counter >= 0 && counter <= 4 )
+		if ( counter == pins.number_of_pins ) isValid = 1;
 
 	TEST_ASSERT_EQUAL(1, isValid);
 }

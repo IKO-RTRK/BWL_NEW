@@ -87,8 +87,10 @@ KNOCKED_DOWN_PINS knockDownPins(PLAYER* the_player, BALL_POSITION ball_position)
 	KNOCKED_DOWN_PINS pins;
 	uint8_t i, max;
 	max = howManyToKnockMax((int32_t)ball_position.x);
+
 	if ( max == 0 ) pins.number_of_pins =  0; 
-	else pins.number_of_pins = max - ( random() % max ) ;
+	else pins.number_of_pins = max - ( random() % max );
+
 
 	for(i=0; i < pins.number_of_pins ; i++)
 	{
