@@ -58,6 +58,8 @@ TEST_GROUP_RUNNER(RollTheBallTests)
     RUN_TEST_CASE(RollTheBallTests, OffsetFromCentralLine);
     RUN_TEST_CASE(RollTheBallTests, StraightLineTest);
     RUN_TEST_CASE(RollTheBallTests, OffsetStraightLineTest);
+    RUN_TEST_CASE(RollTheBallTests, IsEndOfLine);
+    RUN_TEST_CASE(RollTheBallTests, CheckEndOfLineOnStart);
 }
 
 TEST_GROUP_RUNNER(knockDownPins)
@@ -138,6 +140,29 @@ TEST(RollTheBallTests, OffsetFromCentralLine)
   ball_pos.y = 3;
   ball_pos_next = rollTheBall(&player, ball_pos);
   TEST_ASSERT_EQUAL_UINT32(29, ball_pos_next.x);
+}
+
+TEST(RollTheBallTests, IsEndOfLine)
+{
+  player.quality = 9;
+  ball_pos.x = 21;
+  ball_pos.y = lane.length - 2;
+  ball_pos.isStartPosition = false;
+  //ball_pos.isEndOfLane = false;
+  
+  ball_pos_next = rollTheBall(&player, ball_pos);
+  TEST_ASSERT_TRUE(ball_pos_next.isEndOfLane == true);
+}
+
+
+TEST(RollTheBallTests, CheckEndOfLineOnStart)
+{
+  player.quality = 9;
+  ball_pos.x = 21;
+  ball_pos.isStartPosition = true;
+  
+  ball_pos_next = rollTheBall(&player, ball_pos);
+  TEST_ASSERT_TRUE(ball_pos_next.isEndOfLane == false);
 }
 
 TEST(RollTheBallTests, StraightLineTest)
