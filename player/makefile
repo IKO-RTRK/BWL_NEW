@@ -7,3 +7,4 @@ all: player
 player:
 	$(CC) -c src/player.c -o ../build/player.o
 
+
