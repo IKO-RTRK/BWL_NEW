@@ -179,7 +179,7 @@ static void doTheRoll(BOWLING_GAME* the_game, uint8_t current_frame, uint8_t cur
 	{
 		final_ball_position = throwTheBall(the_game, current_player);
 		
-		knocked_down_pins = knockDownPins(the_game->players[current_player], final_ball_position);
+		knocked_down_pins = knockDownPins(the_game, current_player, final_ball_position);
 
 		writeDownTheScore(the_game, current_player, knocked_down_pins.number_of_pins);
 		// animation spare/strike should go here based on writeDownTheScore() result!
