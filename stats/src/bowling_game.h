@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <inttypes.h>
-
+#include "../../player/src/player.h"
 
 enum 
 { 
