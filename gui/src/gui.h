@@ -8,9 +8,9 @@
 #include "../../stats/src/bowling_game.h"
 #include "../include/SDL.h"
 
-#define INIT_OFFSET_X 40
+#define INIT_OFFSET_X 30
 #define INIT_OFFSET_Y 40
-#define INIT_OFFSET_FOR_PINS_X 70
+#define INIT_OFFSET_FOR_PINS_X 60
 #define OFFSET_FOR_PINS_X 30
 #define OFFSET_FOR_PINS_Y 20
 #define PIN_WIDTH 20
@@ -18,7 +18,10 @@
 #define LANE_HEIGHT 508
 #define BALL_DIM 30 
 #define BALL_MIDDLE 15
-#define TWO_LANES_DISTANCE 350
+#define TWO_LANES_DISTANCE (434 + LANE_WIDTH)
+#define TABLE_WIDTH 384
+#define TABLE_HEIGHT 75
+
 
 #define LENGTH_OF_LANE_CONSOLE 35    
 #define WIDTH_OF_LANE_CONSOLE 15     

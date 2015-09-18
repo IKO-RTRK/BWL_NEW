@@ -63,7 +63,7 @@ uint8_t initGUI(uint8_t gui)
 		if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 		return 1;
 
-		screen = SDL_SetVideoMode(1200, 900, 32, SDL_DOUBLEBUF); 
+		screen = SDL_SetVideoMode(1832, 800, 32, SDL_DOUBLEBUF); 
 
 		setBackground();		
 	
@@ -460,7 +460,7 @@ static void setBackground()
 	screenRect.x = screenRect.y = 0;
 	screenRect.w = screen->w;
 	screenRect.h = screen->h;
-	Uint32 color = SDL_MapRGB(screen->format, 155, 55, 255);
+	Uint32 color = SDL_MapRGB(screen->format, 168, 174, 184);
 
 	SDL_FillRect(screen, &screenRect, color);
 	SDL_Flip(screen);
