@@ -17,7 +17,6 @@
   Defines maximum number for first throw in last frame
 */
 #define LAST_FRAME_FIRST_THROW 18
-
 enum 
 { 
 	MAX_LANES		= 3,		///<  Maximum number of lanes per game 
