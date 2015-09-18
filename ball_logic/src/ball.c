@@ -40,7 +40,7 @@ BALL_POSITION rollTheBall(struct player* the_player, BALL_POSITION current_ball_
 	  uint32_t center = lane.width / 2;
 	  uint32_t offset = center / QUALITY_MAX;
 	  uint8_t i;
-	  for (i = QUALITY_MAX; i > the_player -> quality; i--)
+	  for (i = QUALITY_MAX; i > the_player->quality; i--)
 	  {
 	    if (the_player -> main_hand == LEFT_HAND)
 	    {
@@ -136,7 +136,7 @@ static void listInitialisation()
 		listAppend(i);
 	listSize=10;
 }
-static double power_f(double x,uint8_t n)
+static double power_f(double x, uint8_t n)
 {
 	uint8_t i;
 	double p = 1;

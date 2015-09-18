@@ -153,7 +153,6 @@ TEST(RollTheBallTests, IsEndOfLine)
   ball_pos.x = 21;
   ball_pos.y = lane.length - 2;
   ball_pos.isStartPosition = false;
-  //ball_pos.isEndOfLane = false;
   
   ball_pos_next = rollTheBall(&player, ball_pos);
   TEST_ASSERT_TRUE(ball_pos_next.isEndOfLane == true);
