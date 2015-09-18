@@ -6,6 +6,7 @@
 #include <stdbool.h>
 
 #include "../../player/src/player.h"
+#include "../../stats/src/bowling_game.h"
 
 uint32_t* expected;
 uint32_t* positions;
@@ -14,6 +15,8 @@ PLAYER player;
 BALL_POSITION position;
 BALL_POSITION ball_pos;
 BALL_POSITION ball_pos_next;
+
+BOWLING_GAME game;
 
 KNOCKED_DOWN_PINS pins;
 
@@ -97,6 +100,11 @@ TEST_SETUP(knockDownPins)
 	lane.width = 13;
 	lane.bumperWidth = 3;
 	lane.length = 40;
+	game.players[0] = playerCreate();
+	game.current_roll[0] = 10;
+	assignPlayerName(game.players[0], "Stevan");
+	game.players[0]->quality = 10;
+	
 
 	for(i = 0; i <= NUMBER_OF_PINS - 1; i++)
 	{
@@ -226,7 +234,7 @@ static uint8_t howMuch()
 {
 	uint8_t i;
 	uint8_t counter = 0;
-	pins = knockDownPins(&player, position);
+	pins = knockDownPins(&game, 0 ,position);
 	for(i = 0; i <= NUMBER_OF_PINS - 1; i++)
 	{
 		if ( pins.pins[i] ) counter++;

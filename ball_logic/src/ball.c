@@ -42,7 +42,7 @@ BALL_POSITION rollTheBall(struct player* the_player, BALL_POSITION current_ball_
 	  uint8_t i;
 	  for (i = QUALITY_MAX; i > the_player->quality; i--)
 	  {
-	    if (the_player -> main_hand == LEFT_HAND)
+	    if ( LEFT_HAND == the_player->main_hand)
 	    {
 	      center -= offset;
 	    }
@@ -195,7 +195,16 @@ static uint32_t randomNumber2()
 	return random();
 }
 
-KNOCKED_DOWN_PINS knockDownPins(PLAYER* the_player, BALL_POSITION ball_position)
+typedef uint32_t (*fptr)();
+
+static fptr whatToCall()
+{
+	static uint32_t which = 0;
+	which++;
+	if ( which % 2 ) return randomNumber1;
+		else return randomNumber2;
+}
+KNOCKED_DOWN_PINS knockDownPins(BOWLING_GAME* the_game, uint8_t current_player, BALL_POSITION ball_position)
 {
 	KNOCKED_DOWN_PINS pins;
 	uint8_t i, max;
@@ -203,16 +212,13 @@ KNOCKED_DOWN_PINS knockDownPins(PLAYER* the_player, BALL_POSITION ball_position)
 	resetKnockedDownpins(&pins);
 	max = howManyToKnockMax((int32_t)ball_position.x);
 
-	uint32_t (*randomNumber)();
-	static uint32_t which = 0;
-	which++;
+	fptr randomNumber = whatToCall();
 	
-	if ( which % 2 ) randomNumber = randomNumber1;
-		else randomNumber = randomNumber2;
-
 	if ( max == 0 ) pins.number_of_pins =  0; 
-	else pins.number_of_pins = max - ( randomNumber() % max );
+	else pins.number_of_pins = max - ( randomNumber() % ( QUALITY_MAX+1 - the_game->players[current_player]->quality ) );
 
+
+	if ( the_game->current_roll[current_player] % 2 == 0 || the_game->current_roll[current_player] == 21 ) listInitialisation();  
 	listInitialisation();
 	//printf("%"PRIu8" ", pins.number_of_pins);
 
@@ -227,6 +233,6 @@ KNOCKED_DOWN_PINS knockDownPins(PLAYER* the_player, BALL_POSITION ball_position)
 		printf("%"PRIu8" ", pins.pins[i]);
 	}
 	printf("\n\n\n");*/
-	listDestroy();
+	if ( the_game->current_roll[current_player] % 2 || the_game->current_roll[current_player] == 21 ) listDestroy();
 	return pins;
 }

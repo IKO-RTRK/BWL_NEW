@@ -13,6 +13,7 @@
 #include <stdbool.h>
 
 #include "../../player/src/player.h"
+#include "../../stats/src/bowling_game.h"
 /*!
   Number of pins in lane when game starts
  */
@@ -74,6 +75,6 @@ BALL_POSITION rollTheBall(PLAYER* the_player, BALL_POSITION current_ball_positio
  * @param 	ball_position	Information of ball position immediately before knocking pins
  * @retval	KNOCKED_DOWN_PINS Function returns structure with information which and how many pins are koncked 
  */
-KNOCKED_DOWN_PINS knockDownPins(PLAYER* the_player, BALL_POSITION ball_position);
+KNOCKED_DOWN_PINS knockDownPins(BOWLING_GAME* the_game, uint8_t current_player, BALL_POSITION ball_position);
 #endif
 
