@@ -39,6 +39,7 @@ static uint8_t animateBallMovement_SDL(BOWLING_GAME* the_game, uint8_t current_p
 static uint8_t printLane(uint8_t i);
 static void printBall(uint32_t x, uint32_t y, uint8_t lane);
 static void showAllPins(uint8_t lane);
+static void setBackground();
 
 LANE_CONFIG my_lane_config;
 
@@ -63,6 +64,9 @@ uint8_t initGUI(uint8_t gui)
 		return 1;
 
 		screen = SDL_SetVideoMode(1200, 900, 32, SDL_DOUBLEBUF); 
+
+		setBackground();		
+	
 		ball[0] = SDL_LoadBMP("../resources/ball1.bmp");
 		ball[1] = SDL_LoadBMP("../resources/ball2.bmp");
 		bowling_lane = SDL_LoadBMP("../resources/bowling_lane.bmp");
@@ -448,6 +452,18 @@ static void printBall(uint32_t x, uint32_t y, uint8_t lane)  // x,y - centar lop
 
 	prevX[lane] = x;
 	prevY[lane] = y;
+}
+
+static void setBackground()
+{
+	SDL_Rect screenRect;
+	screenRect.x = screenRect.y = 0;
+	screenRect.w = screen->w;
+	screenRect.h = screen->h;
+	Uint32 color = SDL_MapRGB(screen->format, 155, 55, 255);
+
+	SDL_FillRect(screen, &screenRect, color);
+	SDL_Flip(screen);
 }
 
 void quit()
