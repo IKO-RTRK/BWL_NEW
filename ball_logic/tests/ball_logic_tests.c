@@ -60,6 +60,7 @@ TEST_GROUP_RUNNER(RollTheBallTests)
     RUN_TEST_CASE(RollTheBallTests, OffsetStraightLineTest);
     RUN_TEST_CASE(RollTheBallTests, IsEndOfLine);
     RUN_TEST_CASE(RollTheBallTests, CheckEndOfLineOnStart);
+    RUN_TEST_CASE(RollTheBallTests, LeftHandPreferred);
 }
 
 TEST_GROUP_RUNNER(knockDownPins)
@@ -207,7 +208,17 @@ TEST(RollTheBallTests, OffsetStraightLineTest)
 	TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, positions, lane.length);
 	
 	freeArrays();
-} 
+}
+
+TEST(RollTheBallTests, LeftHandPreferred)
+{
+  ball_pos.isStartPosition = true;
+  player.quality = 9;
+  player.main_hand = LEFT_HAND;
+  ball_pos_next = rollTheBall(&player, ball_pos);
+  
+  TEST_ASSERT_EQUAL_UINT32(19, ball_pos_next.x);
+}
 
 // ==========================================================================================
 

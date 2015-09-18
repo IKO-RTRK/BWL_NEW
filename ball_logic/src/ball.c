@@ -42,7 +42,14 @@ BALL_POSITION rollTheBall(struct player* the_player, BALL_POSITION current_ball_
 	  uint8_t i;
 	  for (i = QUALITY_MAX; i > the_player -> quality; i--)
 	  {
-	    center += offset;
+	    if (the_player -> main_hand == LEFT_HAND)
+	    {
+	      center -= offset;
+	    }
+	    else
+	    {
+	      center += offset;
+	    }
 	  }
 	  
 	  setIsStartPosition(&current_ball_position);
