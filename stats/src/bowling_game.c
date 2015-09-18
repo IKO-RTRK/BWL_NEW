@@ -2,6 +2,29 @@
 #include "bowling_game.h"
 #include <inttypes.h>
 
+static uint8_t canThrow()
+{
+	if(the_game->current_roll[current_player]>=current_frame*2-1 && the_game->current_roll[current_player]<=current_frame*2 && the_game->frames[current_player][current_frame]<10)
+		return 1;
+	else 
+		return 0;
+}
+
+static uint8_t notAllowThirdRoll()
+{
+	if(the_game->frames[current_player][current_frame]<10 && the_game->current_roll[current_player]==current_frame*2+1)
+		return 1;
+	else 
+		return 0;
+}
+
+static uint8_t rollInFrameLessThen3()
+{
+	if(the_game->current_roll[current_player]>=current_frame*2-1 && the_game->current_roll[current_player]<=current_frame*2+1)
+		return 1;
+	else
+		return 0;
+}
 static int isSpare(BOWLING_GAME* the_game, uint8_t i, uint8_t current_player)
 {
 
@@ -23,7 +46,7 @@ uint8_t playerCanThrow(BOWLING_GAME* the_game, uint8_t current_frame, uint8_t cu
 	uint8_t return_value;
 	if(current_frame < NUM_OF_FRAMES)
 	{
-		if(the_game->current_roll[current_player]>=current_frame*2-1 && the_game->current_roll[current_player]<=current_frame*2 && the_game->frames[current_player][current_frame]<10)
+		if(canThrow())
 		{
 			return_value = 1;		
 		}else
@@ -35,10 +58,10 @@ uint8_t playerCanThrow(BOWLING_GAME* the_game, uint8_t current_frame, uint8_t cu
 
 	}else if(current_frame == NUM_OF_FRAMES)
 	{
-		if(the_game->current_roll[current_player]>=current_frame*2-1 && the_game->current_roll[current_player]<=current_frame*2+1)
+		if(rollInFrameLessThen3())
 		{
 		
-			if(the_game->frames[current_player][current_frame]<10 && the_game->current_roll[current_player]==current_frame*2+1)
+			if(notAllowThirdRoll())
 			{
 				return_value = 0;
 			}else
