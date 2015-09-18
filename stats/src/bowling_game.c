@@ -96,7 +96,7 @@ static void score(BOWLING_GAME* the_game, uint8_t current_player)
 
 
 	the_game -> totalScore[current_player] = 0;
-	
+	uint16_t tot_score = the_game -> totalScore[current_player];
 	uint8_t cr = the_game -> current_roll[current_player];
 	int8_t k = cr / 2;
 	
@@ -108,27 +108,28 @@ static void score(BOWLING_GAME* the_game, uint8_t current_player)
 			{
 				if (the_game -> rolls[current_player][j + 2] == ALL_PINS_DOWN)           // Double
 				{
-					the_game -> frames[current_player][i] = the_game -> totalScore[current_player] += (ALL_PINS_DOWN + the_game -> rolls[current_player][j + 2] + the_game -> rolls[current_player][j + 4]);
+					the_game -> frames[current_player][i] = tot_score += (ALL_PINS_DOWN + the_game -> rolls[current_player][j + 2] + the_game -> rolls[current_player][j + 4]);
 				}							
 				else				                   // Strike
 				{
-					the_game -> frames[current_player][i] = the_game -> totalScore[current_player] += (ALL_PINS_DOWN + the_game -> rolls[current_player][j + 2] + the_game -> rolls[current_player][j + 3]);
+					the_game -> frames[current_player][i] = tot_score += (ALL_PINS_DOWN + the_game -> rolls[current_player][j + 2] + the_game -> rolls[current_player][j + 3]);
 				}
 			}
 			else
 			{	
-				the_game -> frames[current_player][i] = the_game -> totalScore[current_player] += (ALL_PINS_DOWN + the_game -> rolls[current_player][j + 1] + the_game -> rolls[current_player][j + 2]);
+				the_game -> frames[current_player][i] = tot_score += (ALL_PINS_DOWN + the_game -> rolls[current_player][j + 1] + the_game -> rolls[current_player][j + 2]);
 			}
 		}
 		else if (isSpare(the_game, j, current_player) && (j <= LAST_FRAME_FIRST_THROW))           // Spare
 		{
-			the_game -> frames[current_player][i] = the_game -> totalScore[current_player] += (ALL_PINS_DOWN + the_game -> rolls[current_player][j + 2]);
+			the_game -> frames[current_player][i] = tot_score += (ALL_PINS_DOWN + the_game -> rolls[current_player][j + 2]);
 		}
 		else
 		{
-			the_game -> frames[current_player][i] = the_game -> totalScore[current_player] += (the_game -> rolls[current_player][j] + the_game -> rolls[current_player][j + 1]);
+			the_game -> frames[current_player][i] = tot_score += (the_game -> rolls[current_player][j] + the_game -> rolls[current_player][j + 1]);
 		}
 		j += 2;
+		the_game -> totalScore[current_player] = tot_score;
 	}
 }
 
