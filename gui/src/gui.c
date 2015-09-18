@@ -38,6 +38,7 @@ static uint8_t animateBallMovement_SDL(BOWLING_GAME* the_game, uint8_t current_p
 
 static uint8_t printLane(uint8_t i);
 static void printBall(uint32_t x, uint32_t y, uint8_t lane);
+static void showAllPins(uint8_t lane);
 
 LANE_CONFIG my_lane_config;
 
@@ -67,16 +68,20 @@ uint8_t initGUI(uint8_t gui)
 		bowling_lane = SDL_LoadBMP("../resources/bowling_lane.bmp");
 		pin = SDL_LoadBMP("../resources/pin.bmp"); ///<	Load pin image
 
-		if (screen == NULL || ball[0] == NULL || ball[1] == NULL || bowling_lane == NULL)
+		if (screen == NULL || ball[0] == NULL || ball[1] == NULL || bowling_lane == NULL || pin == NULL)
 		return 2;
 
 		SDL_WM_SetCaption("Bowling", NULL);
+
+		Uint32 colorkey3 = SDL_MapRGB( pin -> format, 255, 255, 255);
+		SDL_SetColorKey(pin, SDL_SRCCOLORKEY, colorkey3); ///<	Set pin key color to white
 
 		uint8_t i;
 		for (i = 0; i < MAX_LANES; i++)
 		{
 			if (printLane(i))	
 			return 3;
+			showAllPins(i);
 		}
 
 		Uint32 colorkey1 = SDL_MapRGB( ball[0] -> format, 255, 234, 157);
@@ -84,9 +89,6 @@ uint8_t initGUI(uint8_t gui)
 
 		Uint32 colorkey2 = SDL_MapRGB( ball[1] -> format, 255, 234, 157);
 		SDL_SetColorKey(ball[1], SDL_SRCCOLORKEY, colorkey2);
-		
-		Uint32 colorkey3 = SDL_MapRGB( pin -> format, 255, 255, 255);
-		SDL_SetColorKey(pin, SDL_SRCCOLORKEY, colorkey3); ///<	Set pin key color to white
 		
 		return 0;
 	}
@@ -391,7 +393,7 @@ static int8_t drawPins(uint8_t lane, KNOCKED_DOWN_PINS knocked_down_pins )
 
 static uint8_t drawKnockedPinsAndTable_SDL(BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins)
 {
-  drawPins(the_game -> lane_number, knocked_down_pins);
+  	drawPins(the_game -> lane_number, knocked_down_pins);
 
 }
 
@@ -399,6 +401,19 @@ static uint8_t animateBallMovement_SDL(BOWLING_GAME* the_game, uint8_t current_p
 {
 	printBall(ball_position.x, ball_position.y, the_game -> lane_number);
 	return 0;
+}
+
+static void showAllPins(uint8_t lane)
+{
+	KNOCKED_DOWN_PINS knocked_pins;
+
+	uint8_t i;
+	for (i = 0; i < NUM_OF_PINS; i++)
+	{
+		knocked_pins.pins[i] = 0;
+	} 
+	drawPins(lane, knocked_pins);
+
 }
 
 static void printBall(uint32_t x, uint32_t y, uint8_t lane)  // x,y - centar lopte
@@ -441,6 +456,7 @@ void quit()
 	SDL_FreeSurface(ball[1]);
 	SDL_FreeSurface(screen);	
 	SDL_FreeSurface(bowling_lane);
+	SDL_FreeSurface(pin);
 
 	SDL_Quit(); 
 }

@@ -30,7 +30,7 @@ TEST_GROUP_RUNNER(ConsoleAnimationTest)
 
 TEST_SETUP(SDLAnimationTest)
 {
-	quit();
+	
 }
 
 TEST_SETUP(ConsoleAnimationTest)
@@ -76,21 +76,33 @@ TEST(SDLAnimationTest, BMP_Load)
 TEST(SDLAnimationTest, Animation)
 {
 	initGUI(SDL);
-	bp1.x = 15;
-	bp2.x = 125;
+	bp1.x = 35;
+	bp2.x = 70;
 	bg1.lane_number = 0;
 	bg2.lane_number = 2;
 	uint32_t i;
-	for (i = 0; i < 450; i++)
+	for (i = 0; i < 420; i++)
 	{	
 		SDL_Delay(10);
 		bp1.y = i;
 		bp2.y = i;
-		if (i < 300)
 		animateBallMovement(&bg1, 0, bp1);
 		animateBallMovement(&bg2, 0, bp2);
 	}
-	SDL_Delay(4000);
+		
+	knocked_pins.pins[0] = 1;
+	knocked_pins.pins[1] = 1;
+
+	drawKnockedPinsAndTable(&bg2, 0, knocked_pins);
+
+	knocked_pins.pins[0] = 0;
+	knocked_pins.pins[1] = 0;
+	knocked_pins.pins[2] = 1;
+	knocked_pins.pins[3] = 1;
+
+	drawKnockedPinsAndTable(&bg1, 0, knocked_pins);
+	SDL_Delay(5000);
+	quit();
 	TEST_ASSERT_EQUAL(0, 0);
 }
 
