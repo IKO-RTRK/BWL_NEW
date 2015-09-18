@@ -3,6 +3,7 @@
 static void RunAllTests(void)
 {
 	RUN_TEST_GROUP(writeDownTheScoreTest);
+	RUN_TEST_GROUP(PlayerCanTrowTests);
 }
 
 int main(int argc, char *argv[])

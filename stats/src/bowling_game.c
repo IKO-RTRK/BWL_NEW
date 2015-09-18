@@ -4,9 +4,7 @@
 
 static int isSpare(BOWLING_GAME* the_game, uint8_t i, uint8_t current_player)
 {
-//	uint8_t cr = the_game -> current_roll[current_player];
-	
-//	printf("%hhd %hhd\n", the_game -> rolls[current_player][cr], the_game -> rolls[current_player][cr+1]);
+
 	if ((the_game -> rolls[current_player][i] + the_game -> rolls[current_player][i+1]) == 10)
 	{
 		return 1;
@@ -22,9 +20,50 @@ BOWLING_GAME* bowlingGameCreate()
 
 uint8_t playerCanThrow(BOWLING_GAME* the_game, uint8_t current_frame, uint8_t current_player)
 {
+	uint8_t return_value;
+	if(current_frame < NUM_OF_FRAMES)
+	{
+		if(the_game->current_roll[current_player]>=current_frame*2-1 && the_game->current_roll[current_player]<=current_frame*2 && the_game->frames[current_player][current_frame]<10)
+		{
+			return_value = 1;		
+		}else
+		{
+			return_value = 0;	
+		}
+
+		return return_value;
+
+	}else if(current_frame == NUM_OF_FRAMES)
+	{
+		if(the_game->current_roll[current_player]>=current_frame*2-1 && the_game->current_roll[current_player]<=current_frame*2+1)
+		{
+		
+			if(the_game->frames[current_player][current_frame]<10 && the_game->current_roll[current_player]==current_frame*2+1)
+			{
+				return_value = 0;
+			}else
+			{
+				return_value = 1;		
+			}		
+
+		}else
+		{
+			return_value = 0;	
+		}
+
+		return return_value;
 	
-	return 1;
+	
+	}else
+	{
+		printf("prekoracenje broja frame-ova");
+		return 0;
+			
+	}
 }
+	
+	
+
 
 
 
