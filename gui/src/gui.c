@@ -21,7 +21,7 @@ static void initialisation_pins_console(TRACK_CONSOLE* track);
 static void initialisation_lane_console(TRACK_CONSOLE* track);
 static void initialisation_table_console(TRACK_CONSOLE* track, BOWLING_GAME* the_game);
 
-static void print_lane_console(TRACK_CONSOLE* track);
+void print_lane_console(TRACK_CONSOLE* track);
 static void print_table_console(TRACK_CONSOLE* track);
 
 
@@ -138,7 +138,7 @@ static void initialisation_lane_console(TRACK_CONSOLE* track)
 
 static void initialisation_pins_console(TRACK_CONSOLE* track)
 {
-    uint8_t current_row;
+    uint8_t current_row, i;
     uint8_t current_column;
     uint8_t counter = NUM_OF_PINS - 1;
     uint8_t tmp = START_OF_FIRST_TRACK_ROW, tmp1;
@@ -155,6 +155,11 @@ static void initialisation_pins_console(TRACK_CONSOLE* track)
 	tmp++;
 	n--;	
     }
+
+	for (i = 0; i < NUM_OF_PINS; i++)
+	{
+	   track->bowling_pins[i] = '!';
+	}
 
    
     return;
@@ -253,7 +258,7 @@ static void initialisation_table_console(TRACK_CONSOLE* track, BOWLING_GAME* the
 	}				    
 }
 
-static void print_lane_console(TRACK_CONSOLE* track)
+void print_lane_console(TRACK_CONSOLE* track)
 {
 	uint8_t current_row;
 	uint8_t current_column;
@@ -303,8 +308,11 @@ uint8_t drawKnockedPinsAndTable_console(BOWLING_GAME* the_game, uint8_t current_
     uint8_t counter = NUM_OF_PINS - 1;
     uint8_t tmp = START_OF_FIRST_TRACK_ROW, tmp1;
     uint8_t n = END_COLUMN_PINS;
-    uint8_t i;
+    uint8_t i, temp;
     
+	if ((knocked_down_pins.number_of_pins > 10) || (knocked_down_pins.number_of_pins < 0))
+		return 0;
+
 	for (i = 0; i < 10; i++)
 	  if (knocked_down_pins.pins[i]){
 	    track->bowling_pins[i] = 'x';
@@ -315,7 +323,7 @@ uint8_t drawKnockedPinsAndTable_console(BOWLING_GAME* the_game, uint8_t current_
 	tmp1 = n;
 	for (current_column = current_row; current_column >START_OF_FIRST_TRACK_ROW; current_column--)
 	{
-	   track->lane_gui[tmp][tmp1] = track->bowling_pins[tmp];
+	   track->lane_gui[tmp][tmp1] = track->bowling_pins[counter--];
 	    tmp1-=2;
 	}
 	tmp++;
@@ -323,11 +331,7 @@ uint8_t drawKnockedPinsAndTable_console(BOWLING_GAME* the_game, uint8_t current_
 	
     }
 	
-	i = 0;
-    for (n = 0; n < NUM_OF_PINS; n++)
-	if (track->bowling_pins[n] == 'x')
-	   i++;
-    return i;
+    return 1;
 }
 
 static uint8_t animateBallMovement_console(BOWLING_GAME* the_game, uint8_t current_player, BALL_POSITION ball_position)

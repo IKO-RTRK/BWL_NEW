@@ -24,8 +24,10 @@ TEST_GROUP_RUNNER(ConsoleAnimationTest)
 {
 	RUN_TEST_CASE(ConsoleAnimationTest, drawKnockedPinsNone);
 	RUN_TEST_CASE(ConsoleAnimationTest, drawKnockedPinsAll);
-	RUN_TEST_CASE(ConsoleAnimationTest, drawKnockedPinsOne);
-	RUN_TEST_CASE(ConsoleAnimationTest, drawKnockedPinsTwo);
+	RUN_TEST_CASE(ConsoleAnimationTest, drawKnockedPinsNegative);
+	RUN_TEST_CASE(ConsoleAnimationTest, drawKnockedPinsOverride);
+	RUN_TEST_CASE(ConsoleAnimationTest, drawKnockedPinsCheckPosition);
+	RUN_TEST_CASE(ConsoleAnimationTest, drawKnockedPinsCheckPosition1);
 }
 
 TEST_SETUP(SDLAnimationTest)
@@ -58,6 +60,8 @@ TEST_TEAR_DOWN(SDLAnimationTest)
 
 TEST_TEAR_DOWN(ConsoleAnimationTest)
 {
+	free(track);
+	free(game);
 }
 
 // Prvi test - SDL inicijalizacija
@@ -98,49 +102,59 @@ TEST(SDLAnimationTest, Animation)
 //Prvi test - Console gui
 TEST(ConsoleAnimationTest, drawKnockedPinsNone)
 {	
+	   
 	
+	TEST_ASSERT_TRUE(drawKnockedPinsAndTable_console(game, 1, knocked_pins, track));
+	
+}
+
+TEST(ConsoleAnimationTest, drawKnockedPinsOverride)
+{
+	
+	knocked_pins.number_of_pins = 15;	
 	TEST_ASSERT_EQUAL(0, drawKnockedPinsAndTable_console(game, 1, knocked_pins, track));
-	free(track);
-	free(game);
-	
+}
+
+TEST(ConsoleAnimationTest, drawKnockedPinsNegative)
+{
+	knocked_pins.number_of_pins = -5;;
+	TEST_ASSERT_EQUAL(0, drawKnockedPinsAndTable_console(game, 1, knocked_pins, track));
+
 }
 
 TEST(ConsoleAnimationTest, drawKnockedPinsAll)
 {
-
-	uint8_t i;
-	
 	knocked_pins.number_of_pins = 10;
-	for (i = 0; i < NUM_OF_PINS; i++)
-	{
-	  knocked_pins.pins[i] = 1;
-	} 
-	
-	TEST_ASSERT_EQUAL(10, drawKnockedPinsAndTable_console(game, 1, knocked_pins, track));
-	free(track);
-	free(game);
+	TEST_ASSERT_EQUAL(1, drawKnockedPinsAndTable_console(game, 1, knocked_pins, track));
 }
 
-TEST(ConsoleAnimationTest, drawKnockedPinsOne)
+TEST(ConsoleAnimationTest, drawKnockedPinsCheckPosition)
 {
+	system("clear");
 	knocked_pins.number_of_pins = 1;
 	knocked_pins.pins[0] = 1;
-	
-	TEST_ASSERT_EQUAL(1, drawKnockedPinsAndTable_console(game, 1, knocked_pins, track));
-	free(track);
-	free(game);
+	drawKnockedPinsAndTable_console(game, 1, knocked_pins, track);
+	print_lane_console();
+	TEST_ASSERT_EQUAL('x',track->lane_gui[3][8]);
 }
 
-TEST(ConsoleAnimationTest, drawKnockedPinsTwo)
+TEST(ConsoleAnimationTest, drawKnockedPinsCheckPosition1)
 {
-
-	knocked_pins.number_of_pins = 2;
+	uint8_t i, counter = 0;
+	system("clear");
+	knocked_pins.number_of_pins = 1;
 	knocked_pins.pins[0] = 1;
-	knocked_pins.pins[1] = 1;
-	
-	TEST_ASSERT_EQUAL(2, drawKnockedPinsAndTable_console(game, 1, knocked_pins, track));
-	free(track);
-	free(game);
+ 	knocked_pins.pins[1] = 1;
+	knocked_pins.pins[2] = 1;
+	knocked_pins.pins[3] = 1;
+	drawKnockedPinsAndTable_console(game, 1, knocked_pins, track);
+	print_lane_console();
+	for (i = 0; i < 10; i++)
+	{
+	  if(track->bowling_pins[i] == 'x')
+		counter++;
+	}
+	TEST_ASSERT_EQUAL(4, counter);
 }
 
 
