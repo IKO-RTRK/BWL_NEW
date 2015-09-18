@@ -5,7 +5,7 @@
 static int isSpare(BOWLING_GAME* the_game, uint8_t i, uint8_t current_player)
 {
 
-	if ((the_game -> rolls[current_player][i] + the_game -> rolls[current_player][i+1]) == 10)
+	if ((the_game -> rolls[current_player][i] + the_game -> rolls[current_player][i+1]) == ALL_PINS_DOWN)
 	{
 		return 1;
 	}
@@ -23,7 +23,7 @@ uint8_t playerCanThrow(BOWLING_GAME* the_game, uint8_t current_frame, uint8_t cu
 	uint8_t return_value;
 	if(current_frame < NUM_OF_FRAMES)
 	{
-		if(the_game->current_roll[current_player]>=current_frame*2-1 && the_game->current_roll[current_player]<=current_frame*2 && the_game->frames[current_player][current_frame]<10)
+		if(the_game->current_roll[current_player]>=current_frame*2-1 && the_game->current_roll[current_player]<=current_frame*2 && the_game->frames[current_player][current_frame]<ALL_PINS_DOWN)
 		{
 			return_value = 1;		
 		}else
@@ -38,7 +38,7 @@ uint8_t playerCanThrow(BOWLING_GAME* the_game, uint8_t current_frame, uint8_t cu
 		if(the_game->current_roll[current_player]>=current_frame*2-1 && the_game->current_roll[current_player]<=current_frame*2+1)
 		{
 		
-			if(the_game->frames[current_player][current_frame]<10 && the_game->current_roll[current_player]==current_frame*2+1)
+			if(the_game->frames[current_player][current_frame]<ALL_PINS_DOWN && the_game->current_roll[current_player]==current_frame*2+1)
 			{
 				return_value = 0;
 			}else
@@ -80,27 +80,27 @@ static void score(BOWLING_GAME* the_game, uint8_t current_player)
 	
 	for (i = 0; i < k; i++) 
 	{
-		if (the_game -> rolls[current_player][j] == 10)            
+		if (the_game -> rolls[current_player][j] == ALL_PINS_DOWN)            
 		{	
-			if(j < 18)
+			if(j < LAST_FRAME_FIRST_THROW)
 			{
-				if (the_game -> rolls[current_player][j + 2] == 10)           // Double
+				if (the_game -> rolls[current_player][j + 2] == ALL_PINS_DOWN)           // Double
 				{
-					the_game -> frames[current_player][i] = the_game -> totalScore[current_player] += (10 + the_game -> rolls[current_player][j + 2] + the_game -> rolls[current_player][j + 4]);
+					the_game -> frames[current_player][i] = the_game -> totalScore[current_player] += (ALL_PINS_DOWN + the_game -> rolls[current_player][j + 2] + the_game -> rolls[current_player][j + 4]);
 				}							
 				else				                   // Strike
 				{
-					the_game -> frames[current_player][i] = the_game -> totalScore[current_player] += (10 + the_game -> rolls[current_player][j + 2] + the_game -> rolls[current_player][j + 3]);
+					the_game -> frames[current_player][i] = the_game -> totalScore[current_player] += (ALL_PINS_DOWN + the_game -> rolls[current_player][j + 2] + the_game -> rolls[current_player][j + 3]);
 				}
 			}
 			else
 			{	
-				the_game -> frames[current_player][i] = the_game -> totalScore[current_player] += (10 + the_game -> rolls[current_player][j + 1] + the_game -> rolls[current_player][j + 2]);
+				the_game -> frames[current_player][i] = the_game -> totalScore[current_player] += (ALL_PINS_DOWN + the_game -> rolls[current_player][j + 1] + the_game -> rolls[current_player][j + 2]);
 			}
 		}
-		else if (isSpare(the_game, j, current_player) && (j <= 18))           // Spare
+		else if (isSpare(the_game, j, current_player) && (j <= LAST_FRAME_FIRST_THROW))           // Spare
 		{
-			the_game -> frames[current_player][i] = the_game -> totalScore[current_player] += (10 + the_game -> rolls[current_player][j + 2]);
+			the_game -> frames[current_player][i] = the_game -> totalScore[current_player] += (ALL_PINS_DOWN + the_game -> rolls[current_player][j + 2]);
 		}
 		else
 		{
@@ -110,7 +110,7 @@ static void score(BOWLING_GAME* the_game, uint8_t current_player)
 	}
 }
 
-void writeDownTheScore(BOWLING_GAME* the_game, uint8_t current_player, uint8_t x)
+void writeDownTheScore(BOWLING_GAME* the_game, uint8_t current_player, uint8_t number_of_pins)
 {	
 	uint8_t cr = the_game -> current_roll[current_player];
 
@@ -119,9 +119,9 @@ void writeDownTheScore(BOWLING_GAME* the_game, uint8_t current_player, uint8_t x
 		cr = 0;
 	}
 	
-	the_game -> rolls[current_player][cr] = x;
+	the_game -> rolls[current_player][cr] = number_of_pins;
 
-	if ((x == 10) && (cr < 18)) 
+	if ((number_of_pins == ALL_PINS_DOWN) && (cr < LAST_FRAME_FIRST_THROW)) 
 	{
 		the_game -> rolls[current_player][++the_game -> current_roll[current_player]] = 0;	
 	}

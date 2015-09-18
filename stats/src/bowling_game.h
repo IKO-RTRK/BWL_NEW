@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <inttypes.h>
+#define ALL_PINS_DOWN 10
+#define LAST_FRAME_FIRST_THROW 18
 
 
 enum 
