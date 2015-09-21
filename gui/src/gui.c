@@ -424,12 +424,31 @@ static void showAllPins(uint8_t lane)
 
 }
 
+
+void ballLogic(BALL_POSITION* prev, BALL_POSITION* current, uint8_t lane, uint8_t gui)
+{
+	if (gui == 1)
+	{
+		current -> x = INIT_OFFSET_X + current -> x + lane * TWO_LANES_DISTANCE;
+	}
+	else
+	{
+
+
+	}
+	prev -> x = current -> x;
+	prev -> y = current -> y;
+
+	
+}
+
+
 static void printBall(uint32_t x, uint32_t y, uint8_t lane)  // x,y - centar lopte
 {
 
 	// Pozicija na stazi na kojoj se brise lopta
 	SDL_Rect dstOffsetDel; 
-	dstOffsetDel.x = INIT_OFFSET_X + prevX[lane] + (lane) * TWO_LANES_DISTANCE; 
+	dstOffsetDel.x = INIT_OFFSET_X + prevX[lane] + lane * TWO_LANES_DISTANCE; 
 	dstOffsetDel.y = INIT_OFFSET_Y + LANE_HEIGHT - BALL_DIM - prevY[lane];
 
 	SDL_Rect srcOffsetDel;

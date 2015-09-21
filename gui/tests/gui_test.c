@@ -15,9 +15,10 @@ TEST_GROUP(ConsoleAnimationTest);
 
 TEST_GROUP_RUNNER(SDLAnimationTest)
 {
-	RUN_TEST_CASE(SDLAnimationTest, SDL_Init);
-	RUN_TEST_CASE(SDLAnimationTest, BMP_Load);
-	RUN_TEST_CASE(SDLAnimationTest, Animation);
+	RUN_TEST_CASE(SDLAnimationTest, Test1);
+	RUN_TEST_CASE(SDLAnimationTest, Test2);
+//	RUN_TEST_CASE(SDLAnimationTest, BMP_Load);
+//	RUN_TEST_CASE(SDLAnimationTest, Animation);
 }
 
 TEST_GROUP_RUNNER(ConsoleAnimationTest)
@@ -64,16 +65,42 @@ TEST_TEAR_DOWN(ConsoleAnimationTest)
 	free(game);
 }
 
-// Prvi test - SDL inicijalizacija
-TEST(SDLAnimationTest, SDL_Init)
+// Prvi test
+TEST(SDLAnimationTest, Test1)
 {
-	TEST_ASSERT_EQUAL(0, initGUI(SDL));
+	bp1.x = 5;
+	bp1.y = 5;
+	
+	bp2.x = 6;
+	bp2.y = 6;
+
+	ballLogic(&bp1, &bp2, 0, 1);
+
+	TEST_ASSERT_EQUAL(bp1.x, bp2.x);
+	TEST_ASSERT_EQUAL(bp1.y, bp2.y);
 }
 
-// Drugi test - Ucitavanje resursa
+// Drugi test
+TEST(SDLAnimationTest, Test2)
+{
+	bp1.x = 5;
+	bp1.y = 5;
+	
+	bp2.x = 6;
+	bp2.y = 6;
+
+	ballLogic(&bp1, &bp2, 1, 1);
+
+	TEST_ASSERT_EQUAL(bp2.x, INIT_OFFSET_X + 6 + 1 * TWO_LANES_DISTANCE);
+}
+
+// Drugi test
 TEST(SDLAnimationTest, BMP_Load)
 {
-	TEST_ASSERT_EQUAL(0, initGUI(SDL));
+	BALL_POSITION a, b;
+	ballLogic(&a, &b, 0, 1);
+
+	TEST_ASSERT_EQUAL(a.x, b.x);
 }
 
 // Treci test - Animacija

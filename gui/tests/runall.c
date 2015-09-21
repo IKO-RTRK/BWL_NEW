@@ -3,7 +3,7 @@
 static void RunAllTests(void)
 {
 	RUN_TEST_GROUP(SDLAnimationTest);
-	RUN_TEST_GROUP(ConsoleAnimationTest);
+//	RUN_TEST_GROUP(ConsoleAnimationTest);
 }
 
 int main(int argc, char *argv[])
