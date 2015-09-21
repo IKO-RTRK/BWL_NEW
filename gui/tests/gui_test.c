@@ -7,6 +7,8 @@ BALL_POSITION bp1, bp2;
 
 TRACK_CONSOLE* track;
 BOWLING_GAME* game;
+BALL_POSITION* ball;
+
 KNOCKED_DOWN_PINS knocked_pins;
 
 
@@ -28,6 +30,8 @@ TEST_GROUP_RUNNER(ConsoleAnimationTest)
 	RUN_TEST_CASE(ConsoleAnimationTest, drawKnockedPinsOverride);
 	RUN_TEST_CASE(ConsoleAnimationTest, drawKnockedPinsCheckPosition);
 	RUN_TEST_CASE(ConsoleAnimationTest, drawKnockedPinsCheckPosition1);
+	
+	RUN_TEST_CASE(ConsoleAnimationTest, animateBallMovementStartPosition);
 }
 
 TEST_SETUP(SDLAnimationTest)
@@ -39,9 +43,13 @@ TEST_SETUP(ConsoleAnimationTest)
 {
 	track = (TRACK_CONSOLE*)calloc(1, sizeof(TRACK_CONSOLE));
 	track->trackID = 1;
-	game = (BOWLING_GAME*)malloc(sizeof(BOWLING_GAME));
+	game = (BOWLING_GAME*)calloc(1,sizeof(BOWLING_GAME));
 	game->lane_number = 1;
 	game->number_of_players = 1;
+	ball = (BALL_POSITION*)calloc(1,sizeof(BALL_POSITION));
+	ball->isStartPosition=1;
+	ball->isEndOfLane=0;
+	
 	
 	initialisation_track_console(track, game);
 	uint8_t i;
@@ -62,6 +70,7 @@ TEST_TEAR_DOWN(ConsoleAnimationTest)
 {
 	free(track);
 	free(game);
+	free(ball);
 }
 
 // Prvi test - SDL inicijalizacija
@@ -167,6 +176,12 @@ TEST(ConsoleAnimationTest, drawKnockedPinsCheckPosition1)
 		counter++;
 	}
 	TEST_ASSERT_EQUAL(4, counter);
+}
+TEST(ConsoleAnimationTest, animateBallMovementStartPosition)
+{
+ 
+  animateBallMovement_console(game,1,*ball,track);
+  TEST_ASSERT_EQUAL('o', track->lane_gui[FIRST_BALL_POS_ROW][FIRST_BALL_POS_COL]);
 }
 
 
