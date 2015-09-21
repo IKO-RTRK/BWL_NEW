@@ -64,6 +64,7 @@ TEST_GROUP_RUNNER(RollTheBallTests)
     RUN_TEST_CASE(RollTheBallTests, IsEndOfLine);
     RUN_TEST_CASE(RollTheBallTests, CheckEndOfLineOnStart);
     RUN_TEST_CASE(RollTheBallTests, LeftHandPreferred);
+    RUN_TEST_CASE(RollTheBallTests, LaneWidthSmallerThen20);
 }
 
 TEST_GROUP_RUNNER(knockDownPins)
@@ -141,7 +142,7 @@ TEST(RollTheBallTests, MakeOffsetOnStartLine)
   
   ball_pos.isStartPosition = true;
   ball_pos_next = rollTheBall(&player, ball_pos);
-  TEST_ASSERT_EQUAL_UINT32(25, ball_pos_next.x);
+  TEST_ASSERT_EQUAL_UINT32(26, ball_pos_next.x);
 }
 
 TEST(RollTheBallTests, OffsetFromCentralLine)
@@ -181,7 +182,7 @@ TEST(RollTheBallTests, StraightLineTest)
 {
   int i;
   
-  fillExpectedArray(21);
+  fillExpectedArray(22);
   
   player.quality = 10;
   
@@ -201,7 +202,7 @@ TEST(RollTheBallTests, OffsetStraightLineTest)
 {
 	int i;
 	
-	fillExpectedArray(27);
+	fillExpectedArray(29);
 	
 	player.quality = 7;
 	initialiseArray();
@@ -224,7 +225,18 @@ TEST(RollTheBallTests, LeftHandPreferred)
   player.main_hand = LEFT_HAND;
   ball_pos_next = rollTheBall(&player, ball_pos);
   
-  TEST_ASSERT_EQUAL_UINT32(19, ball_pos_next.x);
+  TEST_ASSERT_EQUAL_UINT32(20, ball_pos_next.x);
+}
+
+TEST(RollTheBallTests, LaneWidthSmallerThen20)
+{
+	lane.width = 14;
+	player.quality = 8;
+	ball_pos.isStartPosition = true;
+
+	ball_pos_next = rollTheBall(&player, ball_pos);
+	TEST_ASSERT_EQUAL_UINT32(6, ball_pos_next.x);
+
 }
 
 // ==========================================================================================

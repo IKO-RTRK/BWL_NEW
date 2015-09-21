@@ -37,20 +37,27 @@ BALL_POSITION rollTheBall(struct player* the_player, BALL_POSITION current_ball_
 	if (isBallOnStartPosition(current_ball_position))
 	{
 	  next_ball_position.y = 0;
-	  uint32_t center = lane.width / 2;
-	  uint32_t offset = center / QUALITY_MAX;
+	  double center = round(lane.width / 2.0);
+
+	  double offset = center / QUALITY_MAX;
+	  double total_offset = 0;
 	  uint8_t i;
 	  for (i = QUALITY_MAX; i > the_player->quality; i--)
 	  {
-	    if ( LEFT_HAND == the_player->main_hand)
-	    {
-	      center -= offset;
-	    }
-	    else
-	    {
-	      center += offset;
-	    }
+	  	total_offset += offset;
 	  }
+	    
+	  if ( LEFT_HAND == the_player->main_hand)
+	  {
+	    center -= total_offset;
+	  }
+	  else
+	  {
+	    center += total_offset;
+	  }
+
+	  center = round(center); 
+	  
 	  
 	  setIsStartPosition(&current_ball_position);
 	  next_ball_position.isEndOfLane = false;
