@@ -46,34 +46,34 @@ typedef struct knocked_down_pins_struct
  */
 typedef struct
 {
-	int32_t width;		///<	Lane width
-	int32_t length;		///<	Lane length
-	int32_t bumperWidth;	///<	Bumper width
+	int32_t width;			///<	Lane width
+	int32_t length;			///<	Lane length
+	int32_t bumperWidth;		///<	Bumper width
 } LANE_CONFIG;
 
-LANE_CONFIG lane;	///<	Structure in which are informations about lane dimensions
+LANE_CONFIG lane;			///<	Structure in which are informations about lane dimensions
 
 /**
- * @brief 	Function define dimensions of lanes used in game.
- * 			Values of parameter \a lane_cfg are assigned to global \ref LANE_CONFIG 
- * @param 	lane_cfg	Structure with lane information
+ * @brief 	Function define dimensions of lanes used in game. 
+ * @param 	lane_cfg		Structure with lane information
  * @retval	void
  */
 void initBallLogic(LANE_CONFIG lane_cfg);
 
 /**
  * @brief 	Function which determinates next ball position on lane
- * @param 	*the_player	Information about current \a player who play on lane
+ * @param 	the_player		Information about current player who play on lane
  * @param 	current_ball_position	Information about current ball position on lane 
- * @retval 	BALL_POSITION Function returns structure with information of ball new position
+ * @retval 	BALL_POSITION 		Function returns structure with information of ball new position
  */
 BALL_POSITION rollTheBall(PLAYER* the_player, BALL_POSITION current_ball_position);
 
 /**
  * @brief 	Function implements knocking down pins
- * @param 	*the_player	Information about current player who play on lane
- * @param 	ball_position	Information of ball position immediately before knocking pins
- * @retval	KNOCKED_DOWN_PINS Function returns structure with information which and how many pins are koncked 
+ * @param 	the_game		Information about current bowling game, for detailed info see struct bowling_game in BWL_NEW/stats/src/bowling_game.h
+ * @param	current_player		Current player on lane
+ * @param 	ball_position		Information of ball position immediately before knocking pins
+ * @retval	KNOCKED_DOWN_PINS 	Function returns structure with information which and how many pins are koncked 
  */
 KNOCKED_DOWN_PINS knockDownPins(BOWLING_GAME* the_game, uint8_t current_player, BALL_POSITION ball_position);
 #endif
