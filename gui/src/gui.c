@@ -345,6 +345,10 @@ uint8_t animateBallMovement_console(BOWLING_GAME* the_game, uint8_t current_play
       if(ball_position.isStartPosition==0)
       {
 	track->lane_gui[track->ball_prevYpos][track->ball_prevXpos] = '.';
+	track->ball_prevYpos = ball_position.y;
+	track->ball_prevXpos = ball_position.x;
+	track->lane_gui[track->ball_prevYpos][track->ball_prevXpos] = 'o';
+
       }
       return 1;
 }
