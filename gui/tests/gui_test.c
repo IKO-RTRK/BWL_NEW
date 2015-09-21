@@ -33,6 +33,7 @@ TEST_GROUP_RUNNER(ConsoleAnimationTest)
 	
 	RUN_TEST_CASE(ConsoleAnimationTest, animateBallMovementStartPosition);
 	RUN_TEST_CASE(ConsoleAnimationTest, animateBallMovementOnePositionForwardPrevPosCheck)
+	RUN_TEST_CASE(ConsoleAnimationTest, animateBallMovementOnePositionForwardNextPosCheck)
 
 }
 
@@ -201,4 +202,15 @@ TEST(ConsoleAnimationTest, animateBallMovementOnePositionForwardPrevPosCheck)
   
 }
 
+TEST(ConsoleAnimationTest, animateBallMovementOnePositionForwardNextPosCheck)
+{
+      ball->isStartPosition=0;
+      ball->y=FIRST_BALL_POS_ROW-1;
+      ball->x=FIRST_BALL_POS_COL;
+      animateBallMovement_console(game,1,*ball,track);
+      system("clear");
+      print_lane_console(track);
+      TEST_ASSERT_EQUAL('o', track->lane_gui[FIRST_BALL_POS_ROW-1][FIRST_BALL_POS_COL]);
 
+  
+}
