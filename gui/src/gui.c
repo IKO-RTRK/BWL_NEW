@@ -127,7 +127,7 @@ static void initialisation_lane_console(TRACK_CONSOLE* track)
 	  }
 	}
 	
-	track->ball_prevXpos = FIRST_BALL_POS_COL;
+	track->ball_prevXpos = FIRST_BALL_POS_COL; 
 	track->ball_prevYpos = FIRST_BALL_POS_ROW;
 
 	for (current_row = START_OF_FIRST_TRACK_ROW ; current_row < LENGTH_OF_LANE_CONSOLE; current_row++)
@@ -342,8 +342,11 @@ uint8_t drawKnockedPinsAndTable_console(BOWLING_GAME* the_game, uint8_t current_
 
 uint8_t animateBallMovement_console(BOWLING_GAME* the_game, uint8_t current_player, BALL_POSITION ball_position,TRACK_CONSOLE* track)
 {
-
-  return 1;
+      if(ball_position.isStartPosition==0)
+      {
+	track->lane_gui[track->ball_prevYpos][track->ball_prevXpos] = '.';
+      }
+      return 1;
 }
 // CONSOLE GUI END
 
