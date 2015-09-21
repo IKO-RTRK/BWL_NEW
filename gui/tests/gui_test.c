@@ -7,6 +7,8 @@ BALL_POSITION bp1, bp2;
 
 TRACK_CONSOLE* track;
 BOWLING_GAME* game;
+BALL_POSITION* ball;
+
 KNOCKED_DOWN_PINS knocked_pins;
 
 
@@ -29,6 +31,13 @@ TEST_GROUP_RUNNER(ConsoleAnimationTest)
 	RUN_TEST_CASE(ConsoleAnimationTest, drawKnockedPinsOverride);
 	RUN_TEST_CASE(ConsoleAnimationTest, drawKnockedPinsCheckPosition);
 	RUN_TEST_CASE(ConsoleAnimationTest, drawKnockedPinsCheckPosition1);
+	
+	RUN_TEST_CASE(ConsoleAnimationTest, animateBallMovementStartPosition);
+	RUN_TEST_CASE(ConsoleAnimationTest, animateBallMovementOnePositionForwardPrevPosCheck);
+	RUN_TEST_CASE(ConsoleAnimationTest, animateBallMovementOnePositionForwardNextPosCheck);
+	RUN_TEST_CASE(ConsoleAnimationTest, animateBallMovementForwardUntillTheEndPosition);
+
+
 }
 
 TEST_SETUP(SDLAnimationTest)
@@ -40,9 +49,13 @@ TEST_SETUP(ConsoleAnimationTest)
 {
 	track = (TRACK_CONSOLE*)calloc(1, sizeof(TRACK_CONSOLE));
 	track->trackID = 1;
-	game = (BOWLING_GAME*)malloc(sizeof(BOWLING_GAME));
+	game = (BOWLING_GAME*)calloc(1,sizeof(BOWLING_GAME));
 	game->lane_number = 1;
 	game->number_of_players = 1;
+	ball = (BALL_POSITION*)calloc(1,sizeof(BALL_POSITION));
+	ball->isStartPosition=1;
+	ball->isEndOfLane=0;
+	
 	
 	initialisation_track_console(track, game);
 	uint8_t i;
@@ -63,6 +76,7 @@ TEST_TEAR_DOWN(ConsoleAnimationTest)
 {
 	free(track);
 	free(game);
+	free(ball);
 }
 
 // Prvi test
@@ -187,7 +201,7 @@ TEST(ConsoleAnimationTest, drawKnockedPinsCheckPosition1)
 	knocked_pins.pins[2] = 1;
 	knocked_pins.pins[3] = 1;
 	drawKnockedPinsAndTable_console(game, 1, knocked_pins, track);
-	print_lane_console();
+	print_lane_console(track);
 	for (i = 0; i < 10; i++)
 	{
 	  if(track->bowling_pins[i] == 'x')
@@ -197,3 +211,57 @@ TEST(ConsoleAnimationTest, drawKnockedPinsCheckPosition1)
 }
 
 
+TEST(ConsoleAnimationTest, animateBallMovementStartPosition)
+{ 	
+  
+      animateBallMovement_console(game,1,*ball,track);
+      TEST_ASSERT_EQUAL('o', track->lane_gui[FIRST_BALL_POS_ROW][FIRST_BALL_POS_COL]);
+}
+
+TEST(ConsoleAnimationTest, animateBallMovementOnePositionForwardPrevPosCheck)
+{
+      system("clear");
+      ball->isStartPosition=0;
+      ball->y=FIRST_BALL_POS_ROW-1;
+      ball->x=FIRST_BALL_POS_COL;
+      animateBallMovement_console(game,1,*ball,track);
+      print_lane_console(track);
+      TEST_ASSERT_EQUAL('.', track->lane_gui[FIRST_BALL_POS_ROW][FIRST_BALL_POS_COL]);
+
+  
+}
+
+TEST(ConsoleAnimationTest, animateBallMovementOnePositionForwardNextPosCheck)
+{
+      system("clear");  
+      ball->isStartPosition=0;
+      ball->y=FIRST_BALL_POS_ROW-1;
+      ball->x=FIRST_BALL_POS_COL;
+      animateBallMovement_console(game,1,*ball,track);
+      system("clear");
+      print_lane_console(track);
+      TEST_ASSERT_EQUAL('o', track->lane_gui[FIRST_BALL_POS_ROW-1][FIRST_BALL_POS_COL]);
+
+  
+}
+
+TEST(ConsoleAnimationTest, animateBallMovementForwardUntillTheEndPosition)
+{
+      system("clear");
+      ball->isStartPosition=0;
+      ball->x=FIRST_BALL_POS_COL;
+      for(ball->y=FIRST_BALL_POS_ROW-1 ; ball->y >= END_OF_PINS_ROW-1 ;ball->y=ball->y-1)
+      {  
+	if(ball->y==END_OF_PINS_ROW-1)
+	{
+	  ball->isEndOfLane=1;
+	}
+	animateBallMovement_console(game,1,*ball,track);
+
+      }
+      ball->isEndOfLane=1;
+      print_lane_console(track);
+      TEST_ASSERT_EQUAL('.', track->lane_gui[END_OF_PINS_ROW][FIRST_BALL_POS_COL]);
+
+  
+}
