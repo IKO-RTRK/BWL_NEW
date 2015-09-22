@@ -178,7 +178,7 @@ static void doTheRoll(BOWLING_GAME* the_game, uint8_t current_frame, uint8_t cur
 	while (playerCanThrow(the_game, current_frame, current_player))
 	{	
 		final_ball_position = throwTheBall(the_game, current_player);
-		
+
 		knocked_down_pins = knockDownPins(the_game, current_player, final_ball_position);
 
 		writeDownTheScore(the_game, current_player, knocked_down_pins.number_of_pins);
@@ -231,6 +231,9 @@ static void init(GUI_TYPE gui_id)
 	system("clear");
 
 	initGUI(gui_id);
+	my_lane_config.width = 43;		//postavljene fiksne vrijednosti da bi staza bila inicijalizovana
+	my_lane_config.length = 50;
+	my_lane_config.bumperWidth = 5;
 	initBallLogic(my_lane_config);
 }
 

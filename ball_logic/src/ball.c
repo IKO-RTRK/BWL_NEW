@@ -59,7 +59,7 @@ BALL_POSITION rollTheBall(struct player* the_player, BALL_POSITION current_ball_
 	  center = round(center); 
 	  
 	  
-	  setIsStartPosition(&current_ball_position);
+	  setIsStartPosition(&next_ball_position);
 	  next_ball_position.isEndOfLane = false;
 	  next_ball_position.x = center;
 	}

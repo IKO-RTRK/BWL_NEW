@@ -16,3 +16,4 @@
 -  ~~4) TEST : Offset from central line~~
 -  ~~5) TEST : Straight line test~~
 -  ~~6) TEST : Straight line test with offset on central line~~
+-  7) TEST : Line configuration not set
