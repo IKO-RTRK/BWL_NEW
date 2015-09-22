@@ -1,0 +1,143 @@
+\hypertarget{ball_8h}{\section{src/ball.h File Reference}
+\label{ball_8h}\index{src/ball.\-h@{src/ball.\-h}}
+}
+
+
+Document contains short description of used structures and functions.  
+
+
+{\ttfamily \#include $<$stdio.\-h$>$}\\*
+{\ttfamily \#include $<$stdint.\-h$>$}\\*
+{\ttfamily \#include $<$inttypes.\-h$>$}\\*
+{\ttfamily \#include $<$stdbool.\-h$>$}\\*
+{\ttfamily \#include \char`\"{}../../player/src/player.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}../../stats/src/bowling\-\_\-game.\-h\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structball__position__struct}{ball\-\_\-position\-\_\-struct}
+\item 
+struct \hyperlink{structknocked__down__pins__struct}{knocked\-\_\-down\-\_\-pins\-\_\-struct}
+\item 
+struct \hyperlink{structLANE__CONFIG}{L\-A\-N\-E\-\_\-\-C\-O\-N\-F\-I\-G}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{ball_8h_a23dbd731758fa50b768f64e5c79af0e7}{N\-U\-M\-B\-E\-R\-\_\-\-O\-F\-\_\-\-P\-I\-N\-S}~10
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{ball_8h_a13c04506f4bc2f9489ea6a42fb83849d}{typedef struct \hyperlink{structball__position__struct}{ball\-\_\-position\-\_\-struct} {\bfseries B\-A\-L\-L\-\_\-\-P\-O\-S\-I\-T\-I\-O\-N}}\label{ball_8h_a13c04506f4bc2f9489ea6a42fb83849d}
+
+\item 
+\hypertarget{ball_8h_adf645500a6aaed54a60eabfa8e22c588}{typedef struct \\*
+\hyperlink{structknocked__down__pins__struct}{knocked\-\_\-down\-\_\-pins\-\_\-struct} {\bfseries K\-N\-O\-C\-K\-E\-D\-\_\-\-D\-O\-W\-N\-\_\-\-P\-I\-N\-S}}\label{ball_8h_adf645500a6aaed54a60eabfa8e22c588}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{ball_8h_a7ad3bc57090704d7d176403ed69d539d}{init\-Ball\-Logic} (\hyperlink{structLANE__CONFIG}{L\-A\-N\-E\-\_\-\-C\-O\-N\-F\-I\-G} lane\-\_\-cfg)
+\begin{DoxyCompactList}\small\item\em Function define dimensions of lanes used in game. \end{DoxyCompactList}\item 
+\hyperlink{structball__position__struct}{B\-A\-L\-L\-\_\-\-P\-O\-S\-I\-T\-I\-O\-N} \hyperlink{ball_8h_af068bdfa362217f5dcdda5a7fd65aa5a}{roll\-The\-Ball} (P\-L\-A\-Y\-E\-R $\ast$the\-\_\-player, \hyperlink{structball__position__struct}{B\-A\-L\-L\-\_\-\-P\-O\-S\-I\-T\-I\-O\-N} current\-\_\-ball\-\_\-position)
+\begin{DoxyCompactList}\small\item\em Function which determinates next ball position on lane. \end{DoxyCompactList}\item 
+\hyperlink{structknocked__down__pins__struct}{K\-N\-O\-C\-K\-E\-D\-\_\-\-D\-O\-W\-N\-\_\-\-P\-I\-N\-S} \hyperlink{ball_8h_ae0512ce7b3231439a9572d2af56bb8bd}{knock\-Down\-Pins} (B\-O\-W\-L\-I\-N\-G\-\_\-\-G\-A\-M\-E $\ast$the\-\_\-game, uint8\-\_\-t current\-\_\-player, \hyperlink{structball__position__struct}{B\-A\-L\-L\-\_\-\-P\-O\-S\-I\-T\-I\-O\-N} ball\-\_\-position)
+\begin{DoxyCompactList}\small\item\em Function implements knocking down pins. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{ball_8h_ab3240ffc57db1fccbbd0293d0b338565}{\hyperlink{structLANE__CONFIG}{L\-A\-N\-E\-\_\-\-C\-O\-N\-F\-I\-G} \hyperlink{ball_8h_ab3240ffc57db1fccbbd0293d0b338565}{lane}}\label{ball_8h_ab3240ffc57db1fccbbd0293d0b338565}
+
+\begin{DoxyCompactList}\small\item\em Structure in which are informations about lane dimensions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Document contains short description of used structures and functions. \begin{DoxyAuthor}{Author}
+R\-T-\/\-R\-K Ball\-\_\-logic 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+September, 2015 
+\end{DoxyDate}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{ball_8h_a23dbd731758fa50b768f64e5c79af0e7}{\index{ball.\-h@{ball.\-h}!N\-U\-M\-B\-E\-R\-\_\-\-O\-F\-\_\-\-P\-I\-N\-S@{N\-U\-M\-B\-E\-R\-\_\-\-O\-F\-\_\-\-P\-I\-N\-S}}
+\index{N\-U\-M\-B\-E\-R\-\_\-\-O\-F\-\_\-\-P\-I\-N\-S@{N\-U\-M\-B\-E\-R\-\_\-\-O\-F\-\_\-\-P\-I\-N\-S}!ball.h@{ball.\-h}}
+\subsubsection[{N\-U\-M\-B\-E\-R\-\_\-\-O\-F\-\_\-\-P\-I\-N\-S}]{\setlength{\rightskip}{0pt plus 5cm}\#define N\-U\-M\-B\-E\-R\-\_\-\-O\-F\-\_\-\-P\-I\-N\-S~10}}\label{ball_8h_a23dbd731758fa50b768f64e5c79af0e7}
+Number of pins in lane when game starts 
+
+\subsection{Function Documentation}
+\hypertarget{ball_8h_a7ad3bc57090704d7d176403ed69d539d}{\index{ball.\-h@{ball.\-h}!init\-Ball\-Logic@{init\-Ball\-Logic}}
+\index{init\-Ball\-Logic@{init\-Ball\-Logic}!ball.h@{ball.\-h}}
+\subsubsection[{init\-Ball\-Logic}]{\setlength{\rightskip}{0pt plus 5cm}void init\-Ball\-Logic (
+\begin{DoxyParamCaption}
+\item[{{\bf L\-A\-N\-E\-\_\-\-C\-O\-N\-F\-I\-G}}]{lane\-\_\-cfg}
+\end{DoxyParamCaption}
+)}}\label{ball_8h_a7ad3bc57090704d7d176403ed69d539d}
+
+
+Function define dimensions of lanes used in game. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em lane\-\_\-cfg} & Structure with lane information \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em void} & \\
+\hline
+\end{DoxyRetVals}
+\hypertarget{ball_8h_ae0512ce7b3231439a9572d2af56bb8bd}{\index{ball.\-h@{ball.\-h}!knock\-Down\-Pins@{knock\-Down\-Pins}}
+\index{knock\-Down\-Pins@{knock\-Down\-Pins}!ball.h@{ball.\-h}}
+\subsubsection[{knock\-Down\-Pins}]{\setlength{\rightskip}{0pt plus 5cm}{\bf K\-N\-O\-C\-K\-E\-D\-\_\-\-D\-O\-W\-N\-\_\-\-P\-I\-N\-S} knock\-Down\-Pins (
+\begin{DoxyParamCaption}
+\item[{B\-O\-W\-L\-I\-N\-G\-\_\-\-G\-A\-M\-E $\ast$}]{the\-\_\-game, }
+\item[{uint8\-\_\-t}]{current\-\_\-player, }
+\item[{{\bf B\-A\-L\-L\-\_\-\-P\-O\-S\-I\-T\-I\-O\-N}}]{ball\-\_\-position}
+\end{DoxyParamCaption}
+)}}\label{ball_8h_ae0512ce7b3231439a9572d2af56bb8bd}
+
+
+Function implements knocking down pins. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em the\-\_\-game} & Information about current bowling game, for detailed info see struct bowling\-\_\-game in B\-W\-L\-\_\-\-N\-E\-W/stats/src/bowling\-\_\-game.\-h \\
+\hline
+{\em current\-\_\-player} & Current player on lane \\
+\hline
+{\em ball\-\_\-position} & Information of ball position immediately before knocking pins \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em K\-N\-O\-C\-K\-E\-D\-\_\-\-D\-O\-W\-N\-\_\-\-P\-I\-N\-S} & Function returns structure with information which and how many pins are koncked \\
+\hline
+\end{DoxyRetVals}
+\hypertarget{ball_8h_af068bdfa362217f5dcdda5a7fd65aa5a}{\index{ball.\-h@{ball.\-h}!roll\-The\-Ball@{roll\-The\-Ball}}
+\index{roll\-The\-Ball@{roll\-The\-Ball}!ball.h@{ball.\-h}}
+\subsubsection[{roll\-The\-Ball}]{\setlength{\rightskip}{0pt plus 5cm}{\bf B\-A\-L\-L\-\_\-\-P\-O\-S\-I\-T\-I\-O\-N} roll\-The\-Ball (
+\begin{DoxyParamCaption}
+\item[{P\-L\-A\-Y\-E\-R $\ast$}]{the\-\_\-player, }
+\item[{{\bf B\-A\-L\-L\-\_\-\-P\-O\-S\-I\-T\-I\-O\-N}}]{current\-\_\-ball\-\_\-position}
+\end{DoxyParamCaption}
+)}}\label{ball_8h_af068bdfa362217f5dcdda5a7fd65aa5a}
+
+
+Function which determinates next ball position on lane. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em the\-\_\-player} & Information about current player who play on lane \\
+\hline
+{\em current\-\_\-ball\-\_\-position} & Information about current ball position on lane \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em B\-A\-L\-L\-\_\-\-P\-O\-S\-I\-T\-I\-O\-N} & Function returns structure with information of ball new position \\
+\hline
+\end{DoxyRetVals}
