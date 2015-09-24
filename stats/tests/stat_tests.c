@@ -2,7 +2,7 @@
 #include "../src/bowling_game.h"
 
 BOWLING_GAME pok;
-
+BOWLING_GAME* the_game;
 
 TEST_GROUP(writeDownTheScoreTest);
 TEST_GROUP(PlayerCanTrowTests);
@@ -23,13 +23,12 @@ TEST_GROUP_RUNNER(PlayerCanTrowTests)
 {
 	RUN_TEST_CASE(PlayerCanTrowTests, first_roll_in_current_frame);
 	RUN_TEST_CASE(PlayerCanTrowTests, second_roll_in_curent_frame);
-	RUN_TEST_CASE(PlayerCanTrowTests, third_rool_in_current_frame);
+	RUN_TEST_CASE(PlayerCanTrowTests, illegal_roll_in_current_frame);
 	RUN_TEST_CASE(PlayerCanTrowTests, player_had_not_strike_in_current_frame);
 	RUN_TEST_CASE(PlayerCanTrowTests, player_had_strike_in_current_frame);
-	RUN_TEST_CASE(PlayerCanTrowTests, player_had_not_strike_in_10th_frame);
-	RUN_TEST_CASE(PlayerCanTrowTests, player_had_not_strike_or_clean_in_10th_frame);
-	RUN_TEST_CASE(PlayerCanTrowTests, player_had_strike_or_clean_in_10th_frame);
-	RUN_TEST_CASE(PlayerCanTrowTests, trying_illegal_roll);
+	RUN_TEST_CASE(PlayerCanTrowTests, second_roll_in_last_frame_in_first_roll_player_hadnt_clean);
+	RUN_TEST_CASE(PlayerCanTrowTests, 3th_roll_of_10th_frame_player_had_not_strike_or_clean_in_1st_or_2nd_roll);
+	RUN_TEST_CASE(PlayerCanTrowTests, 3th_roll_of_10th_frame_player_had_strike_or_clean_in_1st_or_2nd_roll);
 }
 
 TEST_SETUP(writeDownTheScoreTest)
@@ -41,7 +40,7 @@ TEST_SETUP(writeDownTheScoreTest)
 
 TEST_SETUP(PlayerCanTrowTests)
 {
-	BOWLING_GAME* the_game=bowlingGameCreate();
+	the_game=bowlingGameCreate();
 	 
 }
 
@@ -173,100 +172,147 @@ TEST(writeDownTheScoreTest, SparesAndStrikes)
 
 
 
-// Prvi test
+// 1. test
 TEST(PlayerCanTrowTests , first_roll_in_current_frame)
-{	
-	BOWLING_GAME* the_game = bowlingGameCreate();
-	the_game->current_roll[1]=1;
-	the_game->frames[1][1]=5;
+{
+	uint8_t i;
+	uint8_t j;
+
+	for(j=0 ; j < MAX_PLAYERS_PER_LANE ; j++)
+	for(i=0 ; i < NUM_OF_FRAMES-1; i++)
+	{	
+		the_game->current_roll[j]=2*i;
+		the_game->frames[j][i]=5;
 	
-	TEST_ASSERT_EQUAL(1, playerCanThrow(the_game,  1 ,1));
+		TEST_ASSERT_EQUAL(1, playerCanThrow(the_game, i ,j));
+	}
 }
 
-//Drugi test
+
+
+//2. test
 TEST(PlayerCanTrowTests , second_roll_in_curent_frame)
 {
-	BOWLING_GAME* the_game = bowlingGameCreate();
-	the_game->current_roll[1]=2;
-	the_game->frames[1][1]=5;
+	uint8_t i;
+	uint8_t j;
 
-	TEST_ASSERT_EQUAL(1, playerCanThrow(the_game,  1 ,1));
+	for(j=0 ; j < MAX_PLAYERS_PER_LANE ; j++)
+	for(i=0 ; i < NUM_OF_FRAMES-1; i++)
+	{	
+		the_game->current_roll[j]=2*i+1;
+		the_game->frames[j][i]=5;
+
+		TEST_ASSERT_EQUAL(1, playerCanThrow(the_game,  i ,j));
+	}
 }
 
-//Treci test
-TEST(PlayerCanTrowTests , third_rool_in_current_frame)
+//3. test
+TEST(PlayerCanTrowTests , illegal_roll_in_current_frame)
 {
-	BOWLING_GAME* the_game = bowlingGameCreate();
-	the_game->frames[1][1]=5;
-	the_game->current_roll[1]=3;
-	
-	TEST_ASSERT_EQUAL(0, playerCanThrow(the_game,1 ,1));
+
+	uint8_t i;
+	uint8_t j;
+
+	for(j=0 ; j < MAX_PLAYERS_PER_LANE ; j++)
+	for(i=0 ; i <= NUM_OF_FRAMES-1; i++)
+	{	
+		if(i< NUM_OF_FRAMES-1)
+		{		
+			the_game->current_roll[j]=2*i+2;
+			the_game->frames[j][i]=5;
+		}
+		if(i == NUM_OF_FRAMES-1)
+		{		
+			the_game->current_roll[j]=2*i+3;
+			the_game->frames[j][i]=5;
+		}
+		TEST_ASSERT_EQUAL(0, playerCanThrow(the_game,  i ,j));
+
+	}
 }
 
 
-//Cetvrti test
+//4. test
 TEST(PlayerCanTrowTests , player_had_not_strike_in_current_frame)
-{	
-	BOWLING_GAME* the_game = bowlingGameCreate();
-	the_game->frames[1][1]=5;
-	the_game->current_roll[1]=2;
-
-	TEST_ASSERT_EQUAL(1, playerCanThrow(the_game , 1 , 1));
-}
-
-//Peti test
-TEST(PlayerCanTrowTests , player_had_strike_in_current_frame)
-{	
-	BOWLING_GAME* the_game = bowlingGameCreate();
-	the_game->frames[1][1]=10;
-	the_game->current_roll[1]=2;
-
-	TEST_ASSERT_EQUAL(0, playerCanThrow(the_game , 1 , 1));
-}
-
-//Sesti test
-TEST(PlayerCanTrowTests , player_had_not_strike_in_10th_frame)
 {
-	BOWLING_GAME* the_game = bowlingGameCreate();
-	the_game->frames[1][10]=5;
-	the_game->current_roll[1]=2*10;  //drugo bacanje u 10 frame-u
+	uint8_t i;
+	uint8_t j;
 
-	TEST_ASSERT_EQUAL(1, playerCanThrow(the_game , 10 , 1));
+	for(j=0 ; j < MAX_PLAYERS_PER_LANE ; j++)
+	for(i=0 ; i < NUM_OF_FRAMES-1; i++)
+	{	
+		the_game->current_roll[j]=2*i+1;
+		the_game->frames[j][i]=5;
+
+		TEST_ASSERT_EQUAL(1, playerCanThrow(the_game,  i ,j));
+
+	}
 }
 
-//Sedmi test
+//5. test
+TEST(PlayerCanTrowTests , player_had_strike_in_current_frame)
+{
+	uint8_t i;
+	uint8_t j;
 
-TEST(PlayerCanTrowTests , player_had_not_strike_or_clean_in_10th_frame)
-{	
-	BOWLING_GAME* the_game = bowlingGameCreate();
-	the_game->frames[1][10]=5;
-	the_game->current_roll[1]=2*10+1;  //trece bacanje u 10 frame-u
+	for(j=0 ; j < MAX_PLAYERS_PER_LANE ; j++)
+	for(i=0 ; i < NUM_OF_FRAMES-1; i++)
+	{	
+		the_game->current_roll[j]=2*i+1;
+		the_game->frames[j][i]=10;
 
-	TEST_ASSERT_EQUAL(0, playerCanThrow(the_game , 10 , 1));
+		TEST_ASSERT_EQUAL(0, playerCanThrow(the_game,  i ,j));
+	}
+}
+
+//6. test
+TEST(PlayerCanTrowTests , second_roll_in_last_frame_in_first_roll_player_hadnt_clean)
+{
+	uint8_t j;
+	uint8_t current_frame=10-1;  			 // 10. frame je frame sa indeksom 9, jer indeksiranje krece od 0 
+
+	for(j=0 ; j < MAX_PLAYERS_PER_LANE ; j++)
+	{
+		the_game->frames[j][current_frame]=5;
+		the_game->current_roll[j]=2*(10-1)+1;  	//drugo bacanje u 10 frame-u
+		TEST_ASSERT_EQUAL(1, playerCanThrow(the_game , current_frame , j));
+	}
+}
+
+
+//7. test
+
+TEST(PlayerCanTrowTests ,  3th_roll_of_10th_frame_player_had_not_strike_or_clean_in_1st_or_2nd_roll)
+{
+
+	uint8_t j;
+	uint8_t last_frame=10-1;  			 // 10. frame je frame sa indeksom 9, jer indeksiranje krece od 0 
+
+	for(j=0 ; j < MAX_PLAYERS_PER_LANE ; j++)
+	{
+		the_game->frames[j][last_frame]=5;
+		the_game->current_roll[j]=2*last_frame+2;  	// 3. bacanje u 10 frame-u
+		TEST_ASSERT_EQUAL(0, playerCanThrow(the_game , last_frame , j));
+	}
+
 }
 
 
 //8. test
 
-TEST(PlayerCanTrowTests , player_had_strike_or_clean_in_10th_frame)
-{	
-	
-	BOWLING_GAME* the_game = bowlingGameCreate();
-	the_game->frames[1][10]=10;
-	the_game->current_roll[1]=2*10+1;  //trece bacanje u 10 frame-u
+TEST(PlayerCanTrowTests , 3th_roll_of_10th_frame_player_had_strike_or_clean_in_1st_or_2nd_roll)
+{
 
-	TEST_ASSERT_EQUAL(1, playerCanThrow(the_game , 10 , 1));
-}
+	uint8_t j;
+	uint8_t last_frame=10-1;  			 // 10. frame je frame sa indeksom 9, jer indeksiranje krece od 0 
 
-//9. test
+	for(j=0 ; j < MAX_PLAYERS_PER_LANE ; j++)
+	{
+		the_game->frames[j][last_frame]=10;	// bodovi u prva dva bacanja su 10 ili vise=> clean ili strike
+		the_game->current_roll[j]=2*last_frame+2;  	// 3. bacanje u 10 frame-u
+		TEST_ASSERT_EQUAL(1, playerCanThrow(the_game , last_frame , j));
+	}
 
-TEST(PlayerCanTrowTests , trying_illegal_roll)
-{	
-	BOWLING_GAME* the_game = bowlingGameCreate();
-	the_game->frames[1][10]=10;
-	the_game->current_roll[1]=2*10+2;  //cetvrto bacanje u 10 frame-u
-
-	TEST_ASSERT_EQUAL(0, playerCanThrow(the_game , 10 , 1));
 }
 
 
