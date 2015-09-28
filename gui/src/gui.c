@@ -455,12 +455,12 @@ static void printTable (BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_
 	dstOffset.x += 40;
 	dstOffset.y += 3;
 	SDL_Flip(table);
-	}
+}
 
 static uint8_t drawKnockedPinsAndTable_SDL(BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins)
 {
   	drawPins(the_game -> lane_number, knocked_down_pins);
-	printTable(the_game, current_player, knocked_down_pins,the_game -> number_of_players);
+	//printTable(the_game, current_player, knocked_down_pins,the_game -> number_of_players);
 }
 
 static uint8_t animateBallMovement_SDL(BOWLING_GAME* the_game, uint8_t current_player, BALL_POSITION ball_position)
