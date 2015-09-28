@@ -44,6 +44,7 @@ static int isSpare(BOWLING_GAME* the_game, uint8_t i, uint8_t current_player)
 	return 0;
 }
 
+
 BOWLING_GAME* bowlingGameCreate()
 {
 	BOWLING_GAME* game = (BOWLING_GAME*) calloc( 1, sizeof(BOWLING_GAME) );
@@ -90,48 +91,79 @@ uint8_t playerCanThrow(BOWLING_GAME* the_game, uint8_t current_frame, uint8_t cu
 }
 
 
+int allPinsDownInCurrentFrame(BOWLING_GAME* the_game, uint8_t current_player, uint8_t current_frame)
+{
+	if(the_game -> rolls[current_player][current_frame] == ALL_PINS_DOWN)
+	{	
+		return 1;
+	}else
+	{
+		return 0;
+	}
+}
+
+uint16_t addPoints(BOWLING_GAME* the_game, uint8_t current_player, uint8_t all_pins_are_down, uint8_t add_roll_1 , uint8_t add_roll_2)
+{
+	uint16_t return_value=0;
+	
+	if(all_pins_are_down && add_roll_1!=0 && add_roll_2 !=0 )
+	{	
+		return_value = (ALL_PINS_DOWN + the_game -> rolls[current_player][add_roll_1] + the_game -> rolls[current_player][add_roll_2]);
+	
+	}else if(all_pins_are_down && add_roll_1!=0 && add_roll_2 ==0)
+	{
+		return_value = (ALL_PINS_DOWN + the_game -> rolls[current_player][add_roll_1]);
+	}else
+	{
+		return_value = ( the_game -> rolls[current_player][add_roll_1] + the_game -> rolls[current_player][add_roll_2]);
+	}
+
+
+	return return_value;
+}
 
 static void score(BOWLING_GAME* the_game, uint8_t current_player)
 {
 	uint8_t i; 
-	uint8_t j = 0;
-
+	uint8_t current_roll = 0;
+	uint8_t current_frame = (the_game -> current_roll[current_player]) / 2;
 
 	the_game -> totalScore[current_player] = 0;
 	uint16_t tot_score = the_game -> totalScore[current_player];
-	uint8_t cr = the_game -> current_roll[current_player];
-	int8_t k = cr / 2;
 	
-	for (i = 0; i < k; i++) 
+	
+	for (i = 0; i < current_frame ; i++) 									
 	{
-		if (the_game -> rolls[current_player][j] == ALL_PINS_DOWN)            
+		if (allPinsDownInCurrentFrame(the_game , current_player , current_roll))            			// clear in current frame (current_roll is first roll in each frame here)
 		{	
-			if(j < LAST_FRAME_FIRST_THROW)
+			if(current_roll < LAST_FRAME_FIRST_THROW)							// NOT LAST FRAME
 			{
-				if (the_game -> rolls[current_player][j + 2] == ALL_PINS_DOWN)           // Double
+				if (allPinsDownInCurrentFrame(the_game , current_player , current_roll+2 ))            //clear in next frame (current_roll+2 is firs roll in next frame)
 				{
-					the_game -> frames[current_player][i] = tot_score += (ALL_PINS_DOWN + the_game -> rolls[current_player][j + 2] + the_game -> rolls[current_player][j + 4]);
+					the_game -> frames[current_player][i] = tot_score += addPoints(the_game, current_player, 1 , current_roll+2 , current_roll+4); // points= 
+																	//    ALL_PINS_DOWN+next_frame_points+ (next_frame+1)_points
 				}							
-				else				                   // Strike
+				else				                   				       //player hadnt clear in next frame , but had strike in next frame 
 				{
-					the_game -> frames[current_player][i] = tot_score += (ALL_PINS_DOWN + the_game -> rolls[current_player][j + 2] + the_game -> rolls[current_player][j + 3]);
+				the_game -> frames[current_player][i] = tot_score += addPoints( the_game , current_player, 1 , current_roll+2, current_roll+3);	       // points=
+																	//    ALL_PINS_DOWN+next_frame_points (1st and 2nd roll points)
 				}
 			}
-			else
+			else														//	IS LAST FRAME
 			{	
-				the_game -> frames[current_player][i] = tot_score += (ALL_PINS_DOWN + the_game -> rolls[current_player][j + 1] + the_game -> rolls[current_player][j + 2]);
+				the_game -> frames[current_player][i] = tot_score += addPoints( the_game , current_player, 1 , current_roll+1, current_roll+2);	// add points from next 2 rolls
 			}
 		}
-		else if (isSpare(the_game, j, current_player) && (j <= LAST_FRAME_FIRST_THROW))           // Spare
+		else if (isSpare(the_game, current_roll, current_player) && (current_roll <= LAST_FRAME_FIRST_THROW))           // Spare in current frame
 		{
-			the_game -> frames[current_player][i] = tot_score += (ALL_PINS_DOWN + the_game -> rolls[current_player][j + 2]);
+			the_game -> frames[current_player][i] = tot_score += addPoints( the_game , current_player, 1 , current_roll+2, 0);	//adding just points from first roll in next frame
 		}
-		else
+		else														// player had not even clear or spare in current frame
 		{
-			the_game -> frames[current_player][i] = tot_score += (the_game -> rolls[current_player][j] + the_game -> rolls[current_player][j + 1]);
+			the_game -> frames[current_player][i] = tot_score += addPoints( the_game , current_player, 0 , current_roll,current_roll+1); //just add this frame points(2 rolls in frame)
 		}
-		j += 2;
-		the_game -> totalScore[current_player] = tot_score;
+		current_roll += 2;																		//sledeci frame
+		the_game -> totalScore[current_player] = tot_score;											//ukupni score se uvecava za ugatanu vrednost
 	}
 }
 

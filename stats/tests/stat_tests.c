@@ -214,7 +214,7 @@ TEST(PlayerCanTrowTests , illegal_roll_in_current_frame)
 	uint8_t j;
 
 	for(j=0 ; j < MAX_PLAYERS_PER_LANE ; j++)
-	for(i=0 ; i <= NUM_OF_FRAMES-1; i++)
+	for(i=0 ; i < NUM_OF_FRAMES-1; i++)
 	{	
 		if(i< NUM_OF_FRAMES-1)
 		{		
@@ -255,7 +255,7 @@ TEST(PlayerCanTrowTests , player_had_strike_in_current_frame)
 	uint8_t i;
 	uint8_t j;
 
-	for(j=0 ; j < MAX_PLAYERS_PER_LANE ; j++)
+	for(j=0 ; j < MAX_PLAYERS_PER_LANE-1 ; j++)
 	for(i=0 ; i < NUM_OF_FRAMES-1; i++)
 	{	
 		the_game->current_roll[j]=2*i+1;
