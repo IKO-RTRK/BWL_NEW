@@ -373,6 +373,16 @@ static uint8_t printLane(uint8_t i)
 	return ((k || j) ? 1 : 0);
 }
 /**
+ * @brief Hellper functions for TDD - get position for pins
+ */
+static SDL_Rect dstOffsetPin;
+
+SDL_Rect getPinOffset()
+{
+  return   dstOffsetPin;
+}
+
+/**
  * @brief 	Function drow pins on lane
  * @param 	lane	Number of lain (lane ID)
  * @param 	knocked_down_pins	Structure who keep data of knocked pins
@@ -380,33 +390,47 @@ static uint8_t printLane(uint8_t i)
  */
 static int8_t drawPins(uint8_t lane, KNOCKED_DOWN_PINS knocked_down_pins )
 {
-  printLane(lane);
-  SDL_Rect dstOffset; 
-
-  dstOffset.x = INIT_OFFSET_FOR_PINS_X + (lane) * TWO_LANES_DISTANCE; 
-  dstOffset.y = INIT_OFFSET_Y;
-  
-  int8_t numOfPin = NUM_OF_PINS; 
-  int8_t numOfRow;
-  int8_t numOfPinsInRow;
-  
-  for (numOfRow = 4; numOfRow > 0; numOfRow--)
+  printLane(lane); ///< Clean lane
+  uint8_t pinNum;
+  dstOffsetPin.y = INIT_OFFSET_Y;
+  for(pinNum = 6; pinNum < 10; pinNum++)
   {
-    for(numOfPinsInRow = numOfRow; numOfPinsInRow > 0; numOfPinsInRow--)
+    if(knocked_down_pins.pins[pinNum] == 1)
     {
-      if(knocked_down_pins.pins[--numOfPin] == 0)
-      {
-	SDL_BlitSurface(pin, NULL, screen, &dstOffset); ///<	Add pin to the sceen
-      }
-      dstOffset.x += OFFSET_FOR_PINS_X; ///<	Sets  offset for x for next pin
+      dstOffsetPin.x = INIT_OFFSET_FOR_PINS_X + (lane) * TWO_LANES_DISTANCE + (pinNum - 6) * OFFSET_FOR_PINS_X;
     }
-    dstOffset.x = INIT_OFFSET_FOR_PINS_X + (lane) * TWO_LANES_DISTANCE + (4 - numOfRow + 1) * OFFSET_FOR_PINS_X / 2; ///<	Sets initial offset for x for given row
-    dstOffset.y += OFFSET_FOR_PINS_Y; ///<	Sets initial offset for y for given row
   }
+   
   
-  int8_t j = SDL_Flip(screen);
-
-  return j;
+  
+  //	RAZVJANO BEZ TDD-a
+//   printLane(lane);
+//   SDL_Rect dstOffset; 
+// 
+//   dstOffset.x = INIT_OFFSET_FOR_PINS_X + (lane) * TWO_LANES_DISTANCE; 
+//   dstOffset.y = INIT_OFFSET_Y;
+//   
+//   int8_t numOfPin = NUM_OF_PINS; 
+//   int8_t numOfRow;
+//   int8_t numOfPinsInRow;
+//   
+//   for (numOfRow = 4; numOfRow > 0; numOfRow--)
+//   {
+//     for(numOfPinsInRow = numOfRow; numOfPinsInRow > 0; numOfPinsInRow--)
+//     {
+//       if(knocked_down_pins.pins[--numOfPin] == 0)
+//       {
+// 	SDL_BlitSurface(pin, NULL, screen, &dstOffset); ///<	Add pin to the sceen
+//       }
+//       dstOffset.x += OFFSET_FOR_PINS_X; ///<	Sets  offset for x for next pin
+//     }
+//     dstOffset.x = INIT_OFFSET_FOR_PINS_X + (lane) * TWO_LANES_DISTANCE + (4 - numOfRow + 1) * OFFSET_FOR_PINS_X / 2; ///<	Sets initial offset for x for given row
+//     dstOffset.y += OFFSET_FOR_PINS_Y; ///<	Sets initial offset for y for given row
+//   }
+//   
+//   int8_t j = SDL_Flip(screen);
+// 
+//   return j;
 }
 
 static uint8_t drawKnockedPinsAndTable_SDL(BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins)
