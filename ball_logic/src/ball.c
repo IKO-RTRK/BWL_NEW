@@ -82,54 +82,54 @@ typedef struct node{ // lista koja sluzi za izvlacenje rednog broja dostupnih pi
 	struct node *next;
 } node;
 
-static node * head=NULL;
-static node * tail=NULL;
-static uint8_t listSize=0;
+static node * head = NULL;
+static node * tail = NULL;
+static uint8_t listSize = 0;
 
 static void listAppend(uint8_t broj)
 {
 	if ( head == NULL ) 
 	{
-		head=tail=(node*)malloc(sizeof(node));
-		head->position=tail->position=broj;
-		head->next=tail->next=NULL;
+		head = tail = (node*)malloc(sizeof(node));
+		head->position = tail->position=broj;
+		head->next = tail->next=NULL;
 		return;
 	}
-	node *temp=tail;
-	tail=(node*)malloc(sizeof(node));
-	tail->next=NULL;
-	temp->next=tail;
-	tail->position=broj;
-}
+	node *temp = tail;
+	tail = (node*)malloc(sizeof(node));
+	tail->next = NULL;
+	temp->next = tail;
+	tail->position = broj;
+} 
 
 static void listDestroy()
 {
 	node *temp;
-	while(head!=NULL)
+	while(head != NULL)
 	{
-		temp=head->next;
+		temp = head->next;
 		free(head);
-		head=temp;
+		head = temp;
 	}
-	head=tail=NULL;
-	listSize=0;
+	head = tail = NULL;
+	listSize = 0;
 }
 
 static uint8_t listGetAvailablePin(uint8_t atPosition) // vraca pin koji se moze srusiti, a nalazi se na poziciji "atPosition" u listi
 {
-	if ( atPosition > listSize || atPosition < 1 ) atPosition=1; // u slucaju da dodje nedozvoljena vrijednost izbacuje se onaj na poziciji 1
-	uint8_t i=1;
-	node *temp=head;
-	node *prev=NULL;
-	for(; i<atPosition; i++)
+	if ( atPosition > listSize || atPosition < 1 ) atPosition = 1; // u slucaju da dodje nedozvoljena vrijednost izbacuje se onaj na poziciji 1
+	uint8_t i = 1;
+	node *temp = head;
+	node *prev = NULL;
+	for(; i < atPosition;i++)
 	{
-		prev=temp;
-		temp=temp->next;
+		prev = temp;
+		temp = temp->next;
 	}
-	i=temp->position;
-	if ( temp==head ) { head=head->next; free(temp); listSize--; return i; }
-	if ( temp==tail ) { free(tail); tail=prev; tail->next=NULL; listSize--; return i; }
-	prev->next=temp->next;
+	i = temp->position;
+	if ( temp == head ) { head = head->next; free(temp); listSize--; return i; }
+	if ( temp == tail ) { free(tail); tail=prev; tail->next=NULL; listSize--; return i; }
+	prev->next = temp->next;
 	free(temp);
 	listSize--;
 	return i;
@@ -141,7 +141,7 @@ static void listInitialisation()
 	listDestroy();
 	for(i=0; i <= NUMBER_OF_PINS - 1; i++)
 		listAppend(i);
-	listSize=10;
+	listSize = 10;
 }
 static double power_f(double x, uint8_t n)
 {
@@ -175,9 +175,7 @@ static uint8_t howManyToKnockMax(int32_t position)
 	return (uint8_t)ceil(realValue);
 }
 
-
-
-static void resetKnockedDownpins(KNOCKED_DOWN_PINS *pins)
+static void resetKnockedDownPins(KNOCKED_DOWN_PINS *pins)
 {
 	uint8_t i;
 	
@@ -189,7 +187,6 @@ static void resetKnockedDownpins(KNOCKED_DOWN_PINS *pins)
 	}
 }
 
-
 static uint32_t randomNumber1()
 {
 	static uint32_t coeff = 19 ;
@@ -197,6 +194,7 @@ static uint32_t randomNumber1()
 	coeff = coeff + 5;
 	return rand;
 }
+
 static uint32_t randomNumber2()
 {
 	return random();
@@ -216,7 +214,6 @@ KNOCKED_DOWN_PINS knockDownPins(BOWLING_GAME* the_game, uint8_t current_player, 
 	KNOCKED_DOWN_PINS pins;
 	uint8_t i, max;
 
-	resetKnockedDownpins(&pins);
 	max = howManyToKnockMax((int32_t)ball_position.x);
 
 	fptr randomNumber = whatToCall();
@@ -225,8 +222,7 @@ KNOCKED_DOWN_PINS knockDownPins(BOWLING_GAME* the_game, uint8_t current_player, 
 	else pins.number_of_pins = max - ( randomNumber() % ( QUALITY_MAX+1 - the_game->players[current_player]->quality ) );
 
 
-	if ( the_game->current_roll[current_player] % 2 == 0 || the_game->current_roll[current_player] == 21 ) listInitialisation();  
-	listInitialisation();
+	if ( the_game->current_roll[current_player] % 2 == 0 || the_game->current_roll[current_player] == 21 ) { resetKnockedDownPins(&pins); listInitialisation(); }  
 	//printf("%"PRIu8" ", pins.number_of_pins);
 
 	for(i=0; i < pins.number_of_pins ; i++)
