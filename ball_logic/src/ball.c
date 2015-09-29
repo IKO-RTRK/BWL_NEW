@@ -12,14 +12,14 @@ static bool isBallOnStartPosition(BALL_POSITION ball_position)
 
 static void setIsStartPosition(BALL_POSITION* ball_position)
 {
-  ball_position -> isStartPosition = false;
+  ball_position->isStartPosition = false;
 }
 
 static void isEndOfLane(BALL_POSITION* ball_position)
 {
-  if (ball_position -> y == lane.length - 1)
+  if (ball_position->y == lane.length - 1)
   {
-    ball_position -> isEndOfLane = true;
+    ball_position->isEndOfLane = true;
   }
 }
 
@@ -67,6 +67,7 @@ BALL_POSITION rollTheBall(struct player* the_player, BALL_POSITION current_ball_
 	{  
 	  next_ball_position.y = current_ball_position.y + 1;
 	  next_ball_position.x = current_ball_position.x;
+	  setIsStartPosition(&next_ball_position);
 	  isEndOfLane(&next_ball_position);
 	}
 	
