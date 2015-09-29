@@ -33,7 +33,7 @@ enum
 */
 
 typedef struct bowling_game
-{
+{	
 	uint8_t lane_number;						///< Number of lane in game
 	uint8_t number_of_players;					///< Number of players in game
 
@@ -41,7 +41,8 @@ typedef struct bowling_game
 
 	uint8_t rolls[MAX_PLAYERS_PER_LANE][MAX_ROLLS];			///< Matrix of all players with their scores for each roll
 	uint16_t totalScore[MAX_PLAYERS_PER_LANE];			///< Total score of one player in game. See #MAX_PLAYERS_PER_LANE
-	uint16_t frames[MAX_PLAYERS_PER_LANE][NUM_OF_FRAMES];		///< Matrix of all players with their scores in each frame
+	uint16_t frames[MAX_PLAYERS_PER_LANE][NUM_OF_FRAMES];
+									///< Matrix of all players with their scores in each frame
 
 	struct player* players[MAX_PLAYERS_PER_LANE];			///< See struct player in BWL_NEW/player/src/player.h
 } BOWLING_GAME;

@@ -156,7 +156,7 @@ static void startGame(BOWLING_GAME* the_game)
 
 	for (current_frame = 0; current_frame < NUM_OF_FRAMES; current_frame++)
 	{
-		for (current_player = 1; current_player < the_game->number_of_players; current_player++)
+		for (current_player = 0; current_player < the_game->number_of_players; current_player++)
 		{
 			doTheRoll(the_game, current_frame, current_player);
 		}
@@ -174,19 +174,20 @@ static void doTheRoll(BOWLING_GAME* the_game, uint8_t current_frame, uint8_t cur
 {
 	BALL_POSITION final_ball_position;
 	KNOCKED_DOWN_PINS knocked_down_pins;
+		
 	
 	while (playerCanThrow(the_game, current_frame, current_player))
 	{	
-		final_ball_position = throwTheBall(the_game, current_player);
 
+		final_ball_position = throwTheBall(the_game, current_player);
 		knocked_down_pins = knockDownPins(the_game, current_player, final_ball_position);
 
-		writeDownTheScore(the_game, current_player, knocked_down_pins.number_of_pins);
+		//writeDownTheScore(the_game, current_player, knocked_down_pins.number_of_pins);
 		// animation spare/strike should go here based on writeDownTheScore() result!
 
-		drawKnockedPinsAndTable(the_game, current_player, knocked_down_pins);
+		//drawKnockedPinsAndTable(the_game, current_player, knocked_down_pins);
 		usleep(MICRO_TIME_BETWEEN_TWO_ROLLS);
-		
+		the_game->current_roll[current_player]++;
 	}
 }
 
@@ -203,7 +204,7 @@ static BALL_POSITION throwTheBall(BOWLING_GAME* the_game, uint8_t current_player
 	do
 	{
 		current_ball_position = rollTheBall(the_game->players[current_player], current_ball_position);
-		animateBallMovement(the_game, current_player, current_ball_position);
+		//animateBallMovement(the_game, current_player, current_ball_position);
 	} while (!current_ball_position.isEndOfLane);
 
 	return current_ball_position;

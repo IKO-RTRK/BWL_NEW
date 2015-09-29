@@ -47,7 +47,10 @@ static int isSpare(BOWLING_GAME* the_game, uint8_t i, uint8_t current_player)
 
 BOWLING_GAME* bowlingGameCreate()
 {
+	int i;
 	BOWLING_GAME* game = (BOWLING_GAME*) calloc( 1, sizeof(BOWLING_GAME) );
+	for(i=0 ; i < MAX_PLAYERS_PER_LANE; i++)
+		game->current_roll[MAX_PLAYERS_PER_LANE]=0;
 	return game;
 }
 
@@ -188,7 +191,10 @@ void writeDownTheScore(BOWLING_GAME* the_game, uint8_t current_player, uint8_t n
 	cr = the_game -> current_roll[current_player];
 	
 	if ((cr % 2 == 0 && cr != 0) || cr  == MAX_ROLLS)
-	score(the_game, current_player);
+	{	
+		score(the_game, current_player);
+	}
+
 }
 
 
