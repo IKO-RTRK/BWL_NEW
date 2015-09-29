@@ -155,7 +155,7 @@ static double power_f(double x, uint8_t n)
 	return p;
 }
 
-static uint8_t howManyToKnockMax(int32_t position)
+static uint8_t howManyToKnockMax(uint8_t leftOver, int32_t position)
 {
 
 	if ( position - lane.bumperWidth <= -1 ) return 0; // ball went down the left canal
@@ -167,8 +167,8 @@ static uint8_t howManyToKnockMax(int32_t position)
 	relative_offset=place/(lane.width-2*lane.bumperWidth);
 
 
-	if ( relative_offset <= 0 ) realValue = 10+23*relative_offset+36*power_f(relative_offset, 2)+36*power_f(relative_offset, 3);  // y = 10+23*x+36*x^2+36*x^3 for -0.5 >= x >= 0
-	else realValue = 10-23*relative_offset+36*power_f(relative_offset, 2)-36*power_f(relative_offset, 3);  // y = 10-23*x+36*x^2-36*x^3 for 0 < x <= 0.5
+	if ( relative_offset <= 0 ) realValue = leftOver+23*relative_offset+36*power_f(relative_offset, 2)+36*power_f(relative_offset, 3);  // y = 10+23*x+36*x^2+36*x^3 for -0.5 >= x >= 0
+	else realValue = leftOver-23*relative_offset+36*power_f(relative_offset, 2)-36*power_f(relative_offset, 3);  // y = 10-23*x+36*x^2-36*x^3 for 0 < x <= 0.5
 	// function that approximates convention values
 	
 	//printf("%lf\n\n\n", realValue);
@@ -213,22 +213,26 @@ static fptr whatToCall()
 KNOCKED_DOWN_PINS knockDownPins(BOWLING_GAME* the_game, uint8_t current_player, BALL_POSITION ball_position)
 {
 	KNOCKED_DOWN_PINS pins;
-	uint8_t i, max;
 
-	max = howManyToKnockMax((int32_t)ball_position.x);
+	uint8_t i, max;
+	static uint8_t availablePins;
+
+
+	resetKnockedDownPins(&pins);
+	if ( the_game->current_roll[current_player] % 2 == 0 ) { availablePins = NUMBER_OF_PINS; listInitialisation(); }
+
+	max = howManyToKnockMax(availablePins, (int32_t)ball_position.x);
 
 	fptr randomNumber = whatToCall();
-	
 	if ( max == 0 ) pins.number_of_pins =  0; 
 	else pins.number_of_pins = max - ( randomNumber() % ( QUALITY_MAX+1 - the_game->players[current_player]->quality ) );
-
-
-	if ( the_game->current_roll[current_player] % 2 == 0 || the_game->current_roll[current_player] == 21 ) { resetKnockedDownPins(&pins); listInitialisation(); }  
-	//printf("%"PRIu8" ", pins.number_of_pins);
+ 
+	availablePins -= pins.number_of_pins;
+	//printf("%"PRIu8" ", max);
 
 	for(i=0; i < pins.number_of_pins ; i++)
 	{
-		if ( listSize == 0 ) pins.pins[listGetAvailablePin(1)] = 1;
+		if ( listSize == 0 ) ;
 			else pins.pins[listGetAvailablePin( ( randomNumber() % listSize ) + 1 )] = 1;
 	}
 
@@ -237,6 +241,6 @@ KNOCKED_DOWN_PINS knockDownPins(BOWLING_GAME* the_game, uint8_t current_player, 
 		printf("%"PRIu8" ", pins.pins[i]);
 	}
 	printf("\n\n\n");*/
-	if ( the_game->current_roll[current_player] % 2 || the_game->current_roll[current_player] == 21 ) listDestroy();
+	if ( the_game->current_roll[current_player] % 2 || the_game->current_roll[current_player] == 20 ) listDestroy();
 	return pins;
 }
