@@ -148,7 +148,7 @@ TEST(SDLDrawKnockedPinsTest, TestForXAndYOffsetForRowOneAndTwo)
   drawKnockedPinsAndTable(&bg1, 1, knocked_pins);
   sdlRect = getOffsetForLastPic();
   TEST_ASSERT_EQUAL(sdlRect.y, 2 * OFFSET_FOR_PINS_Y + INIT_OFFSET_Y);
-  TEST_ASSERT_EQUAL(sdlRect.x, INIT_OFFSET_FOR_PINS_X + 1 * TWO_LANES_DISTANCE + 1 * OFFSET_FOR_PINS_X + 2 * OFFSET_FOR_PINS_X / 2);
+  TEST_ASSERT_EQUAL(sdlRect.x, INIT_OFFSET_FOR_PINS_X + 1 * TWO_LANES_DISTANCE  + 2 * OFFSET_FOR_PINS_X / 2 + 1 * OFFSET_FOR_PINS_X);
   
   knocked_pins.pins[0] = 1;
   bg1.lane_number = 1;
