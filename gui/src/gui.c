@@ -376,13 +376,25 @@ static uint8_t printLane(uint8_t i)
 	return ((k || j) ? 1 : 0);
 }
 /**
- * @brief Hellper functions for TDD - get position for pins
+ * @brief Drawing pictures on the screen
+ * @param 	rect	Offset for picture
+ * @param 	pic	Picture
+ * @retval	void
  */
-static SDL_Rect dstOffsetPin;
-
-SDL_Rect getPinOffset()
+static void drawPic(SDL_Rect rect, SDL_Surface* pic)
 {
-  return   dstOffsetPin;
+  SDL_BlitSurface(pic, NULL, screen, &rect); ///<	Add pin to the sceen
+  SDL_Flip(screen);
+  //SDL_Sleep(1000);
+}
+/**
+ * @brief Hellper functions for TDD - get position for last picture
+ */
+static SDL_Rect offsetForLastPic;
+
+SDL_Rect getOffsetForLastPic()
+{
+  return   offsetForLastPic;
 }
 
 /**
@@ -395,12 +407,22 @@ static int8_t drawPins(uint8_t lane, KNOCKED_DOWN_PINS knocked_down_pins )
 {
   printLane(lane); ///< Clean lane
   uint8_t pinNum;
-  dstOffsetPin.y = INIT_OFFSET_Y;
+  offsetForLastPic.y = INIT_OFFSET_Y;
   for(pinNum = 6; pinNum < 10; pinNum++)
   {
     if(knocked_down_pins.pins[pinNum] == 1)
     {
-      dstOffsetPin.x = INIT_OFFSET_FOR_PINS_X + (lane) * TWO_LANES_DISTANCE + (pinNum - 6) * OFFSET_FOR_PINS_X;
+      offsetForLastPic.x = INIT_OFFSET_FOR_PINS_X + (lane) * TWO_LANES_DISTANCE + (pinNum - 6) * OFFSET_FOR_PINS_X;
+      drawPic(offsetForLastPic, pin);
+    }
+  }
+  for(pinNum = 3; pinNum < 6; pinNum++)
+  {
+    if(knocked_down_pins.pins[pinNum] == 1)
+    {
+      offsetForLastPic.y =  OFFSET_FOR_PINS_Y;
+      offsetForLastPic.x = INIT_OFFSET_FOR_PINS_X + (lane) * TWO_LANES_DISTANCE + (pinNum - 6) * OFFSET_FOR_PINS_X;
+      drawPic(offsetForLastPic, pin);
     }
   }
    

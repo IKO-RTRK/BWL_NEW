@@ -72,6 +72,6 @@ uint8_t (*animateBallMovement)(BOWLING_GAME*, uint8_t, BALL_POSITION);
 
 uint8_t initGUI(uint8_t gui);
 void quit();
-SDL_Rect getPinOffset();///< for testing
+SDL_Rect getOffsetForLastPic();///< for testing
 #endif
 
