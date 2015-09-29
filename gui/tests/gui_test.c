@@ -23,6 +23,7 @@ TEST_GROUP_RUNNER(SDLDrawKnockedPinsTest)
 	RUN_TEST_CASE(SDLDrawKnockedPinsTest, Test1);
 	RUN_TEST_CASE(SDLDrawKnockedPinsTest, TestXOffset);
 	RUN_TEST_CASE(SDLDrawKnockedPinsTest, TestYOffset);
+	RUN_TEST_CASE(SDLDrawKnockedPinsTest, TestForXAndYOffsetForRowOneAndTwo);
 
 }
 
@@ -135,8 +136,29 @@ TEST(SDLDrawKnockedPinsTest, TestYOffset)
   bg1.lane_number = 1;
   drawKnockedPinsAndTable(&bg1, 1, knocked_pins);
   sdlRect = getOffsetForLastPic();
-  TEST_ASSERT_EQUAL(sdlRect.y, 1 * OFFSET_FOR_PINS_Y);
+  TEST_ASSERT_EQUAL(sdlRect.y, 1 * OFFSET_FOR_PINS_Y + INIT_OFFSET_Y);
   
+  knocked_pins.pins[3] = 0;
+}
+// Cetvrti test
+TEST(SDLDrawKnockedPinsTest, TestForXAndYOffsetForRowOneAndTwo)
+{
+  knocked_pins.pins[2] = 1;
+  bg1.lane_number = 1;
+  drawKnockedPinsAndTable(&bg1, 1, knocked_pins);
+  sdlRect = getOffsetForLastPic();
+  TEST_ASSERT_EQUAL(sdlRect.y, 2 * OFFSET_FOR_PINS_Y + INIT_OFFSET_Y);
+  TEST_ASSERT_EQUAL(sdlRect.x, INIT_OFFSET_FOR_PINS_X + 1 * TWO_LANES_DISTANCE + 1 * OFFSET_FOR_PINS_X + 2 * OFFSET_FOR_PINS_X / 2);
+  
+  knocked_pins.pins[0] = 1;
+  bg1.lane_number = 1;
+  drawKnockedPinsAndTable(&bg1, 1, knocked_pins);
+  sdlRect = getOffsetForLastPic();
+  TEST_ASSERT_EQUAL(sdlRect.y, 3 * OFFSET_FOR_PINS_Y + INIT_OFFSET_Y);
+  TEST_ASSERT_EQUAL(sdlRect.x, INIT_OFFSET_FOR_PINS_X + 1 * TWO_LANES_DISTANCE + 0 * OFFSET_FOR_PINS_X + 3 * OFFSET_FOR_PINS_X / 2);
+  
+  knocked_pins.pins[0] = 0;
+  knocked_pins.pins[2] = 0;
 }
 // Prvi test
 TEST(SDLAnimationTest, Test1)

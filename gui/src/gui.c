@@ -407,25 +407,43 @@ static int8_t drawPins(uint8_t lane, KNOCKED_DOWN_PINS knocked_down_pins )
 {
   printLane(lane); ///< Clean lane
   uint8_t pinNum;
-  offsetForLastPic.y = INIT_OFFSET_Y;
+  
   for(pinNum = 6; pinNum < 10; pinNum++)
   {
+    
     if(knocked_down_pins.pins[pinNum] == 1)
     {
+      offsetForLastPic.y = INIT_OFFSET_Y;
       offsetForLastPic.x = INIT_OFFSET_FOR_PINS_X + (lane) * TWO_LANES_DISTANCE + (pinNum - 6) * OFFSET_FOR_PINS_X;
       drawPic(offsetForLastPic, pin);
     }
   }
   for(pinNum = 3; pinNum < 6; pinNum++)
   {
+    
     if(knocked_down_pins.pins[pinNum] == 1)
     {
-      offsetForLastPic.y =  OFFSET_FOR_PINS_Y;
+      offsetForLastPic.y = INIT_OFFSET_Y + OFFSET_FOR_PINS_Y;
       offsetForLastPic.x = INIT_OFFSET_FOR_PINS_X + (lane) * TWO_LANES_DISTANCE + (pinNum - 6) * OFFSET_FOR_PINS_X;
       drawPic(offsetForLastPic, pin);
     }
   }
-   
+  for(pinNum = 1; pinNum < 3; pinNum++)
+  {
+    if(knocked_down_pins.pins[pinNum] == 1)
+    { 
+      offsetForLastPic.y = 2 * OFFSET_FOR_PINS_Y + INIT_OFFSET_Y;
+      offsetForLastPic.x = INIT_OFFSET_FOR_PINS_X + (lane) * TWO_LANES_DISTANCE + 2 * OFFSET_FOR_PINS_X / 2 + (pinNum - 1) * OFFSET_FOR_PINS_X;
+      drawPic(offsetForLastPic, pin);
+    }
+  }
+  if(knocked_down_pins.pins[0] == 1)
+    { 
+      offsetForLastPic.y = 3 * OFFSET_FOR_PINS_Y + INIT_OFFSET_Y;
+      offsetForLastPic.x = INIT_OFFSET_FOR_PINS_X + (lane) * TWO_LANES_DISTANCE + 3 * OFFSET_FOR_PINS_X / 2;
+      drawPic(offsetForLastPic, pin);
+    }
+  
   
   
   //	RAZVJANO BEZ TDD-a
