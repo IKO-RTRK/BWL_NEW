@@ -23,6 +23,13 @@ static void isEndOfLane(BALL_POSITION* ball_position)
   }
 }
 
+static bool isLaneConfigured()
+{
+	if (lane.width < 1 && lane.length < 1)
+		return false;
+	return true;
+}
+
 void initBallLogic(LANE_CONFIG lane_cfg)
 {
 
@@ -33,8 +40,15 @@ void initBallLogic(LANE_CONFIG lane_cfg)
 
 BALL_POSITION rollTheBall(struct player* the_player, BALL_POSITION current_ball_position)
 {
+
 	BALL_POSITION next_ball_position;
-	if (isBallOnStartPosition(current_ball_position))
+
+	if (!isLaneConfigured())
+	{
+		next_ball_position.x = -1;
+		next_ball_position.y = -1;
+	}
+	else if (isBallOnStartPosition(current_ball_position))
 	{
 	  next_ball_position.y = 0;
 	  double center = round(lane.width / 2.0);
@@ -59,7 +73,7 @@ BALL_POSITION rollTheBall(struct player* the_player, BALL_POSITION current_ball_
 	  center = round(center); 
 	  
 	  
-	  setIsStartPosition(&current_ball_position);
+	  setIsStartPosition(&next_ball_position);
 	  next_ball_position.isEndOfLane = false;
 	  next_ball_position.x = center;
 	}

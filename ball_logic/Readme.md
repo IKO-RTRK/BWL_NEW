@@ -25,3 +25,4 @@
 -  3) TEST : Refraction point on lane
 -  4) TEST : Floating refraction point on horizontal lane
 -  5) TEST : Floating refraction point on vertical lane
+-  6) TEST : Line configuration not set

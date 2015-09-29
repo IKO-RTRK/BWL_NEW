@@ -1,0 +1,207 @@
+\hypertarget{bowling__game_8h}{\section{src/bowling\-\_\-game.h File Reference}
+\label{bowling__game_8h}\index{src/bowling\-\_\-game.\-h@{src/bowling\-\_\-game.\-h}}
+}
+
+
+Document contains short description of used structures and functions.  
+
+
+{\ttfamily \#include $<$stdio.\-h$>$}\\*
+{\ttfamily \#include $<$stdint.\-h$>$}\\*
+{\ttfamily \#include $<$inttypes.\-h$>$}\\*
+{\ttfamily \#include \char`\"{}../../player/src/player.\-h\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structbowling__game}{bowling\-\_\-game}
+\begin{DoxyCompactList}\small\item\em Structure contains information about bowling game. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{bowling__game_8h_ae0aa2c2f2ae9b75bd2f66bd6da2d6def}{A\-L\-L\-\_\-\-P\-I\-N\-S\-\_\-\-D\-O\-W\-N}~10
+\item 
+\#define \hyperlink{bowling__game_8h_a0b0e6955ccb2b5d6875168242495ef1d}{L\-A\-S\-T\-\_\-\-F\-R\-A\-M\-E\-\_\-\-F\-I\-R\-S\-T\-\_\-\-T\-H\-R\-O\-W}~18
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{bowling__game_8h_ae2be46ab26b963063912ae4410b9bf2f}{typedef struct \hyperlink{structbowling__game}{bowling\-\_\-game} \hyperlink{bowling__game_8h_ae2be46ab26b963063912ae4410b9bf2f}{B\-O\-W\-L\-I\-N\-G\-\_\-\-G\-A\-M\-E}}\label{bowling__game_8h_ae2be46ab26b963063912ae4410b9bf2f}
+
+\begin{DoxyCompactList}\small\item\em Structure contains information about bowling game. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \{ \hyperlink{bowling__game_8h_a06fc87d81c62e9abb8790b6e5713c55ba3f15a7385f4533e7ade8b8100afbb8e2}{M\-A\-X\-\_\-\-L\-A\-N\-E\-S} = 3, 
+\hyperlink{bowling__game_8h_a06fc87d81c62e9abb8790b6e5713c55bad9d4e23298ae8d4d51209ba1f4b041ad}{M\-A\-X\-\_\-\-P\-L\-A\-Y\-E\-R\-S\-\_\-\-P\-E\-R\-\_\-\-L\-A\-N\-E} = 6, 
+\hyperlink{bowling__game_8h_a06fc87d81c62e9abb8790b6e5713c55ba02a6463b7b0ad6c54fe9fb086ff0a309}{N\-U\-M\-\_\-\-O\-F\-\_\-\-F\-R\-A\-M\-E\-S} = 10, 
+\hyperlink{bowling__game_8h_a06fc87d81c62e9abb8790b6e5713c55ba19af435acf39debc9cd34d101e3d80c9}{M\-A\-X\-\_\-\-R\-O\-L\-L\-S} = 21
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{bowling__game_8h_ae2be46ab26b963063912ae4410b9bf2f}{B\-O\-W\-L\-I\-N\-G\-\_\-\-G\-A\-M\-E} $\ast$ \hyperlink{bowling__game_8h_a46f4c382573eb0fc255f74e333e4adbd}{bowling\-Game\-Create} ()
+\begin{DoxyCompactList}\small\item\em This method allocates memory for structure \hyperlink{structbowling__game}{bowling\-\_\-game}. Must be called before any other method in this file. \end{DoxyCompactList}\item 
+uint8\-\_\-t \hyperlink{bowling__game_8h_a762d8e29bcbf435a35cca364d3feb03c}{player\-Can\-Throw} (\hyperlink{bowling__game_8h_ae2be46ab26b963063912ae4410b9bf2f}{B\-O\-W\-L\-I\-N\-G\-\_\-\-G\-A\-M\-E} $\ast$the\-\_\-game, uint8\-\_\-t current\-\_\-frame, uint8\-\_\-t current\-\_\-player)
+\begin{DoxyCompactList}\small\item\em This method checks if player can throw the ball. \end{DoxyCompactList}\item 
+void \hyperlink{bowling__game_8h_a951a29ca153254e5b7ecf373e0741386}{write\-Down\-The\-Score} (\hyperlink{bowling__game_8h_ae2be46ab26b963063912ae4410b9bf2f}{B\-O\-W\-L\-I\-N\-G\-\_\-\-G\-A\-M\-E} $\ast$the\-\_\-game, uint8\-\_\-t current\-\_\-player, uint8\-\_\-t number\-\_\-of\-\_\-pins)
+\begin{DoxyCompactList}\small\item\em This method calculates score of each player for each frame. \end{DoxyCompactList}\item 
+uint8\-\_\-t \hyperlink{bowling__game_8h_a1e84da238a2f01de3a08ab9a98ec0682}{is\-Lane\-Valid} (uint8\-\_\-t number\-\_\-of\-\_\-lanes)
+\begin{DoxyCompactList}\small\item\em This method is validation of lane. \end{DoxyCompactList}\item 
+uint8\-\_\-t \hyperlink{bowling__game_8h_a98167654846e5cbe9b3e22191431f3b6}{is\-Player\-Valid} (uint8\-\_\-t number\-\_\-of\-\_\-players)
+\begin{DoxyCompactList}\small\item\em This method is validation of player. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Document contains short description of used structures and functions. \begin{DoxyAuthor}{Author}
+R\-T-\/\-R\-K Bowling\-\_\-\-Game 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+September , 2015 
+\end{DoxyDate}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{bowling__game_8h_ae0aa2c2f2ae9b75bd2f66bd6da2d6def}{\index{bowling\-\_\-game.\-h@{bowling\-\_\-game.\-h}!A\-L\-L\-\_\-\-P\-I\-N\-S\-\_\-\-D\-O\-W\-N@{A\-L\-L\-\_\-\-P\-I\-N\-S\-\_\-\-D\-O\-W\-N}}
+\index{A\-L\-L\-\_\-\-P\-I\-N\-S\-\_\-\-D\-O\-W\-N@{A\-L\-L\-\_\-\-P\-I\-N\-S\-\_\-\-D\-O\-W\-N}!bowling_game.h@{bowling\-\_\-game.\-h}}
+\subsubsection[{A\-L\-L\-\_\-\-P\-I\-N\-S\-\_\-\-D\-O\-W\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\-L\-L\-\_\-\-P\-I\-N\-S\-\_\-\-D\-O\-W\-N~10}}\label{bowling__game_8h_ae0aa2c2f2ae9b75bd2f66bd6da2d6def}
+Defines number of knocked pins when all fall down \hypertarget{bowling__game_8h_a0b0e6955ccb2b5d6875168242495ef1d}{\index{bowling\-\_\-game.\-h@{bowling\-\_\-game.\-h}!L\-A\-S\-T\-\_\-\-F\-R\-A\-M\-E\-\_\-\-F\-I\-R\-S\-T\-\_\-\-T\-H\-R\-O\-W@{L\-A\-S\-T\-\_\-\-F\-R\-A\-M\-E\-\_\-\-F\-I\-R\-S\-T\-\_\-\-T\-H\-R\-O\-W}}
+\index{L\-A\-S\-T\-\_\-\-F\-R\-A\-M\-E\-\_\-\-F\-I\-R\-S\-T\-\_\-\-T\-H\-R\-O\-W@{L\-A\-S\-T\-\_\-\-F\-R\-A\-M\-E\-\_\-\-F\-I\-R\-S\-T\-\_\-\-T\-H\-R\-O\-W}!bowling_game.h@{bowling\-\_\-game.\-h}}
+\subsubsection[{L\-A\-S\-T\-\_\-\-F\-R\-A\-M\-E\-\_\-\-F\-I\-R\-S\-T\-\_\-\-T\-H\-R\-O\-W}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-A\-S\-T\-\_\-\-F\-R\-A\-M\-E\-\_\-\-F\-I\-R\-S\-T\-\_\-\-T\-H\-R\-O\-W~18}}\label{bowling__game_8h_a0b0e6955ccb2b5d6875168242495ef1d}
+Defines maximum number for first throw in last frame 
+
+\subsection{Enumeration Type Documentation}
+\hypertarget{bowling__game_8h_a06fc87d81c62e9abb8790b6e5713c55b}{\subsubsection[{anonymous enum}]{\setlength{\rightskip}{0pt plus 5cm}anonymous enum}}\label{bowling__game_8h_a06fc87d81c62e9abb8790b6e5713c55b}
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{M\-A\-X\-\_\-\-L\-A\-N\-E\-S@{M\-A\-X\-\_\-\-L\-A\-N\-E\-S}!bowling\-\_\-game.\-h@{bowling\-\_\-game.\-h}}\index{bowling\-\_\-game.\-h@{bowling\-\_\-game.\-h}!M\-A\-X\-\_\-\-L\-A\-N\-E\-S@{M\-A\-X\-\_\-\-L\-A\-N\-E\-S}}\item[{\em 
+\hypertarget{bowling__game_8h_a06fc87d81c62e9abb8790b6e5713c55ba3f15a7385f4533e7ade8b8100afbb8e2}{M\-A\-X\-\_\-\-L\-A\-N\-E\-S}\label{bowling__game_8h_a06fc87d81c62e9abb8790b6e5713c55ba3f15a7385f4533e7ade8b8100afbb8e2}
+}]Maximum number of lanes per game. \index{M\-A\-X\-\_\-\-P\-L\-A\-Y\-E\-R\-S\-\_\-\-P\-E\-R\-\_\-\-L\-A\-N\-E@{M\-A\-X\-\_\-\-P\-L\-A\-Y\-E\-R\-S\-\_\-\-P\-E\-R\-\_\-\-L\-A\-N\-E}!bowling\-\_\-game.\-h@{bowling\-\_\-game.\-h}}\index{bowling\-\_\-game.\-h@{bowling\-\_\-game.\-h}!M\-A\-X\-\_\-\-P\-L\-A\-Y\-E\-R\-S\-\_\-\-P\-E\-R\-\_\-\-L\-A\-N\-E@{M\-A\-X\-\_\-\-P\-L\-A\-Y\-E\-R\-S\-\_\-\-P\-E\-R\-\_\-\-L\-A\-N\-E}}\item[{\em 
+\hypertarget{bowling__game_8h_a06fc87d81c62e9abb8790b6e5713c55bad9d4e23298ae8d4d51209ba1f4b041ad}{M\-A\-X\-\_\-\-P\-L\-A\-Y\-E\-R\-S\-\_\-\-P\-E\-R\-\_\-\-L\-A\-N\-E}\label{bowling__game_8h_a06fc87d81c62e9abb8790b6e5713c55bad9d4e23298ae8d4d51209ba1f4b041ad}
+}]Maximum number of players per lane in one game. \index{N\-U\-M\-\_\-\-O\-F\-\_\-\-F\-R\-A\-M\-E\-S@{N\-U\-M\-\_\-\-O\-F\-\_\-\-F\-R\-A\-M\-E\-S}!bowling\-\_\-game.\-h@{bowling\-\_\-game.\-h}}\index{bowling\-\_\-game.\-h@{bowling\-\_\-game.\-h}!N\-U\-M\-\_\-\-O\-F\-\_\-\-F\-R\-A\-M\-E\-S@{N\-U\-M\-\_\-\-O\-F\-\_\-\-F\-R\-A\-M\-E\-S}}\item[{\em 
+\hypertarget{bowling__game_8h_a06fc87d81c62e9abb8790b6e5713c55ba02a6463b7b0ad6c54fe9fb086ff0a309}{N\-U\-M\-\_\-\-O\-F\-\_\-\-F\-R\-A\-M\-E\-S}\label{bowling__game_8h_a06fc87d81c62e9abb8790b6e5713c55ba02a6463b7b0ad6c54fe9fb086ff0a309}
+}]Number of frames in one game. \index{M\-A\-X\-\_\-\-R\-O\-L\-L\-S@{M\-A\-X\-\_\-\-R\-O\-L\-L\-S}!bowling\-\_\-game.\-h@{bowling\-\_\-game.\-h}}\index{bowling\-\_\-game.\-h@{bowling\-\_\-game.\-h}!M\-A\-X\-\_\-\-R\-O\-L\-L\-S@{M\-A\-X\-\_\-\-R\-O\-L\-L\-S}}\item[{\em 
+\hypertarget{bowling__game_8h_a06fc87d81c62e9abb8790b6e5713c55ba19af435acf39debc9cd34d101e3d80c9}{M\-A\-X\-\_\-\-R\-O\-L\-L\-S}\label{bowling__game_8h_a06fc87d81c62e9abb8790b6e5713c55ba19af435acf39debc9cd34d101e3d80c9}
+}]Maximum number of rolls for each player in one game. \end{description}
+\end{Desc}
+
+
+\subsection{Function Documentation}
+\hypertarget{bowling__game_8h_a46f4c382573eb0fc255f74e333e4adbd}{\index{bowling\-\_\-game.\-h@{bowling\-\_\-game.\-h}!bowling\-Game\-Create@{bowling\-Game\-Create}}
+\index{bowling\-Game\-Create@{bowling\-Game\-Create}!bowling_game.h@{bowling\-\_\-game.\-h}}
+\subsubsection[{bowling\-Game\-Create}]{\setlength{\rightskip}{0pt plus 5cm}{\bf B\-O\-W\-L\-I\-N\-G\-\_\-\-G\-A\-M\-E}$\ast$ bowling\-Game\-Create (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{bowling__game_8h_a46f4c382573eb0fc255f74e333e4adbd}
+
+
+This method allocates memory for structure \hyperlink{structbowling__game}{bowling\-\_\-game}. Must be called before any other method in this file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em void} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em B\-O\-W\-L\-I\-N\-G\-\_\-\-G\-A\-M\-E$\ast$} & Returns pointer to the allocated memory. \\
+\hline
+\end{DoxyRetVals}
+\hypertarget{bowling__game_8h_a1e84da238a2f01de3a08ab9a98ec0682}{\index{bowling\-\_\-game.\-h@{bowling\-\_\-game.\-h}!is\-Lane\-Valid@{is\-Lane\-Valid}}
+\index{is\-Lane\-Valid@{is\-Lane\-Valid}!bowling_game.h@{bowling\-\_\-game.\-h}}
+\subsubsection[{is\-Lane\-Valid}]{\setlength{\rightskip}{0pt plus 5cm}uint8\-\_\-t is\-Lane\-Valid (
+\begin{DoxyParamCaption}
+\item[{uint8\-\_\-t}]{number\-\_\-of\-\_\-lanes}
+\end{DoxyParamCaption}
+)}}\label{bowling__game_8h_a1e84da238a2f01de3a08ab9a98ec0682}
+
+
+This method is validation of lane. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em number\-\_\-of\-\_\-lanes} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em int} & \\
+\hline
+\end{DoxyRetVals}
+\hypertarget{bowling__game_8h_a98167654846e5cbe9b3e22191431f3b6}{\index{bowling\-\_\-game.\-h@{bowling\-\_\-game.\-h}!is\-Player\-Valid@{is\-Player\-Valid}}
+\index{is\-Player\-Valid@{is\-Player\-Valid}!bowling_game.h@{bowling\-\_\-game.\-h}}
+\subsubsection[{is\-Player\-Valid}]{\setlength{\rightskip}{0pt plus 5cm}uint8\-\_\-t is\-Player\-Valid (
+\begin{DoxyParamCaption}
+\item[{uint8\-\_\-t}]{number\-\_\-of\-\_\-players}
+\end{DoxyParamCaption}
+)}}\label{bowling__game_8h_a98167654846e5cbe9b3e22191431f3b6}
+
+
+This method is validation of player. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em number\-\_\-of\-\_\-players} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em int} & \\
+\hline
+\end{DoxyRetVals}
+\hypertarget{bowling__game_8h_a762d8e29bcbf435a35cca364d3feb03c}{\index{bowling\-\_\-game.\-h@{bowling\-\_\-game.\-h}!player\-Can\-Throw@{player\-Can\-Throw}}
+\index{player\-Can\-Throw@{player\-Can\-Throw}!bowling_game.h@{bowling\-\_\-game.\-h}}
+\subsubsection[{player\-Can\-Throw}]{\setlength{\rightskip}{0pt plus 5cm}uint8\-\_\-t player\-Can\-Throw (
+\begin{DoxyParamCaption}
+\item[{{\bf B\-O\-W\-L\-I\-N\-G\-\_\-\-G\-A\-M\-E} $\ast$}]{the\-\_\-game, }
+\item[{uint8\-\_\-t}]{current\-\_\-frame, }
+\item[{uint8\-\_\-t}]{current\-\_\-player}
+\end{DoxyParamCaption}
+)}}\label{bowling__game_8h_a762d8e29bcbf435a35cca364d3feb03c}
+
+
+This method checks if player can throw the ball. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em $\ast$the\-\_\-game} & pointer to structure \hyperlink{bowling__game_8h_ae2be46ab26b963063912ae4410b9bf2f}{B\-O\-W\-L\-I\-N\-G\-\_\-\-G\-A\-M\-E} \\
+\hline
+{\em current\-\_\-frame} & information about current frame \\
+\hline
+{\em current\-\_\-player} & information about current player who plays on lane \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em int} & information can be 1 or 0 \\
+\hline
+\end{DoxyRetVals}
+\hypertarget{bowling__game_8h_a951a29ca153254e5b7ecf373e0741386}{\index{bowling\-\_\-game.\-h@{bowling\-\_\-game.\-h}!write\-Down\-The\-Score@{write\-Down\-The\-Score}}
+\index{write\-Down\-The\-Score@{write\-Down\-The\-Score}!bowling_game.h@{bowling\-\_\-game.\-h}}
+\subsubsection[{write\-Down\-The\-Score}]{\setlength{\rightskip}{0pt plus 5cm}void write\-Down\-The\-Score (
+\begin{DoxyParamCaption}
+\item[{{\bf B\-O\-W\-L\-I\-N\-G\-\_\-\-G\-A\-M\-E} $\ast$}]{the\-\_\-game, }
+\item[{uint8\-\_\-t}]{current\-\_\-player, }
+\item[{uint8\-\_\-t}]{number\-\_\-of\-\_\-pins}
+\end{DoxyParamCaption}
+)}}\label{bowling__game_8h_a951a29ca153254e5b7ecf373e0741386}
+
+
+This method calculates score of each player for each frame. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em $\ast$the\-\_\-game} & Pointer to structure B\-O\-W\-L\-I\-N\-G\-\_\-\-G\-A\-M\-E \\
+\hline
+{\em current\-\_\-player} & Information about current player who plays on lane \\
+\hline
+{\em number\-\_\-of\-\_\-pins} & Number of knocked down pins\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em void} & \\
+\hline
+\end{DoxyRetVals}
