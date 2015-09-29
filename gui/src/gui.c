@@ -11,6 +11,11 @@ static SDL_Surface* screen = NULL;
 static SDL_Surface* ball[2] = {NULL, NULL};  
 static SDL_Surface* bowling_lane = NULL; 
 static SDL_Surface* pin = NULL; 
+static SDL_Surface* table = NULL;
+static SDL_Surface* text = NULL;
+static SDL_Color textColor = { 255, 255, 255 };
+
+static SDL_Rect offsetForLastPic;///< for testing
 
 static uint16_t prevX[3];
 static uint16_t prevY[3];
@@ -35,7 +40,7 @@ uint8_t animateBallMovement_console(BOWLING_GAME* the_game, uint8_t current_play
 
 static uint8_t drawKnockedPinsAndTable_SDL(BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins);
 static uint8_t animateBallMovement_SDL(BOWLING_GAME* the_game, uint8_t current_player, BALL_POSITION ball_position);
-
+static void printTable (BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins, uint8_t numberOfPlayers);
 static uint8_t printLane(uint8_t i);
 static void printBall(uint32_t x, uint32_t y, uint8_t lane);
 static void showAllPins(uint8_t lane);
@@ -373,6 +378,28 @@ static uint8_t printLane(uint8_t i)
 	return ((k || j) ? 1 : 0);
 }
 /**
+ * @brief Hellper functions for TDD - get position for last picture
+ */
+SDL_Rect getOffsetForLastPic()
+{
+  return   offsetForLastPic;
+}
+/**
+ * @brief Drawing pictures on the screen
+ * @param 	rect	Offset for picture
+ * @param 	pic	Picture
+ * @retval	void
+ */
+static void drawPic(SDL_Rect rect, SDL_Surface* pic)
+{
+  SDL_BlitSurface(pic, NULL, screen, &rect); ///<	Add pin to the sceen
+  SDL_Flip(screen);
+  offsetForLastPic = rect; ///< For testing
+  //SDL_Sleep(1000);
+}
+
+
+/**
  * @brief 	Function drow pins on lane
  * @param 	lane	Number of lain (lane ID)
  * @param 	knocked_down_pins	Structure who keep data of knocked pins
@@ -380,39 +407,56 @@ static uint8_t printLane(uint8_t i)
  */
 static int8_t drawPins(uint8_t lane, KNOCKED_DOWN_PINS knocked_down_pins )
 {
-  printLane(lane);
-  SDL_Rect dstOffset; 
-
-  dstOffset.x = INIT_OFFSET_FOR_PINS_X + (lane) * TWO_LANES_DISTANCE; 
+  printLane(lane); ///< Clean lane
+  uint8_t pinNum = NUM_OF_PINS;
+  SDL_Rect dstOffset;
+ // int8_t numOfPin = NUM_OF_PINS; 
+  uint8_t numOfRow;
+  uint8_t numOfPinsInRow;
+  
+  dstOffset.x = INIT_OFFSET_FOR_PINS_X + 3 * OFFSET_FOR_PINS_X + (lane) * TWO_LANES_DISTANCE;
   dstOffset.y = INIT_OFFSET_Y;
-  
-  int8_t numOfPin = NUM_OF_PINS; 
-  int8_t numOfRow;
-  int8_t numOfPinsInRow;
-  
   for (numOfRow = 4; numOfRow > 0; numOfRow--)
-  {
-    for(numOfPinsInRow = numOfRow; numOfPinsInRow > 0; numOfPinsInRow--)
     {
-      if(knocked_down_pins.pins[--numOfPin] == 0)
+      for(numOfPinsInRow = numOfRow; numOfPinsInRow > 0; numOfPinsInRow--)
       {
-	SDL_BlitSurface(pin, NULL, screen, &dstOffset); ///<	Add pin to the sceen
+	if(knocked_down_pins.pins[--pinNum] == 1)
+	{
+	  drawPic(dstOffset, pin); ///<	Add pin to the sceen
+	}
+	dstOffset.x -= OFFSET_FOR_PINS_X; ///<	Sets  offset for x for next pin
       }
-      dstOffset.x += OFFSET_FOR_PINS_X; ///<	Sets  offset for x for next pin
+      dstOffset.x = INIT_OFFSET_FOR_PINS_X + (lane) * TWO_LANES_DISTANCE + (5 - numOfRow) * OFFSET_FOR_PINS_X / 2 + (numOfRow - 2) * OFFSET_FOR_PINS_X; ///<	Sets initial offset for x for given row
+      dstOffset.y += OFFSET_FOR_PINS_Y; ///<	Sets initial offset for y for given row
     }
-    dstOffset.x = INIT_OFFSET_FOR_PINS_X + (lane) * TWO_LANES_DISTANCE + (4 - numOfRow + 1) * OFFSET_FOR_PINS_X / 2; ///<	Sets initial offset for x for given row
-    dstOffset.y += OFFSET_FOR_PINS_Y; ///<	Sets initial offset for y for given row
-  }
-  
-  int8_t j = SDL_Flip(screen);
+ 
+}
 
-  return j;
+static void printTable (BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins, uint8_t numberOfPlayers)
+{	
+	
+	uint8_t i;
+	SDL_Rect dstOffset; 
+	SDL_Rect* clip = NULL;
+
+	dstOffset.x = INIT_TABLE_OFFSET_X + (the_game -> lane_number) * TWO_LANES_DISTANCE; 
+	dstOffset.y = INIT_OFFSET_Y;
+	for( i = 0; i < numberOfPlayers; i++)
+	{
+		SDL_BlitSurface(table, clip, screen, &dstOffset);
+		dstOffset.y += 100;
+		SDL_Flip(screen);
+	}
+	SDL_BlitSurface(text, clip, table, &dstOffset);
+	dstOffset.x += 40;
+	dstOffset.y += 3;
+	SDL_Flip(table);
 }
 
 static uint8_t drawKnockedPinsAndTable_SDL(BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins)
 {
   	drawPins(the_game -> lane_number, knocked_down_pins);
-
+	//printTable(the_game, current_player, knocked_down_pins,the_game -> number_of_players);
 }
 
 static uint8_t animateBallMovement_SDL(BOWLING_GAME* the_game, uint8_t current_player, BALL_POSITION ball_position)

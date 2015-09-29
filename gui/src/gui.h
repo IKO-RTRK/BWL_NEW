@@ -13,6 +13,7 @@
 #define INIT_OFFSET_FOR_PINS_X 60
 #define OFFSET_FOR_PINS_X 30
 #define OFFSET_FOR_PINS_Y 20
+#define INIT_TABLE_OFFSET_X 210
 #define PIN_WIDTH 20
 #define LANE_WIDTH 170
 #define LANE_HEIGHT 508
@@ -21,7 +22,7 @@
 #define TWO_LANES_DISTANCE (434 + LANE_WIDTH)
 #define TABLE_WIDTH 384
 #define TABLE_HEIGHT 75
-
+#define TABLE_SCORE_SIZE 5
 
 #define LENGTH_OF_LANE_CONSOLE 35    
 #define WIDTH_OF_LANE_CONSOLE 15     
@@ -54,8 +55,15 @@ typedef struct track_console
 	char table_gui[LENGTH_OF_TABLE_CONSOLE][WIDTH_OF_TABLE_CONSOLE];
 	char bowling_pins[NUM_OF_PINS];
 	
-}TRACK_CONSOLE;
+} TRACK_CONSOLE;
 
+typedef struct table_offset
+{
+	uint16_t x;
+	uint16_t y;
+	char score[TABLE_SCORE_SIZE];
+
+} TABLE_OFFSET;
 
 extern LANE_CONFIG my_lane_config;
 
@@ -64,5 +72,6 @@ uint8_t (*animateBallMovement)(BOWLING_GAME*, uint8_t, BALL_POSITION);
 
 uint8_t initGUI(uint8_t gui);
 void quit();
+SDL_Rect getOffsetForLastPic();///< for testing
 #endif
 

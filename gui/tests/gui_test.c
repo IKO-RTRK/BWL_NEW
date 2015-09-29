@@ -1,9 +1,11 @@
 #include "../../unity/unity_fixture.h"
 #include "../src/gui.h"
 #include "../include/SDL.h"
+#include "../../stats/src/bowling_game.h"
 
-BOWLING_GAME bg1, bg2;
+BOWLING_GAME bg1,bg2;
 BALL_POSITION bp1, bp2;
+SDL_Rect sdlRect;
 
 TRACK_CONSOLE* track;
 BOWLING_GAME* game;
@@ -12,8 +14,19 @@ BALL_POSITION* ball;
 KNOCKED_DOWN_PINS knocked_pins;
 
 
+TEST_GROUP(SDLDrawKnockedPinsTest);
 TEST_GROUP(SDLAnimationTest);
 TEST_GROUP(ConsoleAnimationTest);
+
+TEST_GROUP_RUNNER(SDLDrawKnockedPinsTest)
+{
+	RUN_TEST_CASE(SDLDrawKnockedPinsTest, Test1);
+	RUN_TEST_CASE(SDLDrawKnockedPinsTest, TestXOffset);
+	RUN_TEST_CASE(SDLDrawKnockedPinsTest, TestYOffset);
+	RUN_TEST_CASE(SDLDrawKnockedPinsTest, TestForXAndYOffsetForRowOneAndTwo);
+
+}
+
 
 TEST_GROUP_RUNNER(SDLAnimationTest)
 {
@@ -38,6 +51,13 @@ TEST_GROUP_RUNNER(ConsoleAnimationTest)
 	//RUN_TEST_CASE(ConsoleAnimationTest, animateBallMovementForwardUntillTheEndPosition);
 
 	RUN_TEST_CASE(ConsoleAnimationTest, drawTableConsole);
+}
+
+TEST_SETUP(SDLDrawKnockedPinsTest)
+{
+   initGUI(SDL);
+   bg1.lane_number = 1;
+	
 }
 
 TEST_SETUP(SDLAnimationTest)
@@ -68,6 +88,10 @@ TEST_SETUP(ConsoleAnimationTest)
 	
 }
 
+TEST_TEAR_DOWN(SDLDrawKnockedPinsTest)
+{
+}
+
 TEST_TEAR_DOWN(SDLAnimationTest)
 {
 }
@@ -79,6 +103,63 @@ TEST_TEAR_DOWN(ConsoleAnimationTest)
 	free(ball);
 }
 
+// Prvi test
+TEST(SDLDrawKnockedPinsTest, Test1)
+{
+  
+  
+  knocked_pins.number_of_pins = 5;
+  knocked_pins.pins[6] = 1;
+  drawKnockedPinsAndTable(&bg1, 1, knocked_pins);
+  sdlRect = getOffsetForLastPic();
+  TEST_ASSERT_EQUAL(sdlRect.x, INIT_OFFSET_FOR_PINS_X + 1 * TWO_LANES_DISTANCE);
+  TEST_ASSERT_EQUAL(sdlRect.y, INIT_OFFSET_Y);
+   
+  knocked_pins.pins[6] = 0;
+}
+
+// Drugi test
+TEST(SDLDrawKnockedPinsTest, TestXOffset)
+{
+  knocked_pins.pins[9] = 1;
+  bg1.lane_number = 1;
+  drawKnockedPinsAndTable(&bg1, 1, knocked_pins);
+  sdlRect = getOffsetForLastPic();
+  TEST_ASSERT_EQUAL(sdlRect.x, INIT_OFFSET_FOR_PINS_X + 1 * TWO_LANES_DISTANCE + 3 * OFFSET_FOR_PINS_X);
+  
+  knocked_pins.pins[9] = 0;
+}
+// Treci test
+TEST(SDLDrawKnockedPinsTest, TestYOffset)
+{
+  knocked_pins.pins[3] = 1;
+  bg1.lane_number = 1;
+  drawKnockedPinsAndTable(&bg1, 1, knocked_pins);
+  sdlRect = getOffsetForLastPic();
+  TEST_ASSERT_EQUAL(sdlRect.y, 1 * OFFSET_FOR_PINS_Y + INIT_OFFSET_Y);
+  
+  knocked_pins.pins[3] = 0;
+}
+// Cetvrti test
+TEST(SDLDrawKnockedPinsTest, TestForXAndYOffsetForRowOneAndTwo)
+{
+  knocked_pins.pins[2] = 1;
+  bg1.lane_number = 1;
+  drawKnockedPinsAndTable(&bg1, 1, knocked_pins);
+  sdlRect = getOffsetForLastPic();
+  TEST_ASSERT_EQUAL(sdlRect.y, 2 * OFFSET_FOR_PINS_Y + INIT_OFFSET_Y);
+  TEST_ASSERT_EQUAL(sdlRect.x, INIT_OFFSET_FOR_PINS_X + 1 * TWO_LANES_DISTANCE  + 2 * OFFSET_FOR_PINS_X / 2 + 1 * OFFSET_FOR_PINS_X);
+  
+  knocked_pins.pins[0] = 1;
+  bg1.lane_number = 1;
+  drawKnockedPinsAndTable(&bg1, 1, knocked_pins);
+  sdlRect = getOffsetForLastPic();
+  TEST_ASSERT_EQUAL(sdlRect.y, 3 * OFFSET_FOR_PINS_Y + INIT_OFFSET_Y);
+  TEST_ASSERT_EQUAL(sdlRect.x, INIT_OFFSET_FOR_PINS_X + 1 * TWO_LANES_DISTANCE + 0 * OFFSET_FOR_PINS_X + 3 * OFFSET_FOR_PINS_X / 2);
+  
+  knocked_pins.pins[0] = 0;
+  knocked_pins.pins[2] = 0;
+}
 // Prvi test
 TEST(SDLAnimationTest, Test1)
 {
