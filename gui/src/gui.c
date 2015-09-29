@@ -22,15 +22,15 @@ static void initialisation_lane_console(TRACK_CONSOLE* track);
 static void initialisation_table_console(TRACK_CONSOLE* track, BOWLING_GAME* the_game);
 
 void print_lane_console(TRACK_CONSOLE* track);
-static void print_table_console(TRACK_CONSOLE* track);
+void print_table_console(TRACK_CONSOLE* track);
 
-
+TRACK_CONSOLE* track;
 char bowling_ball = 'o';
 char init_bowling_pins[NUM_OF_PINS] = {[0 ... NUM_OF_PINS-1] = '!'};
 
 
 
-uint8_t drawKnockedPinsAndTable_console(BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins, TRACK_CONSOLE* track);
+uint8_t drawKnockedPinsAndTable_console(BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins);
 uint8_t animateBallMovement_console(BOWLING_GAME* the_game, uint8_t current_player, BALL_POSITION ball_position, TRACK_CONSOLE* track);
 
 static uint8_t drawKnockedPinsAndTable_SDL(BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins);
@@ -47,7 +47,7 @@ uint8_t initGUI(uint8_t gui)
 {
 	if (gui == CONSOLE)
 	{
-		drawKnockedPinsAndTable = drawKnockedPinsAndTable_console;
+		//awKdrawKnockedPinsAndTable = drnockedPinsAndTable_console;
 		animateBallMovement = NULL;
 		my_lane_config.length=LENGTH_OF_LANE_CONSOLE - START_COLUMN_PINS;
 		my_lane_config.width=WIDTH_OF_LANE_CONSOLE-2;
@@ -255,7 +255,7 @@ static void initialisation_table_console(TRACK_CONSOLE* track, BOWLING_GAME* the
 	       track->table_gui[2 + DIFF_TABLE*temp][48] = '|';
 	       track->table_gui[3 + DIFF_TABLE*temp][48] = '|';
 		
-//	  for (i = 1; the_game->players[temp].name[i-1] != '\0'; i++)
+//	  for (i = 1; the_game->players[temp].name[i-1] != '\0'; i++)	
 //          {
 //	   track->table_gui[5 + DIFF_TABLE*temp][i] =the_game->players[temp].name[i-1];
 //	  }
@@ -287,7 +287,7 @@ void print_lane_console(TRACK_CONSOLE* track)
 
 
 
-static void print_table_console(TRACK_CONSOLE* track)
+void print_table_console(TRACK_CONSOLE* track)
 {
 
 	uint8_t current_row;
@@ -300,6 +300,7 @@ static void print_table_console(TRACK_CONSOLE* track)
 		  SetCursorPos(((track->trackID-1) * DIFF_CONSOLE) + current_column + 16, current_row);
 		  printf("%c", track->table_gui[current_row][current_column]);
 	    }
+	printf("\n");
 	}
 	
 	return;
@@ -307,7 +308,7 @@ static void print_table_console(TRACK_CONSOLE* track)
 
 
 
-uint8_t drawKnockedPinsAndTable_console(BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins, TRACK_CONSOLE* track)
+uint8_t drawKnockedPinsAndTable_console(BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins)
 {
     uint8_t current_row;
     uint8_t current_column;
@@ -315,29 +316,28 @@ uint8_t drawKnockedPinsAndTable_console(BOWLING_GAME* the_game, uint8_t current_
     uint8_t tmp = START_OF_FIRST_TRACK_ROW, tmp1;
     uint8_t n = END_COLUMN_PINS;
     uint8_t i, temp;
-    
+    	
 	if ((knocked_down_pins.number_of_pins > 10) || (knocked_down_pins.number_of_pins < 0))
 		return 0;
-
+	
 	for (i = 0; i < 10; i++)
 	  if (knocked_down_pins.pins[i]){
 	    track->bowling_pins[i] = 'x';
 	 }
-
-    for (current_row = END_OF_PINS_ROW; current_row > START_OF_FIRST_TRACK_ROW; current_row--)
+    															
+    for (current_row = END_OF_PINS_ROW; current_row > START_OF_FIRST_TRACK_ROW; current_row--)				
     {
-	tmp1 = n;
+	tmp1 = n;											
 	for (current_column = current_row; current_column >START_OF_FIRST_TRACK_ROW; current_column--)
-	{
-	   track->lane_gui[tmp][tmp1] = track->bowling_pins[counter--];
-	    tmp1-=2;
-	}
-	tmp++;
-	n--;
-	
+	{								
+	   track->lane_gui[tmp][tmp1] = track->bowling_pins[counter--];	
+	    tmp1-=2;				
+	}			
+	tmp++;			
+	n--;					
+						
     }
 	
-    return 1;
 }
 
 uint8_t animateBallMovement_console(BOWLING_GAME* the_game, uint8_t current_player, BALL_POSITION ball_position,TRACK_CONSOLE* track)
@@ -494,7 +494,7 @@ static void setBackground()
 	screenRect.w = screen->w;
 	screenRect.h = screen->h;
 	Uint32 color = SDL_MapRGB(screen->format, 168, 174, 184);
-
+									
 	SDL_FillRect(screen, &screenRect, color);
 	SDL_Flip(screen);
 }
@@ -506,7 +506,6 @@ void quit()
 	SDL_FreeSurface(screen);	
 	SDL_FreeSurface(bowling_lane);
 	SDL_FreeSurface(pin);
-
 	SDL_Quit(); 
 }
 // SDL GUI END
