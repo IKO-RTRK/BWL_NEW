@@ -9,7 +9,7 @@ SDL_Rect sdlRect;
 
 TRACK_CONSOLE* track;
 BOWLING_GAME* game;
-BALL_POSITION* ball;
+BALL_POSITION ball;
 
 KNOCKED_DOWN_PINS knocked_pins;
 
@@ -21,10 +21,10 @@ TEST_GROUP(ConsoleAnimationTest);
 
 TEST_GROUP_RUNNER(SDLDrawKnockedPinsTest)
 {
-	RUN_TEST_CASE(SDLDrawKnockedPinsTest, Test1);
-	RUN_TEST_CASE(SDLDrawKnockedPinsTest, TestXOffset);
-	RUN_TEST_CASE(SDLDrawKnockedPinsTest, TestYOffset);
-	RUN_TEST_CASE(SDLDrawKnockedPinsTest, TestForXAndYOffsetForRowOneAndTwo);
+	//RUN_TEST_CASE(SDLDrawKnockedPinsTest, Test1);
+	//RUN_TEST_CASE(SDLDrawKnockedPinsTest, TestXOffset);
+	//RUN_TEST_CASE(SDLDrawKnockedPinsTest, TestYOffset);
+	//RUN_TEST_CASE(SDLDrawKnockedPinsTest, TestForXAndYOffsetForRowOneAndTwo);
 
 }
 
@@ -36,14 +36,14 @@ TEST_GROUP_RUNNER(SDLDrawTableTest)
 
 TEST_GROUP_RUNNER(SDLAnimationTest)
 {
-	RUN_TEST_CASE(SDLAnimationTest, Test1);
-	RUN_TEST_CASE(SDLAnimationTest, Test2);
+//	RUN_TEST_CASE(SDLAnimationTest, Test1);
+//	RUN_TEST_CASE(SDLAnimationTest, Test2);
 //	RUN_TEST_CASE(SDLAnimationTest, BMP_Load);
 //	RUN_TEST_CASE(SDLAnimationTest, Animation);
 }
 
 TEST_GROUP_RUNNER(ConsoleAnimationTest)
-{
+{	
 	RUN_TEST_CASE(ConsoleAnimationTest, drawKnockedPinsNone);
 	RUN_TEST_CASE(ConsoleAnimationTest, drawKnockedPinsAll);
 	RUN_TEST_CASE(ConsoleAnimationTest, drawKnockedPinsNegative);
@@ -55,8 +55,8 @@ TEST_GROUP_RUNNER(ConsoleAnimationTest)
 	RUN_TEST_CASE(ConsoleAnimationTest, animateBallMovementOnePositionForwardPrevPosCheck);
 	RUN_TEST_CASE(ConsoleAnimationTest, animateBallMovementOnePositionForwardNextPosCheck);
 	RUN_TEST_CASE(ConsoleAnimationTest, animateBallMovementForwardUntillTheEndPosition);
-
-
+	RUN_TEST_CASE(ConsoleAnimationTest, animateBallMovementForwardUntillTheEndPositionAndRestart);
+	RUN_TEST_CASE(ConsoleAnimationTest, drawTableConsole);
 }
 
 TEST_SETUP(SDLDrawTableTest)
@@ -84,9 +84,11 @@ TEST_SETUP(ConsoleAnimationTest)
 	game = (BOWLING_GAME*)calloc(1,sizeof(BOWLING_GAME));
 	game->lane_number = 1;
 	game->number_of_players = 1;
-	ball = (BALL_POSITION*)calloc(1,sizeof(BALL_POSITION));
-	ball->isStartPosition=1;
-	ball->isEndOfLane=0;
+	
+	ball.isStartPosition=1;
+	ball.isEndOfLane=0;
+	ball.y=0;
+      	ball.x=FIRST_BALL_POS_COL;
 	
 	
 	initialisation_track_console(track, game);
@@ -117,7 +119,7 @@ TEST_TEAR_DOWN(ConsoleAnimationTest)
 {
 	free(track);
 	free(game);
-	free(ball);
+
 }
 
 
@@ -270,8 +272,8 @@ TEST(SDLAnimationTest, Animation)
 TEST(ConsoleAnimationTest, drawKnockedPinsNone)
 {	
 	   
-	
-	TEST_ASSERT_TRUE(drawKnockedPinsAndTable_console(game, 1, knocked_pins, track));
+
+	TEST_ASSERT_TRUE(drawKnockedPinsAndTable_console(game, 1, knocked_pins));
 	
 }
 
@@ -279,20 +281,21 @@ TEST(ConsoleAnimationTest, drawKnockedPinsOverride)
 {
 	
 	knocked_pins.number_of_pins = 15;	
-	TEST_ASSERT_EQUAL(0, drawKnockedPinsAndTable_console(game, 1, knocked_pins, track));
+	TEST_ASSERT_EQUAL(0, drawKnockedPinsAndTable_console(game, 1, knocked_pins));
 }
 
 TEST(ConsoleAnimationTest, drawKnockedPinsNegative)
 {
 	knocked_pins.number_of_pins = -5;;
-	TEST_ASSERT_EQUAL(0, drawKnockedPinsAndTable_console(game, 1, knocked_pins, track));
+	TEST_ASSERT_EQUAL(0, drawKnockedPinsAndTable_console(game, 1, knocked_pins));
 
 }
 
 TEST(ConsoleAnimationTest, drawKnockedPinsAll)
 {
+		
 	knocked_pins.number_of_pins = 10;
-	TEST_ASSERT_EQUAL(1, drawKnockedPinsAndTable_console(game, 1, knocked_pins, track));
+	TEST_ASSERT_EQUAL(1, drawKnockedPinsAndTable_console(game, 1, knocked_pins));
 }
 
 TEST(ConsoleAnimationTest, drawKnockedPinsCheckPosition)
@@ -300,8 +303,8 @@ TEST(ConsoleAnimationTest, drawKnockedPinsCheckPosition)
 	system("clear");
 	knocked_pins.number_of_pins = 1;
 	knocked_pins.pins[0] = 1;
-	drawKnockedPinsAndTable_console(game, 1, knocked_pins, track);
-	print_lane_console();
+	drawKnockedPinsAndTable_console(game, 1, knocked_pins);
+	print_lane_console(track);
 	TEST_ASSERT_EQUAL('x',track->lane_gui[3][8]);
 }
 
@@ -314,13 +317,15 @@ TEST(ConsoleAnimationTest, drawKnockedPinsCheckPosition1)
  	knocked_pins.pins[1] = 1;
 	knocked_pins.pins[2] = 1;
 	knocked_pins.pins[3] = 1;
-	drawKnockedPinsAndTable_console(game, 1, knocked_pins, track);
-	print_lane_console(track);
+	drawKnockedPinsAndTable_console(game, 1, knocked_pins);
+	//print_lane_console(track);
 	for (i = 0; i < 10; i++)
 	{
 	  if(track->bowling_pins[i] == 'x')
 		counter++;
 	}
+	system("clear");
+	print_lane_console(track);	
 	TEST_ASSERT_EQUAL(4, counter);
 }
 
@@ -328,17 +333,19 @@ TEST(ConsoleAnimationTest, drawKnockedPinsCheckPosition1)
 TEST(ConsoleAnimationTest, animateBallMovementStartPosition)
 { 	
   
-      animateBallMovement_console(game,1,*ball,track);
+      animateBallMovement_console(game,1,ball);
+	system("clear");
+	print_lane_console(track);
       TEST_ASSERT_EQUAL('o', track->lane_gui[FIRST_BALL_POS_ROW][FIRST_BALL_POS_COL]);
 }
 
 TEST(ConsoleAnimationTest, animateBallMovementOnePositionForwardPrevPosCheck)
 {
+      ball.isStartPosition=0;
+      ball.y=FIRST_BALL_POS_ROW-1;
+      ball.x=FIRST_BALL_POS_COL;
+      animateBallMovement_console(game,1,ball);
       system("clear");
-      ball->isStartPosition=0;
-      ball->y=FIRST_BALL_POS_ROW-1;
-      ball->x=FIRST_BALL_POS_COL;
-      animateBallMovement_console(game,1,*ball,track);
       print_lane_console(track);
       TEST_ASSERT_EQUAL('.', track->lane_gui[FIRST_BALL_POS_ROW][FIRST_BALL_POS_COL]);
 
@@ -348,10 +355,10 @@ TEST(ConsoleAnimationTest, animateBallMovementOnePositionForwardPrevPosCheck)
 TEST(ConsoleAnimationTest, animateBallMovementOnePositionForwardNextPosCheck)
 {
       system("clear");  
-      ball->isStartPosition=0;
-      ball->y=FIRST_BALL_POS_ROW-1;
-      ball->x=FIRST_BALL_POS_COL;
-      animateBallMovement_console(game,1,*ball,track);
+      ball.isStartPosition=0;
+      ball.y=FIRST_BALL_POS_ROW-1;
+      ball.x=FIRST_BALL_POS_COL;
+      animateBallMovement_console(game,1,ball);
       system("clear");
       print_lane_console(track);
       TEST_ASSERT_EQUAL('o', track->lane_gui[FIRST_BALL_POS_ROW-1][FIRST_BALL_POS_COL]);
@@ -362,20 +369,57 @@ TEST(ConsoleAnimationTest, animateBallMovementOnePositionForwardNextPosCheck)
 TEST(ConsoleAnimationTest, animateBallMovementForwardUntillTheEndPosition)
 {
       system("clear");
-      ball->isStartPosition=0;
-      ball->x=FIRST_BALL_POS_COL;
-      for(ball->y=FIRST_BALL_POS_ROW-1 ; ball->y >= END_OF_PINS_ROW-1 ;ball->y=ball->y-1)
+      ball.isStartPosition=0;
+      ball.x=FIRST_BALL_POS_COL;
+      for(ball.y=FIRST_BALL_POS_ROW-1 ; ball.y >= END_OF_PINS_ROW-1 ;ball.y=ball.y-1)
       {  
-	if(ball->y==END_OF_PINS_ROW-1)
+	if(ball.y==END_OF_PINS_ROW-1)
 	{
-	  ball->isEndOfLane=1;
+	  ball.isEndOfLane=1;
 	}
-	animateBallMovement_console(game,1,*ball,track);
+	animateBallMovement_console(game,1,ball);
 
       }
-      ball->isEndOfLane=1;
+      ball.isEndOfLane=1;
       print_lane_console(track);
       TEST_ASSERT_EQUAL('.', track->lane_gui[END_OF_PINS_ROW][FIRST_BALL_POS_COL]);
 
   
 }
+
+TEST(ConsoleAnimationTest, animateBallMovementForwardUntillTheEndPositionAndRestart)
+{
+
+        ball.isStartPosition=0;
+	ball.isEndOfLane=0;
+        ball.x=FIRST_BALL_POS_COL;
+        for(ball.y=FIRST_BALL_POS_ROW-1 ; ball.y >= END_OF_PINS_ROW-1 ;ball.y=ball.y-1)
+      {  
+	if(ball.y==END_OF_PINS_ROW-1)
+	{
+	  ball.isEndOfLane=1;
+	}
+	animateBallMovement_console(game,1,ball);
+
+      }
+        ball.isStartPosition=1;
+	ball.isEndOfLane=0;
+	ball.y=0;
+	ball.x=FIRST_BALL_POS_COL;
+      
+	animateBallMovement_console(game,1,ball);
+  system("clear");	
+	print_lane_console(track);
+	TEST_ASSERT_EQUAL('o', track->lane_gui[FIRST_BALL_POS_ROW][FIRST_BALL_POS_COL]);
+
+        
+}
+
+// Test provjera ispisa tabele 
+TEST(ConsoleAnimationTest, drawTableConsole)
+{
+	system("clear");
+	TEST_ASSERT_EQUAL('|', track->table_gui[0][0]);
+}
+
+
