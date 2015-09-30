@@ -12,14 +12,18 @@ static bool isBallOnStartPosition(BALL_POSITION ball_position)
 
 static void setIsStartPosition(BALL_POSITION* ball_position)
 {
-  ball_position -> isStartPosition = false;
+  ball_position->isStartPosition = false;
 }
 
 static void isEndOfLane(BALL_POSITION* ball_position)
 {
-  if (ball_position -> y == lane.length - 1)
+  if (ball_position->y == lane.length - 1)
   {
-    ball_position -> isEndOfLane = true;
+    ball_position->isEndOfLane = true;
+  }
+  else
+  {
+  	ball_position->isEndOfLane = false;
   }
 }
 
@@ -28,6 +32,12 @@ static bool isLaneConfigured()
 	if (lane.width < 1 && lane.length < 1)
 		return false;
 	return true;
+}
+
+static void initBallPosition(BALL_POSITION* ball_position)
+{
+	ball_position->isEndOfLane = false;
+	ball_position->isStartPosition = false;
 }
 
 void initBallLogic(LANE_CONFIG lane_cfg)
@@ -42,6 +52,7 @@ BALL_POSITION rollTheBall(struct player* the_player, BALL_POSITION current_ball_
 {
 
 	BALL_POSITION next_ball_position;
+	initBallPosition(&next_ball_position);
 
 	if (!isLaneConfigured())
 	{
@@ -50,38 +61,43 @@ BALL_POSITION rollTheBall(struct player* the_player, BALL_POSITION current_ball_
 	}
 	else if (isBallOnStartPosition(current_ball_position))
 	{
-	  next_ball_position.y = 0;
-	  double center = round(lane.width / 2.0);
 
-	  double offset = center / QUALITY_MAX;
-	  double total_offset = 0;
-	  uint8_t i;
-	  for (i = QUALITY_MAX; i > the_player->quality; i--)
-	  {
-	  	total_offset += offset;
-	  }
+	  	next_ball_position.y = 0;
+	  	double center = round(lane.width / 2.0);
+
+	  	double offset = center / QUALITY_MAX;
+	  	double total_offset = 0;
+	  	uint8_t i;
+	  	for (i = QUALITY_MAX; i > the_player->quality; i--)
+	  	{
+	  		total_offset += offset;
+	  	}
 	    
-	  if ( LEFT_HAND == the_player->main_hand)
-	  {
-	    center -= total_offset;
-	  }
-	  else
-	  {
-	    center += total_offset;
-	  }
+	  	if ( LEFT_HAND == the_player->main_hand)
+	  	{
+	    	center -= total_offset;
+	  	}
+	  	else
+	  	{
+	    	center += total_offset;
+	  	}
 
-	  center = round(center); 
+	  	center = round(center);
+
+	  	function.x1 = function.x2 = center;
+	  	function.y1 = 0;
+	  	function.y2 = lane.length - 1; 
 	  
 	  
-	  setIsStartPosition(&next_ball_position);
-	  next_ball_position.isEndOfLane = false;
-	  next_ball_position.x = center;
+	  	setIsStartPosition(&next_ball_position);
+	  	next_ball_position.isEndOfLane = false;
+	  	next_ball_position.x = center;
 	}
 	else
 	{  
-	  next_ball_position.y = current_ball_position.y + 1;
-	  next_ball_position.x = current_ball_position.x;
-	  isEndOfLane(&next_ball_position);
+	  	next_ball_position.y = current_ball_position.y + 1;
+	  	next_ball_position.x = ((function.x2 - function.x1)/(function.y2 - function.y1))*next_ball_position.y - ((function.x2 - function.x1)/(function.y2 - function.y1))*function.y1 + function.x1;//current_ball_position.x;
+	  	isEndOfLane(&next_ball_position);
 	}
 	
 	return next_ball_position;

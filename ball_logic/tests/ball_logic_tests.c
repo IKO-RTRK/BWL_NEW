@@ -148,13 +148,18 @@ TEST(RollTheBallTests, MakeOffsetOnStartLine)
 
 TEST(RollTheBallTests, OffsetFromCentralLine)
 {
-  player.quality = 6;
+  	player.quality = 6;
   
-  ball_pos.isStartPosition = false;
-  ball_pos.x = 29;
-  ball_pos.y = 3;
-  ball_pos_next = rollTheBall(&player, ball_pos);
-  TEST_ASSERT_EQUAL_UINT32(29, ball_pos_next.x);
+  	ball_pos.isStartPosition = false;
+  	ball_pos.x = 29;
+  	ball_pos.y = 3;
+
+  	function.x1 = function.x2 = ball_pos.x;
+	function.y1 = 0;
+  	function.y2 = lane.length - 1;
+
+  	ball_pos_next = rollTheBall(&player, ball_pos);
+  	TEST_ASSERT_EQUAL_UINT32(29, ball_pos_next.x);
 }
 
 TEST(RollTheBallTests, IsEndOfLine)
