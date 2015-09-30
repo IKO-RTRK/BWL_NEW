@@ -39,6 +39,27 @@ static void initBallPosition(BALL_POSITION* ball_position)
 	ball_position->isEndOfLane = false;
 	ball_position->isStartPosition = false;
 }
+static double getFraction(BALL_POSITION* ball_position)
+{
+	if (ball_position->y < function.y2)
+		return ((function.x2 - function.x1)/(function.y2 - function.y1))/1.0;
+	else
+		return ((function.x3 - function.x2)/(function.y3 - function.y2))/1.0;
+}
+
+static void nextBallPosition(BALL_POSITION* ball_position)
+{
+	ball_position->x = getFraction(ball_position)*ball_position->y - getFraction(ball_position)*function.y1 + function.x1;
+}
+
+static void setKeyPoints(double center)
+{
+	function.x1 = function.x3 = center;
+	function.x2 = center;
+	function.y1 = 0;
+	function.y2 = lane.width / 2 + 1;
+	function.y3 = lane.length - 1; 
+}
 
 void initBallLogic(LANE_CONFIG lane_cfg)
 {
@@ -84,11 +105,8 @@ BALL_POSITION rollTheBall(struct player* the_player, BALL_POSITION current_ball_
 
 	  	center = round(center);
 
-	  	function.x1 = function.x2 = center;
-	  	function.y1 = 0;
-	  	function.y2 = lane.length - 1; 
-	  
-	  
+	  	setKeyPoints(center);
+
 	  	setIsStartPosition(&next_ball_position);
 	  	next_ball_position.isEndOfLane = false;
 	  	next_ball_position.x = center;
@@ -96,7 +114,7 @@ BALL_POSITION rollTheBall(struct player* the_player, BALL_POSITION current_ball_
 	else
 	{  
 	  	next_ball_position.y = current_ball_position.y + 1;
-	  	next_ball_position.x = ((function.x2 - function.x1)/(function.y2 - function.y1))*next_ball_position.y - ((function.x2 - function.x1)/(function.y2 - function.y1))*function.y1 + function.x1;//current_ball_position.x;
+	  	nextBallPosition(&next_ball_position);
 	  	isEndOfLane(&next_ball_position);
 	}
 	
