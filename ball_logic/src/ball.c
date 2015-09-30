@@ -113,16 +113,9 @@ BALL_POSITION rollTheBall(struct player* the_player, BALL_POSITION current_ball_
 	}
 	else
 	{  
-<<<<<<< HEAD
-	  next_ball_position.y = current_ball_position.y + 1;
-	  next_ball_position.x = current_ball_position.x;
-	  setIsStartPosition(&next_ball_position);
-	  isEndOfLane(&next_ball_position);
-=======
 	  	next_ball_position.y = current_ball_position.y + 1;
 	  	nextBallPosition(&next_ball_position);
 	  	isEndOfLane(&next_ball_position);
->>>>>>> Ball_Logic
 	}
 	
 	return next_ball_position;
