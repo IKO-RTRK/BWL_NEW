@@ -54,13 +54,8 @@ static void nextBallPosition(BALL_POSITION* ball_position)
 
 static void setKeyPoints(double center)
 {
-	function.x1 = center;
-	
-	srand(time(NULL));
-	function.x3 = center + (rand() % 3) - 1;
-
-	if (center > (lane.bumperWidth + 1) && center < (lane.width - lane.bumperWidth - 1))
-	function.x2 = center + 2 + (rand() % 3) - 1;
+	function.x1 = function.x3 = center;
+	function.x2 = center;
 	function.y1 = 0;
 	function.y2 = lane.width / 2 + 1;
 	function.y3 = lane.length - 1; 
