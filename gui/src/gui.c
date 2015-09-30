@@ -40,7 +40,7 @@ uint8_t animateBallMovement_console(BOWLING_GAME* the_game, uint8_t current_play
 
 static uint8_t drawKnockedPinsAndTable_SDL(BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins);
 static uint8_t animateBallMovement_SDL(BOWLING_GAME* the_game, uint8_t current_player, BALL_POSITION ball_position);
-static void printTable (BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins, uint8_t numberOfPlayers);
+//static void printTable (BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins, uint8_t numberOfPlayers);
 static uint8_t printLane(uint8_t i);
 static void printBall(uint32_t x, uint32_t y, uint8_t lane);
 static void showAllPins(uint8_t lane);
@@ -432,31 +432,44 @@ static int8_t drawPins(uint8_t lane, KNOCKED_DOWN_PINS knocked_down_pins )
  
 }
 
-static void printTable (BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins, uint8_t numberOfPlayers)
-{	
-	
-	uint8_t i;
-	SDL_Rect dstOffset; 
-	SDL_Rect* clip = NULL;
-
-	dstOffset.x = INIT_TABLE_OFFSET_X + (the_game -> lane_number) * TWO_LANES_DISTANCE; 
-	dstOffset.y = INIT_OFFSET_Y;
-	for( i = 0; i < numberOfPlayers; i++)
-	{
-		SDL_BlitSurface(table, clip, screen, &dstOffset);
-		dstOffset.y += 100;
-		SDL_Flip(screen);
-	}
-	SDL_BlitSurface(text, clip, table, &dstOffset);
-	dstOffset.x += 40;
-	dstOffset.y += 3;
-	SDL_Flip(table);
+static void printTable (BOWLING_GAME* the_game, uint8_t current_player)
+{
+  SDL_Rect dstOffset; 
+  //SDL_Rect* clip = NULL;
+  uint8_t i;
+  dstOffset.x = INIT_TABLE_OFFSET_X + (the_game -> lane_number) * TWO_LANES_DISTANCE; 
+  dstOffset.y = INIT_OFFSET_Y;
+  for(i = 0;i < the_game -> number_of_players;i++)
+  {
+    drawPic(dstOffset, table);
+    dstOffset.y += TABLE_OFFSET_Y;
+  }
+  
+  
+  
+	////////////////////Gogi radio
+// 	uint8_t i;
+// 	SDL_Rect dstOffset; 
+// 	SDL_Rect* clip = NULL;
+// 
+// 	dstOffset.x = INIT_TABLE_OFFSET_X + (the_game -> lane_number) * TWO_LANES_DISTANCE; 
+// 	dstOffset.y = INIT_OFFSET_Y;
+// 	for( i = 0; i < numberOfPlayers; i++)
+// 	{
+// 		SDL_BlitSurface(table, clip, screen, &dstOffset);
+// 		dstOffset.y += 100;
+// 		SDL_Flip(screen);
+// 	}
+// 	SDL_BlitSurface(text, clip, table, &dstOffset);
+// 	dstOffset.x += 40;
+// 	dstOffset.y += 3;
+// 	SDL_Flip(table);
 }
 
 static uint8_t drawKnockedPinsAndTable_SDL(BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins)
 {
   	drawPins(the_game -> lane_number, knocked_down_pins);
-	//printTable(the_game, current_player, knocked_down_pins,the_game -> number_of_players);
+	printTable(the_game, current_player);
 }
 
 static uint8_t animateBallMovement_SDL(BOWLING_GAME* the_game, uint8_t current_player, BALL_POSITION ball_position)

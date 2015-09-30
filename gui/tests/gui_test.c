@@ -15,6 +15,7 @@ KNOCKED_DOWN_PINS knocked_pins;
 
 
 TEST_GROUP(SDLDrawKnockedPinsTest);
+TEST_GROUP(SDLDrawTableTest);
 TEST_GROUP(SDLAnimationTest);
 TEST_GROUP(ConsoleAnimationTest);
 
@@ -27,6 +28,11 @@ TEST_GROUP_RUNNER(SDLDrawKnockedPinsTest)
 
 }
 
+TEST_GROUP_RUNNER(SDLDrawTableTest)
+{
+  RUN_TEST_CASE(SDLDrawTableTest, Test1);
+  RUN_TEST_CASE(SDLDrawTableTest, TestYOffset);
+}
 
 TEST_GROUP_RUNNER(SDLAnimationTest)
 {
@@ -51,6 +57,12 @@ TEST_GROUP_RUNNER(ConsoleAnimationTest)
 	RUN_TEST_CASE(ConsoleAnimationTest, animateBallMovementForwardUntillTheEndPosition);
 
 
+}
+
+TEST_SETUP(SDLDrawTableTest)
+{
+  initGUI(SDL);
+  bg1.lane_number = 1;
 }
 
 TEST_SETUP(SDLDrawKnockedPinsTest)
@@ -88,6 +100,11 @@ TEST_SETUP(ConsoleAnimationTest)
 	
 }
 
+TEST_TEAR_DOWN(SDLDrawTableTest)
+{
+  
+}
+
 TEST_TEAR_DOWN(SDLDrawKnockedPinsTest)
 {
 }
@@ -103,11 +120,28 @@ TEST_TEAR_DOWN(ConsoleAnimationTest)
 	free(ball);
 }
 
+
+// Prvi test
+TEST(SDLDrawTableTest, Test1)
+{
+  bg1.number_of_players = 1;
+  drawKnockedPinsAndTable(&bg1, 1, knocked_pins);
+  sdlRect = getOffsetForLastPic();
+  TEST_ASSERT_EQUAL(sdlRect.x, INIT_TABLE_OFFSET_X + 1 * TWO_LANES_DISTANCE);
+  TEST_ASSERT_EQUAL(sdlRect.y, INIT_OFFSET_Y);
+}
+// Drugi test
+TEST(SDLDrawTableTest, TestYOffset)
+{
+  bg1.number_of_players = 2;
+  drawKnockedPinsAndTable(&bg1, 1, knocked_pins);
+  sdlRect = getOffsetForLastPic();
+  TEST_ASSERT_EQUAL(sdlRect.x, INIT_TABLE_OFFSET_X + 1 * TWO_LANES_DISTANCE);
+  TEST_ASSERT_EQUAL(sdlRect.y, INIT_OFFSET_Y + TABLE_OFFSET_Y);
+}
 // Prvi test
 TEST(SDLDrawKnockedPinsTest, Test1)
 {
-  
-  
   knocked_pins.number_of_pins = 5;
   knocked_pins.pins[6] = 1;
   drawKnockedPinsAndTable(&bg1, 1, knocked_pins);
@@ -117,7 +151,6 @@ TEST(SDLDrawKnockedPinsTest, Test1)
    
   knocked_pins.pins[6] = 0;
 }
-
 // Drugi test
 TEST(SDLDrawKnockedPinsTest, TestXOffset)
 {
