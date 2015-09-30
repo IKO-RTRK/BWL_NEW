@@ -65,6 +65,7 @@ TEST_GROUP_RUNNER(RollTheBallTests)
     RUN_TEST_CASE(RollTheBallTests, CheckEndOfLineOnStart);
     RUN_TEST_CASE(RollTheBallTests, LeftHandPreferred);
     RUN_TEST_CASE(RollTheBallTests, LaneWidthSmallerThen20);
+    RUN_TEST_CASE(RollTheBallTests, LaneNotConfigured);
 }
 
 TEST_GROUP_RUNNER(knockDownPins)
@@ -147,13 +148,18 @@ TEST(RollTheBallTests, MakeOffsetOnStartLine)
 
 TEST(RollTheBallTests, OffsetFromCentralLine)
 {
-  player.quality = 6;
+  	player.quality = 6;
   
-  ball_pos.isStartPosition = false;
-  ball_pos.x = 29;
-  ball_pos.y = 3;
-  ball_pos_next = rollTheBall(&player, ball_pos);
-  TEST_ASSERT_EQUAL_UINT32(29, ball_pos_next.x);
+  	ball_pos.isStartPosition = false;
+  	ball_pos.x = 29;
+  	ball_pos.y = 3;
+
+  	function.x1 = function.x2 = ball_pos.x;
+	function.y1 = 0;
+  	function.y2 = lane.length - 1;
+
+  	ball_pos_next = rollTheBall(&player, ball_pos);
+  	TEST_ASSERT_EQUAL_UINT32(29, ball_pos_next.x);
 }
 
 TEST(RollTheBallTests, IsEndOfLine)
@@ -180,7 +186,7 @@ TEST(RollTheBallTests, CheckEndOfLineOnStart)
 
 TEST(RollTheBallTests, StraightLineTest)
 {
-  int i;
+  int i = 0;
   
   fillExpectedArray(22);
   
@@ -188,9 +194,10 @@ TEST(RollTheBallTests, StraightLineTest)
   
   initialiseArray();
   ball_pos.isStartPosition = true;
-  for(i = 0;i < lane.length;i++)
+  ball_pos_next.isEndOfLane = false;
+  while(!ball_pos_next.isEndOfLane)
   {
-      addPositionToArray(i);
+      addPositionToArray(i++);
   }
   
   TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, positions, lane.length);
@@ -200,7 +207,7 @@ TEST(RollTheBallTests, StraightLineTest)
 
 TEST(RollTheBallTests, OffsetStraightLineTest)
 {
-	int i;
+	int i = 0;
 	
 	fillExpectedArray(29);
 	
@@ -208,9 +215,10 @@ TEST(RollTheBallTests, OffsetStraightLineTest)
 	initialiseArray();
 	
 	ball_pos.isStartPosition = true;
-	for (i = 0;i < lane.length;i++)
+	ball_pos_next.isEndOfLane = false;
+	while(!ball_pos_next.isEndOfLane)
 	{
-	    addPositionToArray(i);
+	    addPositionToArray(i++);
 	}
 	
 	TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, positions, lane.length);
@@ -237,6 +245,20 @@ TEST(RollTheBallTests, LaneWidthSmallerThen20)
 	ball_pos_next = rollTheBall(&player, ball_pos);
 	TEST_ASSERT_EQUAL_UINT32(6, ball_pos_next.x);
 
+}
+
+TEST(RollTheBallTests, LaneNotConfigured)
+{
+	lane.width = 0;
+	lane.length = 0;
+	lane.bumperWidth = 0;
+
+	player.quality = 10;
+	ball_pos.isStartPosition = true;
+
+	ball_pos_next = rollTheBall(&player, ball_pos);
+
+	TEST_ASSERT_EQUAL(-1, ball_pos_next.y);
 }
 
 // ==========================================================================================

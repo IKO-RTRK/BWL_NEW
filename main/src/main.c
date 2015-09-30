@@ -185,7 +185,11 @@ static void doTheRoll(BOWLING_GAME* the_game, uint8_t current_frame, uint8_t cur
 		//writeDownTheScore(the_game, current_player, knocked_down_pins.number_of_pins);
 		// animation spare/strike should go here based on writeDownTheScore() result!
 
+<<<<<<< HEAD
 		//drawKnockedPinsAndTable(the_game, current_player, knocked_down_pins);
+=======
+		// drawKnockedPinsAndTable(the_game, current_player, knocked_down_pins);
+>>>>>>> Ball_Logic
 		usleep(MICRO_TIME_BETWEEN_TWO_ROLLS);
 		the_game->current_roll[current_player]++;
 	}
@@ -204,7 +208,12 @@ static BALL_POSITION throwTheBall(BOWLING_GAME* the_game, uint8_t current_player
 	do
 	{
 		current_ball_position = rollTheBall(the_game->players[current_player], current_ball_position);
+<<<<<<< HEAD
 		//animateBallMovement(the_game, current_player, current_ball_position);
+=======
+		printf("EndOfLane %"PRIu8 " y = %"PRIu32 "\n", current_ball_position.isEndOfLane, current_ball_position.y);
+		// animateBallMovement(the_game, current_player, current_ball_position);
+>>>>>>> Ball_Logic
 	} while (!current_ball_position.isEndOfLane);
 
 	return current_ball_position;

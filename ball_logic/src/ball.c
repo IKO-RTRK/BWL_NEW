@@ -21,6 +21,44 @@ static void isEndOfLane(BALL_POSITION* ball_position)
   {
     ball_position->isEndOfLane = true;
   }
+  else
+  {
+  	ball_position->isEndOfLane = false;
+  }
+}
+
+static bool isLaneConfigured()
+{
+	if (lane.width < 1 && lane.length < 1)
+		return false;
+	return true;
+}
+
+static void initBallPosition(BALL_POSITION* ball_position)
+{
+	ball_position->isEndOfLane = false;
+	ball_position->isStartPosition = false;
+}
+static double getFraction(BALL_POSITION* ball_position)
+{
+	if (ball_position->y < function.y2)
+		return ((function.x2 - function.x1)/(function.y2 - function.y1))/1.0;
+	else
+		return ((function.x3 - function.x2)/(function.y3 - function.y2))/1.0;
+}
+
+static void nextBallPosition(BALL_POSITION* ball_position)
+{
+	ball_position->x = getFraction(ball_position)*ball_position->y - getFraction(ball_position)*function.y1 + function.x1;
+}
+
+static void setKeyPoints(double center)
+{
+	function.x1 = function.x3 = center;
+	function.x2 = center;
+	function.y1 = 0;
+	function.y2 = lane.width / 2 + 1;
+	function.y3 = lane.length - 1; 
 }
 
 void initBallLogic(LANE_CONFIG lane_cfg)
@@ -33,42 +71,58 @@ void initBallLogic(LANE_CONFIG lane_cfg)
 
 BALL_POSITION rollTheBall(struct player* the_player, BALL_POSITION current_ball_position)
 {
+
 	BALL_POSITION next_ball_position;
-	if (isBallOnStartPosition(current_ball_position))
+	initBallPosition(&next_ball_position);
+
+	if (!isLaneConfigured())
 	{
-	  next_ball_position.y = 0;
-	  double center = round(lane.width / 2.0);
+		next_ball_position.x = -1;
+		next_ball_position.y = -1;
+	}
+	else if (isBallOnStartPosition(current_ball_position))
+	{
 
-	  double offset = center / QUALITY_MAX;
-	  double total_offset = 0;
-	  uint8_t i;
-	  for (i = QUALITY_MAX; i > the_player->quality; i--)
-	  {
-	  	total_offset += offset;
-	  }
+	  	next_ball_position.y = 0;
+	  	double center = round(lane.width / 2.0);
+
+	  	double offset = center / QUALITY_MAX;
+	  	double total_offset = 0;
+	  	uint8_t i;
+	  	for (i = QUALITY_MAX; i > the_player->quality; i--)
+	  	{
+	  		total_offset += offset;
+	  	}
 	    
-	  if ( LEFT_HAND == the_player->main_hand)
-	  {
-	    center -= total_offset;
-	  }
-	  else
-	  {
-	    center += total_offset;
-	  }
+	  	if ( LEFT_HAND == the_player->main_hand)
+	  	{
+	    	center -= total_offset;
+	  	}
+	  	else
+	  	{
+	    	center += total_offset;
+	  	}
 
-	  center = round(center); 
-	  
-	  
-	  setIsStartPosition(&next_ball_position);
-	  next_ball_position.isEndOfLane = false;
-	  next_ball_position.x = center;
+	  	center = round(center);
+
+	  	setKeyPoints(center);
+
+	  	setIsStartPosition(&next_ball_position);
+	  	next_ball_position.isEndOfLane = false;
+	  	next_ball_position.x = center;
 	}
 	else
 	{  
+<<<<<<< HEAD
 	  next_ball_position.y = current_ball_position.y + 1;
 	  next_ball_position.x = current_ball_position.x;
 	  setIsStartPosition(&next_ball_position);
 	  isEndOfLane(&next_ball_position);
+=======
+	  	next_ball_position.y = current_ball_position.y + 1;
+	  	nextBallPosition(&next_ball_position);
+	  	isEndOfLane(&next_ball_position);
+>>>>>>> Ball_Logic
 	}
 	
 	return next_ball_position;

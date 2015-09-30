@@ -51,7 +51,15 @@ typedef struct
 	int32_t bumperWidth;		///<	Bumper width
 } LANE_CONFIG;
 
+typedef struct 
+{
+	uint32_t x1,y1;
+	uint32_t x2,y2;
+	uint32_t x3,y3;
+} FUNCTION;
+
 LANE_CONFIG lane;			///<	Structure in which are informations about lane dimensions
+FUNCTION function;
 
 /**
  * @brief 	Function define dimensions of lanes used in game. 

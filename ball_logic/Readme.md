@@ -16,4 +16,13 @@
 -  ~~4) TEST : Offset from central line~~
 -  ~~5) TEST : Straight line test~~
 -  ~~6) TEST : Straight line test with offset on central line~~
--  7) TEST : Line configuration not set
+-  ~~7) TEST : Ball on start true~~
+-  ~~8) TEST : Ball on the end of lane~~
+
+-  Development rollTheBall() using random
+-  1) TEST : Offset from central axis on start line
+-  2) TEST : Offset from central axis on the end of lane
+-  3) TEST : Refraction point on lane
+-  4) TEST : Floating refraction point on horizontal lane
+-  5) TEST : Floating refraction point on vertical lane
+-  6) TEST : Line configuration not set
