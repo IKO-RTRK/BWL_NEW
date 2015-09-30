@@ -36,7 +36,7 @@ char init_bowling_pins[NUM_OF_PINS] = {[0 ... NUM_OF_PINS-1] = '!'};
 
 
 uint8_t drawKnockedPinsAndTable_console(BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins);
-uint8_t animateBallMovement_console(BOWLING_GAME* the_game, uint8_t current_player, BALL_POSITION ball_position, TRACK_CONSOLE* track);
+uint8_t animateBallMovement_console(BOWLING_GAME* the_game, uint8_t current_player, BALL_POSITION ball_position);
 
 static uint8_t drawKnockedPinsAndTable_SDL(BOWLING_GAME* the_game, uint8_t current_player, KNOCKED_DOWN_PINS knocked_down_pins);
 static uint8_t animateBallMovement_SDL(BOWLING_GAME* the_game, uint8_t current_player, BALL_POSITION ball_position);
@@ -342,21 +342,33 @@ uint8_t drawKnockedPinsAndTable_console(BOWLING_GAME* the_game, uint8_t current_
 	n--;					
 						
     }
-	
+	return 1;
 }
 
-uint8_t animateBallMovement_console(BOWLING_GAME* the_game, uint8_t current_player, BALL_POSITION ball_position,TRACK_CONSOLE* track)
+uint8_t animateBallMovement_console(BOWLING_GAME* the_game, uint8_t current_player, BALL_POSITION ball_position)
 {
-      if(ball_position.isStartPosition==0)
-      {
-	track->lane_gui[track->ball_prevYpos][track->ball_prevXpos] = '.';
-	track->ball_prevYpos = ball_position.y;
-	track->ball_prevXpos = ball_position.x;
-	if(ball_position.isEndOfLane==0)
+
+	if(ball_position.isStartPosition==0)
 	{
-	  track->lane_gui[track->ball_prevYpos][track->ball_prevXpos] = 'o';
+		track->lane_gui[track->ball_prevYpos][track->ball_prevXpos] = '.';
+		track->ball_prevYpos = ball_position.y;
+		track->ball_prevXpos = ball_position.x;
+		if(ball_position.isEndOfLane==0)
+		{
+	  		track->lane_gui[track->ball_prevYpos][track->ball_prevXpos] = 'o';
+		}
+      	}
+	else if(ball_position.isStartPosition==1)
+	{
+		int num; 		
+		for(num=END_OF_PINS_ROW; num<LENGTH_OF_LANE_CONSOLE; num++)
+		{
+			track->lane_gui[num][FIRST_BALL_POS_COL]=' ';		
+		}
+		track->lane_gui[FIRST_BALL_POS_ROW][FIRST_BALL_POS_COL]='o';
+
 	}
-      }
+
       return 1;
 }
 // CONSOLE GUI END
